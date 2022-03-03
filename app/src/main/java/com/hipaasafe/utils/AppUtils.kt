@@ -1,0 +1,120 @@
+package com.hipaasafe.utils
+
+import android.content.Context
+import android.util.Log
+import android.view.View
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.hipaasafe.BuildConfig
+import com.hipaasafe.presentation.login.model.CountryModel
+import java.io.IOException
+import java.lang.reflect.Type
+import java.util.ArrayList
+
+class AppUtils {
+
+    lateinit var preferenceUtils: PreferenceUtils
+    companion object {
+        var INSTANCE: AppUtils? = null
+
+        fun setInstance() {
+            if (INSTANCE == null) {
+                INSTANCE = AppUtils()
+            }
+        }
+    }
+
+    fun convertSecondToTime(millis: Long): String {
+        val secs: Long = millis / 1000
+        return String.format("%02d:%02d", (secs % 3600) / 60, secs % 60);
+
+    }
+
+    fun getJsonDataFromAsset(context: Context, fileName: String): String? {
+
+        val jsonString: String
+        try {
+            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
+        } catch (ioException: IOException) {
+            ioException.printStackTrace()
+            return ""
+        }
+        return jsonString
+    }
+
+    fun getCountriesList(context: Context): ArrayList<CountryModel> {
+        val countryCodeListString =
+            INSTANCE?.getJsonDataFromAsset(context, "countries.json")
+        val countryType: Type? = object : TypeToken<ArrayList<CountryModel?>>() {}.type
+        return INSTANCE?.getDataFromJson(
+            countryCodeListString ?: "",
+            countryType
+        ) as ArrayList<CountryModel>
+    }
+    fun getDataFromJson(stringData: String, objectType: Type?): Any {
+        val gson = Gson()
+        return gson.fromJson(stringData, objectType)
+    }
+
+    fun getUSIndex(countryList: ArrayList<CountryModel>): Int {
+        for (i in 0 until countryList.size) {
+            val country = countryList[i]
+            if (country.dial_code.equals("+1")) {
+                return i
+            }
+        }
+        return 0
+    }
+
+    fun logMe(tag: String, message: String?) {
+        if(BuildConfig.DEBUG){
+            Log.e(tag, message ?: "")
+        }
+    }
+
+    fun showView(view: View, duration: Long) {
+        //Alpha 1 indicates completely visible
+        view.animate().alpha(1.0f).duration = 400
+
+        //        view.visibility = View.VISIBLE
+        //            .setListener(object : AnimatorListenerAdapter() {
+        //                override fun onAnimationEnd(animation: Animator) {
+        //                    view.setVisibility(View.GONE)
+        //                }
+        //            })
+    }
+
+    fun hideView(view: View, duration: Long) {
+        //alpha 0 indicates completely transaparent
+        //        view.visibility = View.GONE
+        view.animate().alpha(0f).duration = 400
+        //            .setListener(object : AnimatorListenerAdapter() {
+        //                override fun onAnimationEnd(animation: Animator) {
+        //                    view.setVisibility(View.GONE)
+        //                }
+        //            })
+    }
+
+    fun showFadeView(view: View, duration: Long) {
+        //        view.visibility = View.VISIBLE
+
+        view.animate().alpha(1.0f).duration = duration
+        //            .setListener(object : AnimatorListenerAdapter() {
+        //                override fun onAnimationEnd(animation: Animator) {
+        //                    view.setVisibility(View.GONE)
+        //                }
+        //            })
+    }
+
+    fun hideFadeView(view: View, duration: Long) {
+        //        view.visibility = View.GONE
+
+        view.animate().alpha(0.2f).duration = duration
+        //            .setListener(object : AnimatorListenerAdapter() {
+        //                override fun onAnimationEnd(animation: Animator) {
+        //                    view.setVisibility(View.GONE)
+        //                }
+        //            })
+    }
+
+}
