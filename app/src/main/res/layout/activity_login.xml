@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="16dp"
     android:paddingVertical="20dp"
-    tools:context=".MainActivity">
+    tools:context=".presentation.login.LoginActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/btnBack"
@@ -19,7 +19,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvLogin"
-        style="@style/Text_Heading_Bold"
+        style="@style/metropolis_bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="35dp"
@@ -31,7 +31,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvMsg"
-        style="@style/proximanova_light_small"
+        style="@style/metropolis_light_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
@@ -42,8 +42,9 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgMain"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="240dp"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginTop="52dp"
         android:layout_marginBottom="10dp"
         android:scaleType="centerInside"
@@ -61,10 +62,10 @@
         android:layout_marginTop="5dp"
         android:hint="@string/email"
         android:textColorHint="@color/heather"
-        app:boxStrokeColor="@color/athensGray"
-        app:errorEnabled="true"
-        app:boxStrokeWidth="1dp"
         android:visibility="invisible"
+        app:boxStrokeColor="@color/athensGray"
+        app:boxStrokeWidth="1dp"
+        app:errorEnabled="true"
         app:errorIconDrawable="@null"
         app:hintTextColor="@color/heather"
         app:layout_constraintTop_toTopOf="@+id/layoutMobile"
@@ -73,7 +74,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etEmail"
-            style="@style/Text_Heading_Semi_Bold"
+            style="@style/metropolis_semi_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -103,9 +104,10 @@
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spinner_country_code"
-            style="@style/Text_Semi_Bold"
+            style="@style/metropolis_bold"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -114,7 +116,7 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etMobile"
-            style="@style/Text_Heading_Semi_Bold"
+            style="@style/metropolis_semi_bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -123,8 +125,10 @@
             android:imeOptions="actionDone"
             android:inputType="number"
             android:padding="18dp"
+            android:maxLength="15"
             android:singleLine="true"
             android:textColor="@color/codGray"
+            android:textColorHint="@color/heather"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/spinner_country_code"
             app:layout_constraintTop_toTopOf="parent" />
@@ -133,12 +137,11 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/errorText"
-        style="@style/proximanova_regular_small"
+        style="@style/metropolis_regular_x_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="7dp"
         android:textColor="@color/monza"
-        android:textSize="12sp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/layoutMobile"
         app:layout_constraintTop_toBottomOf="@+id/layoutMobile"
@@ -146,13 +149,12 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvByClicking"
-        style="@style/proximanova_regular_small"
+        style="@style/metropolis_regular_x_small"
         android:layout_width="wrap_content"
         android:layout_height="16dp"
         android:layout_marginTop="27dp"
         android:text="@string/by_clicking_continu_you_agree_with_our"
         android:textColor="@color/heather"
-        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@id/tvTermCondition"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -160,13 +162,12 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTermCondition"
-        style="@style/proximanova_regular_small"
+        style="@style/metropolis_regular_x_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
         android:text="@string/terms_and_condition"
         android:textColor="@color/azure_radiance"
-        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -177,12 +178,8 @@
         style="@style/MaterialButtonBaseStyle"
         android:layout_height="50dp"
         android:layout_marginBottom="27dp"
-        android:fontFamily="@font/metropolis_medium"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        app:cornerRadius="10dp"
+        android:fontFamily="@font/metropolis_regular"
         android:text="@string/sent_otp"
-        android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@id/tvByClicking"

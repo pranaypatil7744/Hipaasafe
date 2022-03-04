@@ -30,128 +30,216 @@
         <item name="cornerSize">20%</item>
     </style>
 
-    <style name="proximanova_regular_xx_small" parent="android:Widget.TextView">
+    <style name="metropolis_regular_xx_small" parent="android:Widget.TextView">
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_regular</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_regular</item>
     </style>
 
-    <style name="proximanova_regular_small" parent="android:Widget.TextView">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_regular</item>
-    </style>
-
-    <style name="proximanova_regular_x_small" parent="android:Widget.TextView">
+    <style name="metropolis_regular_x_small" parent="android:Widget.TextView">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_regular</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_regular</item>
     </style>
 
-    <style name="proximanova_regular" parent="android:Widget.TextView">
+    <style name="metropolis_regular_small" parent="android:Widget.TextView">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_regular</item>
+    </style>
+
+    <style name="metropolis_regular" parent="android:Widget.TextView">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_regular</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_regular</item>
     </style>
 
-    <style name="proximanova_regular_large" parent="android:Widget.TextView">
+    <style name="metropolis_regular_large" parent="android:Widget.TextView">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_regular</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_regular</item>
     </style>
 
-    <style name="proximanova_regular_x_large" parent="android:Widget.TextView">
+    <style name="metropolis_regular_x_large" parent="android:Widget.TextView">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_regular</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_regular</item>
     </style>
 
-    <style name="proximanova_light" parent="android:Widget.TextView">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_light</item>
-    </style>
-
-    <style name="proximanova_light_small" parent="android:Widget.TextView">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_light</item>
-    </style>
-
-    <style name="proximanova_light_x_small" parent="android:Widget.TextView">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_light</item>
-    </style>
-
-    <style name="proximanova_light_xx_small" parent="android:Widget.TextView">
-        <item name="android:textSize">10sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_light</item>
-    </style>
-
-    <style name="proximanova_light_xx_large" parent="android:Widget.TextView">
+    <style name="metropolis_regular_xx_large" parent="android:Widget.TextView">
         <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_light</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_regular</item>
     </style>
 
-    <style name="proximanova_light_x_large" parent="android:Widget.TextView">
+    <style name="metropolis_light" parent="android:Widget.TextView">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_light</item>
+    </style>
+
+    <style name="metropolis_light_small" parent="android:Widget.TextView">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_light</item>
+    </style>
+
+    <style name="metropolis_light_x_small" parent="android:Widget.TextView">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_light</item>
+    </style>
+
+    <style name="metropolis_light_xx_small" parent="android:Widget.TextView">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_light</item>
+    </style>
+
+    <style name="metropolis_light_xx_large" parent="android:Widget.TextView">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_light</item>
+    </style>
+
+    <style name="metropolis_light_x_large" parent="android:Widget.TextView">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_light</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_light</item>
     </style>
-    <style name="proximanova_light_large" parent="android:Widget.TextView">
+
+    <style name="metropolis_light_large" parent="android:Widget.TextView">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_light</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_light</item>
     </style>
 
+    <style name="metropolis_bold_xx_small" parent="android:Widget.TextView">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_bold</item>
+    </style>
 
-    <style name="Text_Heading_Bold" parent="android:Widget.TextView">
+    <style name="metropolis_bold_x_small" parent="android:Widget.TextView">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_bold</item>
+    </style>
+
+    <style name="metropolis_bold_small" parent="android:Widget.TextView">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_bold</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_bold</item>
     </style>
 
-    <style name="Text_Heading_Toolbar_Bold" parent="android:Widget.TextView">
+    <style name="metropolis_bold" parent="android:Widget.TextView">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_bold</item>
+    </style>
+
+    <style name="metropolis_bold_large" parent="android:Widget.TextView">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_bold</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_bold</item>
     </style>
 
-
-    <style name="Text_Bold" parent="android:Widget.TextView">
-        <item name="android:textSize">12sp</item>
+    <style name="metropolis_bold_x_large" parent="android:Widget.TextView">
+        <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_bold</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_bold</item>
     </style>
 
+    <style name="metropolis_bold_xx_large" parent="android:Widget.TextView">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_bold</item>
+    </style>
 
-    <style name="Text_Small_Bold" parent="android:Widget.TextView">
+    <style name="metropolis_medium_xx_small" parent="android:Widget.TextView">
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_bold</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_medium</item>
     </style>
 
-
-    <style name="Text_Semi_Bold" parent="android:Widget.TextView">
+    <style name="metropolis_medium_x_small" parent="android:Widget.TextView">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_semibold</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_medium</item>
     </style>
 
-    <style name="Text_Heading_Semi_Bold" parent="android:Widget.TextView">
+    <style name="metropolis_medium_small" parent="android:Widget.TextView">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_semibold</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_medium</item>
     </style>
 
-    <style name="Text_Small_Semi_Bold" parent="android:Widget.TextView">
+    <style name="metropolis_medium" parent="android:Widget.TextView">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_medium</item>
+    </style>
+
+    <style name="metropolis_medium_large" parent="android:Widget.TextView">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_medium</item>
+    </style>
+
+    <style name="metropolis_medium_x_large" parent="android:Widget.TextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_medium</item>
+    </style>
+
+    <style name="metropolis_medium_xx_large" parent="android:Widget.TextView">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_medium</item>
+    </style>
+
+    <style name="metropolis_semi_bold_xx_small" parent="android:Widget.TextView">
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_semibold</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_semi_bold</item>
     </style>
+
+    <style name="metropolis_semi_bold_x_small" parent="android:Widget.TextView">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_semi_bold</item>
+    </style>
+
+    <style name="metropolis_semi_bold_small" parent="android:Widget.TextView">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_semi_bold</item>
+    </style>
+
+    <style name="metropolis_semi_bold" parent="android:Widget.TextView">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_semi_bold</item>
+    </style>
+
+    <style name="metropolis_semi_bold_large" parent="android:Widget.TextView">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_semi_bold</item>
+    </style>
+
+    <style name="metropolis_semi_bold_x_large" parent="android:Widget.TextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_semi_bold</item>
+    </style>
+
+    <style name="metropolis_semi_bold_xx_large" parent="android:Widget.TextView">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_semi_bold</item>
+    </style>
+
 
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeColor">@color/athensGray</item>
@@ -160,6 +248,7 @@
         <item name="boxCornerRadiusBottomStart">10dp</item>
         <item name="boxCornerRadiusTopEnd">10dp</item>
         <item name="boxCornerRadiusTopStart">10dp</item>
+        <item name="fontFamily">@font/metropolis_regular</item>
     </style>
 
     <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">
@@ -174,10 +263,6 @@
         <item name="fontFamily">@font/metropolis_medium</item>
     </style>
 
-    <!--    <style name="MaterialButtonBg" parent="Widget.MaterialComponents.Button.TextButton">-->
-    <!--        <item name="backgroundColor">@color/turquoise</item>-->
-    <!--    </style>-->
-
     <style name="RedButtonLightTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="colorAccent">@color/turquoise</item>
     </style>
@@ -187,9 +272,12 @@
         <item name="backgroundTint">@color/azure_radiance</item>
         <item name="cornerRadius">10dp</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_regular</item>
+        <item name="fontFamily">@font/metropolis_medium</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="textAllCaps">false</item>
     </style>
 
     <style name="MaterialButtonStrokeBorder" parent="Widget.MaterialComponents.Button">
@@ -199,7 +287,7 @@
         <item name="strokeWidth">1dp</item>
         <item name="android:strokeColor">@color/azure_radiance</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily" tools:ignore="NewApi">@font/proximanova_regular</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">@font/metropolis_medium</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">40dp</item>
     </style>
@@ -207,7 +295,7 @@
     <style name="TabLayout" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
-        <item name="fontFamily">@font/proximanova_regular</item>
+        <item name="fontFamily">@font/metropolis_medium</item>
         <item name="android:ellipsize">end</item>
     </style>
 
@@ -230,7 +318,6 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
-
 
     <style name="DialogTheme">
         <item name="android:windowEnterAnimation">@anim/slide_up</item>

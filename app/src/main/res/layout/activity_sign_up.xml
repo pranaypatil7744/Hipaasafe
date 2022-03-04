@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="16dp"
     android:paddingVertical="20dp"
-    tools:context=".MainActivity">
+    tools:context=".presentation.sign_up.SignUpActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/btnBack"
@@ -19,7 +19,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvLogin"
-        style="@style/Text_Heading_Bold"
+        style="@style/metropolis_bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="35dp"
@@ -47,30 +47,31 @@
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spinner_country_code"
-            style="@style/proximanova_regular_small"
+            style="@style/metropolis_semi_bold"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:clickable="false"
+            android:contextClickable="false"
             android:focusable="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:overlapAnchor="false" />
+            app:overlapAnchor="false"
+            tools:targetApi="m" />
 
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etMobile"
-            style="@style/Text_Heading_Semi_Bold"
+            style="@style/metropolis_semi_bold"
             android:layout_width="0dp"
-            android:enabled="false"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:drawableEnd="@drawable/ic_check"
+            android:enabled="false"
             android:gravity="center_vertical"
             android:hint="@string/mobile_number"
-            android:imeOptions="actionDone"
-            android:inputType="number"
+            android:inputType="none"
             android:padding="18dp"
-            android:drawableEnd="@drawable/ic_check"
             android:singleLine="true"
             android:textColor="@color/codGray"
             app:layout_constraintEnd_toEndOf="parent"
@@ -81,12 +82,11 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/errorText"
-        style="@style/proximanova_regular_small"
+        style="@style/metropolis_regular_x_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="7dp"
         android:textColor="@color/monza"
-        android:textSize="12sp"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@+id/layoutMobile"
         app:layout_constraintTop_toBottomOf="@+id/layoutMobile"
@@ -110,7 +110,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etName"
-            style="@style/Text_Heading_Semi_Bold"
+            style="@style/metropolis_semi_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -130,8 +130,8 @@
         android:hint="@string/email"
         android:textColorHint="@color/heather"
         app:boxStrokeColor="@color/athensGray"
-        app:errorEnabled="true"
         app:boxStrokeWidth="1dp"
+        app:errorEnabled="true"
         app:errorIconDrawable="@null"
         app:hintTextColor="@color/heather"
         app:layout_constraintTop_toBottomOf="@id/layoutName"
@@ -140,7 +140,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etEmail"
-            style="@style/Text_Heading_Semi_Bold"
+            style="@style/metropolis_semi_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -160,8 +160,8 @@
         android:hint="@string/age"
         android:textColorHint="@color/heather"
         app:boxStrokeColor="@color/athensGray"
-        app:errorEnabled="true"
         app:boxStrokeWidth="1dp"
+        app:errorEnabled="true"
         app:errorIconDrawable="@null"
         app:hintTextColor="@color/heather"
         app:layout_constraintTop_toBottomOf="@id/layoutEmail"
@@ -170,7 +170,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etAge"
-            style="@style/Text_Heading_Semi_Bold"
+            style="@style/metropolis_semi_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -190,24 +190,23 @@
         android:fontFamily="@font/metropolis_medium"
         android:insetTop="0dp"
         android:insetBottom="0dp"
-        app:cornerRadius="10dp"
         android:text="@string/_continue"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="16sp"
+        app:cornerRadius="10dp"
         app:layout_constraintBottom_toTopOf="@id/tvByClicking"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutAge" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvByClicking"
-        style="@style/proximanova_regular_small"
+        style="@style/metropolis_regular_x_small"
         android:layout_width="wrap_content"
         android:layout_height="16dp"
         android:layout_marginTop="27dp"
         android:text="@string/by_clicking_continu_you_agree_with_our"
         android:textColor="@color/heather"
-        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@id/tvTermCondition"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -215,7 +214,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTermCondition"
-        style="@style/proximanova_regular_small"
+        style="@style/metropolis_regular_x_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
@@ -229,7 +228,6 @@
     <include
         android:id="@+id/content_loading"
         layout="@layout/content_loading"
-        android:visibility="gone"
-        tools:visibility="visible" />
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,16 +1,19 @@
 package com.hipaasafe.presentation.login
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseActivity
-import com.hipaasafe.databinding.ActivityMainBinding
+import com.hipaasafe.databinding.ActivityLoginBinding
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpRequestModel
 import com.hipaasafe.domain.model.patient_login.PatientSendOtpRequestModel
 import com.hipaasafe.presentation.login.model.CountryModel
@@ -21,7 +24,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class LoginActivity : BaseActivity() {
-    lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityLoginBinding
     private val loginViewModel: LoginViewModel by viewModel()
     var countryList: ArrayList<CountryModel> = ArrayList()
     private var selectedCountryShortForm: String? = ""
@@ -29,7 +32,7 @@ class LoginActivity : BaseActivity() {
     var selectedCountryCode: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setUpObserver()
         getIntentData()
@@ -177,10 +180,12 @@ class LoginActivity : BaseActivity() {
                         mobile.isEmpty() -> {
                             errorText.text = getString(R.string.please_enter_mobile_number)
                             errorText.visibility = VISIBLE
+                            layoutMobile.setBackgroundResource(R.drawable.bg_box_error)
                         }
-                        AppUtils.INSTANCE?.isValidMobileNumber(mobile) == false -> {
+                        mobile.length < 6  -> {
                             errorText.text = getString(R.string.please_enter_valid_mobile_number)
                             errorText.visibility = VISIBLE
+                            layoutMobile.setBackgroundResource(R.drawable.bg_box_error)
                         }
                         else -> {
                             callPatientSendOtpApi()
@@ -188,6 +193,61 @@ class LoginActivity : BaseActivity() {
                     }
                 }
             }
+
+            etMobile.onFocusChangeListener =
+                View.OnFocusChangeListener { _: View, hasFocus: Boolean ->
+                    if (hasFocus) {
+                        clearErrors()
+                        layoutMobile.setBackgroundResource(R.drawable.bg_box_focused)
+                    } else {
+                        layoutMobile.setBackgroundResource(R.drawable.bg_box)
+                    }
+                    val input = etEmail.text.toString().trim()
+                    if (!TextUtils.isEmpty(input)) {
+                        layoutMobile.setBackgroundResource(R.drawable.bg_box_focused)
+                    }
+                }
+
+            etEmail.onFocusChangeListener =
+                View.OnFocusChangeListener { _: View, hasFocus: Boolean ->
+                    if (hasFocus) {
+                        clearErrors()
+                        layoutEmail.setStartIconTintList(
+                            ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    this@LoginActivity,
+                                    R.color.azure_radiance
+                                )
+                            )
+                        )
+                        layoutEmail.boxStrokeColor =
+                            ContextCompat.getColor(this@LoginActivity, R.color.azure_radiance)
+
+                    } else {
+                        layoutEmail.setStartIconTintList(
+                            ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    this@LoginActivity,
+                                    R.color.heather
+                                )
+                            )
+                        )
+                        layoutEmail.boxStrokeColor =
+                            ContextCompat.getColor(this@LoginActivity, R.color.alabaster)
+
+                    }
+                    val input = etEmail.text.toString().trim()
+                    if (!TextUtils.isEmpty(input)) {
+                        layoutEmail.setStartIconTintList(
+                            ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    this@LoginActivity,
+                                    R.color.azure_radiance
+                                )
+                            )
+                        )
+                    }
+                }
         }
     }
 
@@ -196,6 +256,7 @@ class LoginActivity : BaseActivity() {
             layoutEmail.error = ""
             errorText.text = ""
             errorText.visibility = INVISIBLE
+            layoutMobile.setBackgroundResource(R.drawable.bg_box)
         }
     }
 

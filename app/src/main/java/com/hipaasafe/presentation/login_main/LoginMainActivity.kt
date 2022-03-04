@@ -8,7 +8,7 @@ import com.hipaasafe.databinding.ActivityLoginMainBinding
 import com.hipaasafe.presentation.login.LoginActivity
 
 class LoginMainActivity : BaseActivity() {
-    lateinit var binding:ActivityLoginMainBinding
+    lateinit var binding: ActivityLoginMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginMainBinding.inflate(layoutInflater)
@@ -19,16 +19,16 @@ class LoginMainActivity : BaseActivity() {
     private fun setUpListener() {
         binding.apply {
             btnDoctorLogin.setOnClickListener {
-                val i = Intent(this@LoginMainActivity,LoginActivity::class.java)
+                val i = Intent(this@LoginMainActivity, LoginActivity::class.java)
                 val b = Bundle()
-                b.putBoolean(Constants.IS_DOCTOR_LOGIN,true)
+                b.putBoolean(Constants.IS_DOCTOR_LOGIN, true)
                 i.putExtras(b)
                 startActivity(i)
             }
             btnPatientLogin.setOnClickListener {
-                val i = Intent(this@LoginMainActivity,LoginActivity::class.java)
+                val i = Intent(this@LoginMainActivity, LoginActivity::class.java)
                 val b = Bundle()
-                b.putBoolean(Constants.IS_DOCTOR_LOGIN,false)
+                b.putBoolean(Constants.IS_DOCTOR_LOGIN, false)
                 i.putExtras(b)
                 startActivity(i)
             }
