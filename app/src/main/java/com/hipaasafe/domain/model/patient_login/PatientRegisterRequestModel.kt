@@ -23,6 +23,6 @@ data class UserRegisterDataModel(
     var role_name:String? ="",
     var profile_img:String? ="",
     var organization_id:String? ="",
-    var mute_notifications:String? ="",
+    var mute_notifications:Boolean? =false,
     var patient_details:PatientDetailsModel? = PatientDetailsModel()
 )

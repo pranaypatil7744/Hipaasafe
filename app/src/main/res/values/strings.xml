@@ -30,5 +30,8 @@
     <string name="please_enter_valid_mobile_number">Please enter valid mobile number</string>
     <string name="please_enter_otp">Please enter OTP</string>
     <string name="please_enter_4_digit_otp">Please enter 4 digit OTP</string>
+    <string name="please_enter_name">Please enter name</string>
+    <string name="please_enter_age">Please enter age</string>
+    <string name="success">Success</string>
 
 </resources>

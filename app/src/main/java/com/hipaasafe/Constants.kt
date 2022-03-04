@@ -11,6 +11,13 @@ class Constants {
         const val ONE_SIGNAL_APP_ID = "29500431-ac41-47af-908c-fcc2ba1d978d"
 
     }
+    class ErrorMsg{
+        companion object{
+            const val NAME_ERROR = "NAME_ERROR"
+            const val EMAIL_ERROR = "EMAIL_ERROR"
+            const val AGE_ERROR = "AGE_ERROR"
+        }
+    }
 
     class PreferenceKeys{
         companion object{

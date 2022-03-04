@@ -3,6 +3,8 @@ package com.hipaasafe.presentation.login
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hipaasafe.Constants
+import com.hipaasafe.R
 import com.hipaasafe.domain.exception.ApiError
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpRequestModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpResponseModel
@@ -11,6 +13,8 @@ import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpResponseMod
 import com.hipaasafe.domain.model.patient_login.*
 import com.hipaasafe.domain.usecase.base.UseCaseResponse
 import com.hipaasafe.domain.usecase.login.*
+import com.hipaasafe.listener.ValidationListener
+import com.hipaasafe.utils.AppUtils
 
 class LoginViewModel constructor(
     private val patientSendOtpUseCase: PatientSendOtpUseCase,
@@ -27,7 +31,39 @@ class LoginViewModel constructor(
     val patientRegisterResponseData = MutableLiveData<PatientRegisterResponseModel>()
     val showProgressbar = MutableLiveData<Boolean>()
     val messageData = MutableLiveData<String>()
+    var validationListener: ValidationListener? = null
 
+    fun validatePatientRegisterData(request: PatientRegisterRequestModel) {
+        if (request.name.isEmpty()) {
+            validationListener?.onValidationFailure(
+                Constants.ErrorMsg.NAME_ERROR,
+                R.string.please_enter_name
+            )
+            return
+        }
+        if (request.email.isEmpty()) {
+            validationListener?.onValidationFailure(
+                Constants.ErrorMsg.EMAIL_ERROR,
+                R.string.please_enter_email_id
+            )
+            return
+        }
+        if (AppUtils.INSTANCE?.isValidEmail(request.email) == false) {
+            validationListener?.onValidationFailure(
+                Constants.ErrorMsg.EMAIL_ERROR,
+                R.string.please_enter_valid_email_id
+            )
+            return
+        }
+        if (request.age == 0) {
+            validationListener?.onValidationFailure(
+                Constants.ErrorMsg.AGE_ERROR,
+                R.string.please_enter_age
+            )
+            return
+        }
+        validationListener?.onValidationSuccess(Constants.IS_LOGIN, R.string.success)
+    }
 
     fun callPatientRegisterApi(request: PatientRegisterRequestModel) {
         showProgressbar.value = true

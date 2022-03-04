@@ -19,7 +19,6 @@ import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpRequestModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpRequestModel
 import com.hipaasafe.domain.model.patient_login.PatientSendOtpRequestModel
 import com.hipaasafe.domain.model.patient_login.PatientValidateOtpRequestModel
-import com.hipaasafe.domain.model.patient_login.PatientValidateOtpResponseModel
 import com.hipaasafe.domain.model.patient_login.UserDataModel
 import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.login.LoginViewModel
@@ -288,8 +287,6 @@ class VerifyOtpActivity : BaseActivity() {
 
             etOtp.onFocusChangeListener =
                 View.OnFocusChangeListener { _: View, hasFocus: Boolean ->
-
-
                     if (hasFocus) {
                         clearErrorLabels()
                         layoutOtp.setStartIconTintList(

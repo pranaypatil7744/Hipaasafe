@@ -226,4 +226,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <include
+        android:id="@+id/content_loading"
+        layout="@layout/content_loading"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
