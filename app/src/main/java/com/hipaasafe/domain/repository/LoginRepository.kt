@@ -4,10 +4,7 @@ import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpRequestModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpResponseModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpRequestModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpResponseModel
-import com.hipaasafe.domain.model.patient_login.PatientSendOtpRequestModel
-import com.hipaasafe.domain.model.patient_login.PatientSendOtpResponseModel
-import com.hipaasafe.domain.model.patient_login.PatientValidateOtpRequestModel
-import com.hipaasafe.domain.model.patient_login.PatientValidateOtpResponseModel
+import com.hipaasafe.domain.model.patient_login.*
 
 interface LoginRepository {
 
@@ -18,4 +15,6 @@ interface LoginRepository {
     suspend fun callDoctorLoginSendOtpApi(request:DoctorLoginSendOtpRequestModel):DoctorLoginSendOtpResponseModel
 
     suspend fun callDoctorLoginValidateOtpApi(request:DoctorLoginValidateOtpRequestModel):DoctorLoginValidateOtpResponseModel
+
+    suspend fun callPatientRegisterApi(request:PatientRegisterRequestModel):PatientRegisterResponseModel
 }

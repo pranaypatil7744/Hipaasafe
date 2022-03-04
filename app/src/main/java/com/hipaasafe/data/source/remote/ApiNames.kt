@@ -9,5 +9,6 @@ class ApiNames {
         const val DoctorLoginValidateOtp = "user/doctor/login/validate-otp"
         const val PatientValidateOtp = "user/patient/login/validate-otp"
         const val UserProfile = "user/profile"
+        const val PatientRegister = "user/patient/register"
     }
 }

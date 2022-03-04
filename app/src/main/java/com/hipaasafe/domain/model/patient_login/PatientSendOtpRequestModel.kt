@@ -7,5 +7,10 @@ data class PatientSendOtpRequestModel(
 
 data class PatientSendOtpResponseModel(
     var success:Boolean = true,
-    var message:String = ""
+    var message:String = "",
+    var data:DataModel = DataModel()
+)
+
+data class DataModel(
+    var otp:String? = ""
 )

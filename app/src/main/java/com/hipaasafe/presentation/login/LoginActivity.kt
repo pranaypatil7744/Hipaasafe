@@ -202,6 +202,7 @@ class LoginActivity : BaseActivity() {
     private fun callPatientSendOtpApi() {
         binding.apply {
             if (isNetworkAvailable()) {
+                toggleLoader(true)
                 loginViewModel.callPatientSendOtpApi(
                     request = PatientSendOtpRequestModel(
                         country_code = selectedCountryCode,

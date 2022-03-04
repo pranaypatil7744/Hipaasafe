@@ -8,20 +8,25 @@ import android.text.TextUtils
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.blankj.utilcode.util.KeyboardUtils
+import com.google.gson.Gson
 import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.base.BaseApplication
 import com.hipaasafe.databinding.ActivityVerifyOtpBinding
+import com.hipaasafe.domain.model.doctor_login.DoctorDataModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpRequestModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpRequestModel
 import com.hipaasafe.domain.model.patient_login.PatientSendOtpRequestModel
 import com.hipaasafe.domain.model.patient_login.PatientValidateOtpRequestModel
+import com.hipaasafe.domain.model.patient_login.PatientValidateOtpResponseModel
+import com.hipaasafe.domain.model.patient_login.UserDataModel
 import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.login.LoginViewModel
 import com.hipaasafe.presentation.sign_up.SignUpActivity
 import com.hipaasafe.utils.AppUtils
 import com.hipaasafe.utils.ImageUtils
+import com.hipaasafe.utils.PreferenceUtils
 import com.hipaasafe.utils.isNetworkAvailable
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
@@ -103,6 +108,7 @@ class VerifyOtpActivity : BaseActivity() {
         binding = ActivityVerifyOtpBinding.inflate(layoutInflater)
         setContentView(binding.root)
         BaseApplication.second = Constants.RESEND_OTP_SECOND
+        preferenceUtils = PreferenceUtils(this)
         getIntentData()
         setUpObserver()
         setListener()
@@ -132,23 +138,30 @@ class VerifyOtpActivity : BaseActivity() {
                 })
                 doctorLoginValidateOtpResponseData.observe(this@VerifyOtpActivity, {
                     toggleLoader(false)
+                    stopTimer()
                     if (it.success) {
-                        val i = Intent(this@VerifyOtpActivity, HomeActivity::class.java)
-                        startActivity(i)
+                        saveDoctorData(it.data)
+                        navigateToHome()
                     } else {
                         showToast(it.message)
                     }
                 })
                 patientValidateOtpResponseData.observe(this@VerifyOtpActivity, {
                     toggleLoader(false)
+                    stopTimer()
                     if (it.success) {
-                        //TODO check Condition
-                        val i = Intent(this@VerifyOtpActivity, SignUpActivity::class.java)
-                        val b = Bundle()
-                        b.putString(Constants.LOGIN_WITH, loginWith)
-                        b.putString(Constants.COUNTRY_CODE, countryCode)
-                        i.putExtras(b)
-                        startActivity(i)
+                        savePatientData(it.data)
+                        if (it.data.patient_details?.profile_update == true) {
+                            val i = Intent(this@VerifyOtpActivity, SignUpActivity::class.java)
+                            val b = Bundle()
+                            b.putString(Constants.LOGIN_WITH, loginWith)
+                            b.putString(Constants.COUNTRY_CODE, countryCode)
+                            i.putExtras(b)
+                            startActivity(i)
+                        } else {
+                            navigateToHome()
+                        }
+
                     } else {
                         showToast(it.message)
                     }
@@ -157,6 +170,70 @@ class VerifyOtpActivity : BaseActivity() {
                     toggleLoader(false)
                     showToast(it.toString())
                 })
+            }
+        }
+    }
+
+    private fun navigateToHome() {
+        binding.apply {
+            val i = Intent(this@VerifyOtpActivity, HomeActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(i)
+            finish()
+        }
+    }
+
+    private fun savePatientData(data: UserDataModel) {
+        binding.apply {
+            preferenceUtils.apply {
+                setValue(Constants.IS_LOGIN,true)
+                setValue(Constants.PreferenceKeys.id, data.id.toString())
+                setValue(Constants.PreferenceKeys.uid, data.uid.toString())
+                setValue(Constants.PreferenceKeys.name, data.name.toString())
+                setValue(Constants.PreferenceKeys.email, data.email.toString())
+                setValue(Constants.PreferenceKeys.country_code, data.country_code.toString())
+                setValue(Constants.PreferenceKeys.number, data.number.toString())
+                setValue(Constants.PreferenceKeys.role_id, data.role_id.toString())
+                setValue(Constants.PreferenceKeys.role_name, data.role_name.toString())
+                setValue(Constants.PreferenceKeys.profile_img, data.profile_img.toString())
+                setValue(Constants.PreferenceKeys.organization_id, data.organization_id.toString())
+                setValue(
+                    Constants.PreferenceKeys.mute_notifications,
+                    data.mute_notifications ?: false
+                )
+                setValue(Constants.PreferenceKeys.access_token, data.access_token.toString())
+                setValue(
+                    Constants.PreferenceKeys.profile_update,
+                    data.patient_details?.profile_update ?: false
+                )
+            }
+        }
+    }
+
+    private fun saveDoctorData(data: DoctorDataModel) {
+        binding.apply {
+            preferenceUtils.apply {
+                setValue(Constants.IS_LOGIN,true)
+                setValue(Constants.PreferenceKeys.id, data.id.toString())
+                setValue(Constants.PreferenceKeys.uid, data.uid.toString())
+                setValue(Constants.PreferenceKeys.name, data.name.toString())
+                setValue(Constants.PreferenceKeys.email, data.email.toString())
+                setValue(Constants.PreferenceKeys.country_code, data.country_code.toString())
+                setValue(Constants.PreferenceKeys.number, data.number.toString())
+                setValue(Constants.PreferenceKeys.role_id, data.role_id.toString())
+                setValue(Constants.PreferenceKeys.role_name, data.role_name.toString())
+                setValue(Constants.PreferenceKeys.profile_img, data.profile_img.toString())
+                setValue(Constants.PreferenceKeys.location, data.doctor_details?.location)
+                setValue(Constants.PreferenceKeys.experience, data.doctor_details?.experience)
+                setValue(Constants.PreferenceKeys.speciality, data.doctor_details?.speciality)
+                setValue(Constants.PreferenceKeys.tags, Gson().toJson(data.doctor_details?.tags))
+                setValue(Constants.PreferenceKeys.createdAt, data.doctor_details?.createdAt)
+                setValue(Constants.PreferenceKeys.updatedAt, data.doctor_details?.updatedAt)
+                setValue(
+                    Constants.PreferenceKeys.organization_domain,
+                    data.doctor_details?.organization_domain
+                )
+                setValue(Constants.PreferenceKeys.access_token, data.access_token.toString())
             }
         }
     }

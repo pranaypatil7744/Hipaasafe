@@ -7,10 +7,7 @@ import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpRequestModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpResponseModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpRequestModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpResponseModel
-import com.hipaasafe.domain.model.patient_login.PatientSendOtpRequestModel
-import com.hipaasafe.domain.model.patient_login.PatientSendOtpResponseModel
-import com.hipaasafe.domain.model.patient_login.PatientValidateOtpRequestModel
-import com.hipaasafe.domain.model.patient_login.PatientValidateOtpResponseModel
+import com.hipaasafe.domain.model.patient_login.*
 import com.hipaasafe.domain.repository.LoginRepository
 
 class LoginRepositoryImp(private val apiService: ApiService): LoginRepository {
@@ -28,6 +25,10 @@ class LoginRepositoryImp(private val apiService: ApiService): LoginRepository {
 
     override suspend fun callDoctorLoginValidateOtpApi(request: DoctorLoginValidateOtpRequestModel): DoctorLoginValidateOtpResponseModel {
         return apiService.callDoctorLoginValidateOtpApi(request)
+    }
+
+    override suspend fun callPatientRegisterApi(request: PatientRegisterRequestModel): PatientRegisterResponseModel {
+        return apiService.callPatientRegisterApi(request)
     }
 
 }

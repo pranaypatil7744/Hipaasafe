@@ -7,11 +7,8 @@ import com.hipaasafe.data.repository.LoginRepositoryImp
 import com.hipaasafe.data.source.remote.ApiNames
 import com.hipaasafe.data.source.remote.ApiService
 import com.hipaasafe.domain.repository.LoginRepository
-import com.hipaasafe.domain.usecase.login.PatientSendOtpUseCase
 import com.google.gson.GsonBuilder
-import com.hipaasafe.domain.usecase.login.DoctorLoginSendOtpUseCase
-import com.hipaasafe.domain.usecase.login.DoctorLoginValidationOtpUseCase
-import com.hipaasafe.domain.usecase.login.PatientValidateOtpUseCase
+import com.hipaasafe.domain.usecase.login.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -109,4 +106,8 @@ fun createDoctorLoginSendOtpUseCase(loginRepository: LoginRepository): DoctorLog
 
 fun createDoctorLoginValidateOtpUseCase(loginRepository: LoginRepository): DoctorLoginValidationOtpUseCase {
     return DoctorLoginValidationOtpUseCase(loginRepository)
+}
+
+fun createPatientRegisterUseCase(loginRepository: LoginRepository): PatientRegisterUseCase {
+    return PatientRegisterUseCase(loginRepository)
 }

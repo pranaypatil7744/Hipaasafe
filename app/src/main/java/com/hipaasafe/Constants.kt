@@ -12,6 +12,32 @@ class Constants {
 
     }
 
+    class PreferenceKeys{
+        companion object{
+            const val id ="id"
+            const val uid ="uid"
+            const val name ="name"
+            const val email ="email"
+            const val country_code ="country_code"
+            const val number ="number"
+            const val role_id ="role_id"
+            const val role_name ="role_name"
+            const val profile_img ="profile_img"
+            const val organization_id ="organization_id"
+            const val mute_notifications ="mute_notifications"
+            const val age ="age"
+            const val profile_update ="profile_update"
+            const val access_token ="access_token"
+            const val location ="location"
+            const val experience ="experience"
+            const val speciality ="speciality"
+            const val tags ="tags"
+            const val createdAt ="createdAt"
+            const val updatedAt ="updatedAt"
+            const val organization_domain ="organization_domain"
+        }
+    }
+
     class NotificationType {
         companion object {
             const val FRIEND_REQUEST = "friendRequest"

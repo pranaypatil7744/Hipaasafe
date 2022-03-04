@@ -7,12 +7,13 @@ import org.koin.dsl.module
 
 
 val AppModule = module {
-    viewModel { LoginViewModel(get(),get(),get(),get()) }
+    viewModel { LoginViewModel(get(),get(),get(),get(),get()) }
 
     single { createLoginRepository(get(named("normalService"))) }
     single { createPatientSendOtpUseCase(get()) }
     single { createPatientValidateOtpUseCase(get()) }
     single { createDoctorLoginSendOtpUseCase(get()) }
     single { createDoctorLoginValidateOtpUseCase(get()) }
+    single { createPatientRegisterUseCase(get()) }
 
 }
