@@ -1,5 +1,7 @@
 package com.hipaasafe.domain.model.doctor_login
 
+import com.hipaasafe.utils.AppUtils
+
 data class DoctorLoginValidateOtpResponseModel(
     var success: Boolean = true,
     var message: String = "",
@@ -36,4 +38,6 @@ data class DoctorDetailsModel(
 data class DoctorLoginValidateOtpRequestModel(
     var email: String= "",
     var otp: Int = 0,
+    var player_id: String? =AppUtils.INSTANCE?.getPlayerId(),
+    var device_platform:String? = "android"
 )
