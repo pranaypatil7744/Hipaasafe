@@ -2,6 +2,7 @@ package com.hipaasafe.utils
 
 import android.content.Context
 import android.util.Log
+import android.util.Patterns
 import android.view.View
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -10,6 +11,7 @@ import com.hipaasafe.presentation.login.model.CountryModel
 import java.io.IOException
 import java.lang.reflect.Type
 import java.util.ArrayList
+import java.util.regex.Pattern
 
 class AppUtils {
 
@@ -28,6 +30,18 @@ class AppUtils {
         val secs: Long = millis / 1000
         return String.format("%02d:%02d", (secs % 3600) / 60, secs % 60);
 
+    }
+
+    fun isValidEmail(email: String?) = Patterns.EMAIL_ADDRESS.matcher(email).matches()
+
+    fun isValidMobileNumber(s: String): Boolean {
+        return if (s.isNotEmpty()) {
+            val p = Pattern.compile("(0/91)?[6-9][0-9]{9}")
+            val m = p.matcher(s)
+            m.find() && m.group() == s
+        } else {
+            true
+        }
     }
 
     fun getJsonDataFromAsset(context: Context, fileName: String): String? {

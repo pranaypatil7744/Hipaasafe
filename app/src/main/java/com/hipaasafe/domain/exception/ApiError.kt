@@ -10,6 +10,7 @@ private const val UNAUTHORIZED_ERROR_MESSAGE = "Unauthorized!"
 private const val INTERNAL_SERVER_ERROR_MESSAGE = "Internal Server error!"
 private const val NO_CONNECTION_ERROR_MESSAGE = "No Connection!"
 private const val TIMEOUT_ERROR_MESSAGE = "Time Out!"
+private const val NOT_ACCEPTABLE_ERROR_MESSAGE = "Not Acceptable!"
 const val UNKNOWN_ERROR_MESSAGE = "Unknown Error!"
 
 /**
@@ -31,6 +32,7 @@ data class ApiError(val message: String?, val code: Int?, var errorStatus: Error
             ErrorStatus.INTERNAL_SERVER_ERROR -> INTERNAL_SERVER_ERROR_MESSAGE
             ErrorStatus.NO_CONNECTION -> NO_CONNECTION_ERROR_MESSAGE
             ErrorStatus.TIMEOUT -> TIMEOUT_ERROR_MESSAGE
+            ErrorStatus.NOT_ACCEPTABLE -> NOT_ACCEPTABLE_ERROR_MESSAGE
             ErrorStatus.UNKNOWN_ERROR -> UNKNOWN_ERROR_MESSAGE
         }
     }
@@ -67,6 +69,8 @@ data class ApiError(val message: String?, val code: Int?, var errorStatus: Error
          * Attempting to use POST with a GET-only endpoint, or vice-versa.
          */
         METHOD_NOT_ALLOWED,
+
+        NOT_ACCEPTABLE,
 
         /**
          * The request could not be completed as it is. Use the information included in the response to modify the request and retry.

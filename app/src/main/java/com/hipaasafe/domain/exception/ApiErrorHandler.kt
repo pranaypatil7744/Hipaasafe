@@ -36,6 +36,11 @@ fun traceErrorException(throwable: Throwable?): ApiError {
                     throwable.code(),
                     ApiError.ErrorStatus.METHOD_NOT_ALLOWED
                 )
+                406 -> ApiError(
+                    throwable.message(),
+                    throwable.code(),
+                    ApiError.ErrorStatus.NOT_ACCEPTABLE
+                )
                 409 -> ApiError(
                     throwable.message(),
                     throwable.code(),

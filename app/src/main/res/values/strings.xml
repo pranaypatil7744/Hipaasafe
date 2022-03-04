@@ -20,5 +20,15 @@
     <string name="resend_otp">Resend OTP</string>
     <string name="otp">OTP</string>
     <string name="verify">Verify</string>
+    <string name="sign_up">Sign up</string>
+    <string name="name">Name</string>
+    <string name="age">Age</string>
+    <string name="please_enter_email_id">Please enter email id</string>
+    <string name="please_enter_valid_email_id">Please enter valid email id</string>
+    <string name="please_check_your_internet_connection">Please check your internet connection</string>
+    <string name="please_enter_mobile_number">Please enter mobile number</string>
+    <string name="please_enter_valid_mobile_number">Please enter valid mobile number</string>
+    <string name="please_enter_otp">Please enter OTP</string>
+    <string name="please_enter_4_digit_otp">Please enter 4 digit OTP</string>
 
 </resources>

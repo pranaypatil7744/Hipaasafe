@@ -2,29 +2,82 @@ package com.hipaasafe.presentation.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.databinding.ActivityMainBinding
+import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpRequestModel
+import com.hipaasafe.domain.model.patient_login.PatientSendOtpRequestModel
 import com.hipaasafe.presentation.login.model.CountryModel
 import com.hipaasafe.presentation.verify_otp.VerifyOtpActivity
 import com.hipaasafe.utils.AppUtils
+import com.hipaasafe.utils.isNetworkAvailable
+import org.koin.android.viewmodel.ext.android.viewModel
+
 
 class LoginActivity : BaseActivity() {
     lateinit var binding: ActivityMainBinding
+    private val loginViewModel: LoginViewModel by viewModel()
     var countryList: ArrayList<CountryModel> = ArrayList()
-
+    private var selectedCountryShortForm: String? = ""
     var isDoctorLogin: Boolean = false
+    var selectedCountryCode: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setUpObserver()
         getIntentData()
         setUpListener()
         setUpCountryCodes()
+    }
+
+    private fun setUpObserver() {
+        binding.apply {
+            with(loginViewModel) {
+                doctorLoginSendOtpResponseData.observe(this@LoginActivity, {
+                    toggleLoader(false)
+                    if (it.success) {
+                        navigateToVerifyOtpScreen()
+                    } else {
+                        showToast(it.message)
+                    }
+                })
+                patientSendOtpResponseData.observe(this@LoginActivity, {
+                    toggleLoader(false)
+                    if (it.success) {
+                        navigateToVerifyOtpScreen()
+                    } else {
+                        showToast(it.message)
+                    }
+                })
+                messageData.observe(this@LoginActivity, {
+                    toggleLoader(false)
+                    showToast(it)
+                })
+            }
+        }
+    }
+
+    private fun navigateToVerifyOtpScreen() {
+        binding.apply {
+            val i = Intent(this@LoginActivity, VerifyOtpActivity::class.java)
+            val b = Bundle()
+            b.putBoolean(Constants.IS_DOCTOR_LOGIN, isDoctorLogin)
+            if (isDoctorLogin) {
+                b.putString(Constants.LOGIN_WITH, etEmail.text.toString().trim())
+            } else {
+                b.putString(Constants.LOGIN_WITH, etMobile.text.toString().trim())
+                b.putString(Constants.COUNTRY_CODE, selectedCountryCode)
+            }
+            i.putExtras(b)
+            startActivity(i)
+        }
     }
 
     private fun getIntentData() {
@@ -71,18 +124,11 @@ class LoginActivity : BaseActivity() {
     private fun setUpCountryCodes() {
 
         countryList.addAll(AppUtils.INSTANCE?.getCountriesList(this) ?: ArrayList())
-//        val adapterCodes =
-//            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countryList.map { it ->
-//                it.dial_code
-//            })
-        val clist: ArrayList<String> = ArrayList()
-        clist.add("+91")
-        clist.add("+92")
-        clist.add("+93")
-        clist.add("+94")
-        clist.add("+95")
         val adapterCodes =
-            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, clist)
+            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countryList.map { it ->
+                it.dial_code
+            })
+
         binding.spinnerCountryCode.adapter = adapterCodes
         val usIndex = AppUtils.INSTANCE?.getUSIndex(countryList) ?: 0
 
@@ -93,20 +139,101 @@ class LoginActivity : BaseActivity() {
 
     private fun setUpListener() {
         binding.apply {
+            spinnerCountryCode.onItemSelectedListener = object :
+                AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View, position: Int, id: Long
+                ) {
+                    selectedCountryCode = parent.getItemAtPosition(position).toString()
+                    selectedCountryShortForm = countryList[position].code
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // write code to perform some action
+                }
+            }
             btnBack.setOnClickListener {
                 finish()
             }
             btnContinue.setOnClickListener {
-                val i = Intent(this@LoginActivity, VerifyOtpActivity::class.java)
-                val b = Bundle()
-                b.putBoolean(Constants.IS_DOCTOR_LOGIN, isDoctorLogin)
+                clearErrors()
                 if (isDoctorLogin) {
-                    b.putString(Constants.LOGIN_WITH, etEmail.text.toString().trim())
+                    val email = etEmail.text.toString().trim()
+                    when {
+                        email.isEmpty() -> {
+                            layoutEmail.error = getString(R.string.please_enter_email_id)
+                        }
+                        AppUtils.INSTANCE?.isValidEmail(email) == false -> {
+                            layoutEmail.error = getString(R.string.please_enter_valid_email_id)
+                        }
+                        else -> {
+                            callDoctorLoginSendOtpApi()
+                        }
+                    }
                 } else {
-                    b.putString(Constants.LOGIN_WITH, etMobile.text.toString().trim())
+                    val mobile = etMobile.text.toString().trim()
+                    when {
+                        mobile.isEmpty() -> {
+                            errorText.text = getString(R.string.please_enter_mobile_number)
+                            errorText.visibility = VISIBLE
+                        }
+                        AppUtils.INSTANCE?.isValidMobileNumber(mobile) == false -> {
+                            errorText.text = getString(R.string.please_enter_valid_mobile_number)
+                            errorText.visibility = VISIBLE
+                        }
+                        else -> {
+                            callPatientSendOtpApi()
+                        }
+                    }
                 }
-                i.putExtras(b)
-                startActivity(i)
+            }
+        }
+    }
+
+    private fun clearErrors() {
+        binding.apply {
+            layoutEmail.error = ""
+            errorText.text = ""
+            errorText.visibility = INVISIBLE
+        }
+    }
+
+    private fun callPatientSendOtpApi() {
+        binding.apply {
+            if (isNetworkAvailable()) {
+                loginViewModel.callPatientSendOtpApi(
+                    request = PatientSendOtpRequestModel(
+                        country_code = selectedCountryCode.replace("+",""),
+                        number = etMobile.text.toString().trim()
+                    )
+                )
+            } else {
+                showToast(getString(R.string.please_check_your_internet_connection))
+            }
+        }
+    }
+
+    private fun toggleLoader(showLoader: Boolean) {
+        toggleFadeView(
+            binding.root,
+            binding.contentLoading.root,
+            binding.contentLoading.imageLoading,
+            showLoader
+        )
+    }
+
+    private fun callDoctorLoginSendOtpApi() {
+        binding.apply {
+            if (isNetworkAvailable()) {
+                toggleLoader(true)
+                loginViewModel.callDoctorLoginSendOtpApi(
+                    request = DoctorLoginSendOtpRequestModel(
+                        etEmail.text.toString().trim()
+                    )
+                )
+            } else {
+                showToast(getString(R.string.please_check_your_internet_connection))
             }
         }
     }

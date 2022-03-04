@@ -1,10 +1,12 @@
 package com.hipaasafe.presentation.verify_otp
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Html
 import android.text.TextUtils
 import android.view.View
+import android.view.View.INVISIBLE
 import androidx.core.content.ContextCompat
 import com.blankj.utilcode.util.KeyboardUtils
 import com.hipaasafe.Constants
@@ -12,17 +14,29 @@ import com.hipaasafe.R
 import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.base.BaseApplication
 import com.hipaasafe.databinding.ActivityVerifyOtpBinding
+import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpRequestModel
+import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpRequestModel
+import com.hipaasafe.domain.model.patient_login.PatientSendOtpRequestModel
+import com.hipaasafe.domain.model.patient_login.PatientValidateOtpRequestModel
 import com.hipaasafe.listener.ValidationListener
+import com.hipaasafe.presentation.home_screen.HomeActivity
+import com.hipaasafe.presentation.login.LoginViewModel
+import com.hipaasafe.presentation.sign_up.SignUpActivity
 import com.hipaasafe.utils.AppUtils
 import com.hipaasafe.utils.ImageUtils
+import com.hipaasafe.utils.isNetworkAvailable
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
-class VerifyOtpActivity : BaseActivity(), ValidationListener {
+class VerifyOtpActivity : BaseActivity() {
 
     var isFromLoginDoctor: Boolean = false
     var loginWith: String = ""
+    var countryCode: String = ""
 
     lateinit var timer: Timer
+    private val loginViewModel: LoginViewModel by viewModel()
+
 
     inner class BeatTimerTask : TimerTask() {
 
@@ -46,22 +60,26 @@ class VerifyOtpActivity : BaseActivity(), ValidationListener {
     }
 
     private fun showResendOtpUi() {
-        binding.ivTimer.visibility = View.INVISIBLE
-        binding.tvResendOtp.visibility = View.VISIBLE
+        binding.apply {
+            ivTimer.visibility = View.INVISIBLE
+            tvResendOtp.visibility = View.VISIBLE
+        }
     }
 
     private fun startTimer() {
         stopTimer()
-        binding.ivTimer.visibility = View.VISIBLE
-        ImageUtils.INSTANCE?.loadLocalGIFImage(binding.ivTimer, R.drawable.timer)
-        timer = Timer()
-        //        delay - delay in milliseconds before task is to be executed.
+        binding.apply {
+            ivTimer.visibility = View.VISIBLE
+            ImageUtils.INSTANCE?.loadLocalGIFImage(ivTimer, R.drawable.timer)
+            timer = Timer()
+            //        delay - delay in milliseconds before task is to be executed.
 //        period - time in milliseconds between successive task executions.
-        timer.scheduleAtFixedRate(
-            BeatTimerTask(),
-            0,
-            1000
-        )
+            timer.scheduleAtFixedRate(
+                BeatTimerTask(),
+                0,
+                1000
+            )
+        }
 
     }
 
@@ -88,14 +106,68 @@ class VerifyOtpActivity : BaseActivity(), ValidationListener {
         setContentView(binding.root)
         BaseApplication.second = Constants.RESEND_OTP_SECOND
         getIntentData()
+        setUpObserver()
         setListener()
         startTimer()
+    }
+
+    private fun setUpObserver() {
+        binding.apply {
+            with(loginViewModel) {
+                doctorLoginSendOtpResponseData.observe(this@VerifyOtpActivity, {
+                    toggleLoader(false)
+                    if (it.success) {
+                        startTimer()
+                        showToast("Resent OTP")
+                    } else {
+                        showToast(it.message)
+                    }
+                })
+                patientSendOtpResponseData.observe(this@VerifyOtpActivity, {
+                    toggleLoader(false)
+                    if (it.success) {
+                        startTimer()
+                        showToast("Resent OTP")
+                    } else {
+                        showToast(it.message)
+                    }
+                })
+                doctorLoginValidateOtpResponseData.observe(this@VerifyOtpActivity, {
+                    toggleLoader(false)
+                    if (it.success) {
+                        val i = Intent(this@VerifyOtpActivity, HomeActivity::class.java)
+                        startActivity(i)
+                    } else {
+                        showToast(it.message)
+                    }
+                })
+                patientValidateOtpResponseData.observe(this@VerifyOtpActivity, {
+                    toggleLoader(false)
+                    if (it.success) {
+                        //TODO check Condition
+                        val i = Intent(this@VerifyOtpActivity, SignUpActivity::class.java)
+                        val b = Bundle()
+                        b.putString(Constants.LOGIN_WITH, loginWith)
+                        b.putString(Constants.COUNTRY_CODE, countryCode)
+                        i.putExtras(b)
+                        startActivity(i)
+                    } else {
+                        showToast(it.message)
+                    }
+                })
+                messageData.observe(this@VerifyOtpActivity, {
+                    toggleLoader(false)
+                    showToast(it.toString())
+                })
+            }
+        }
     }
 
     private fun getIntentData() {
         intent.extras?.run {
             isFromLoginDoctor = getBoolean(Constants.IS_DOCTOR_LOGIN)
             loginWith = getString(Constants.LOGIN_WITH).toString()
+            countryCode = getString(Constants.COUNTRY_CODE).toString()
             setUpViews()
         }
     }
@@ -120,6 +192,23 @@ class VerifyOtpActivity : BaseActivity(), ValidationListener {
             }
             btnVerify.setOnClickListener {
                 KeyboardUtils.hideSoftInput(this@VerifyOtpActivity)
+                clearErrorLabels()
+                val otp = etOtp.text.toString().trim()
+                when {
+                    otp.isEmpty() -> {
+                        layoutOtp.error = getString(R.string.please_enter_otp)
+                    }
+                    otp.length < 4 -> {
+                        layoutOtp.error = getString(R.string.please_enter_4_digit_otp)
+                    }
+                    else -> {
+                        callVerifyOtpApi()
+                    }
+                }
+            }
+
+            btnBack.setOnClickListener {
+                finish()
             }
 
             etOtp.onFocusChangeListener =
@@ -128,7 +217,7 @@ class VerifyOtpActivity : BaseActivity(), ValidationListener {
 
                     if (hasFocus) {
                         clearErrorLabels()
-                        textInputOtp.setStartIconTintList(
+                        layoutOtp.setStartIconTintList(
                             ColorStateList.valueOf(
                                 ContextCompat.getColor(
                                     this@VerifyOtpActivity,
@@ -136,11 +225,11 @@ class VerifyOtpActivity : BaseActivity(), ValidationListener {
                                 )
                             )
                         )
-                        textInputOtp.boxStrokeColor =
+                        layoutOtp.boxStrokeColor =
                             ContextCompat.getColor(this@VerifyOtpActivity, R.color.azure_radiance)
 
                     } else {
-                        textInputOtp.setStartIconTintList(
+                        layoutOtp.setStartIconTintList(
                             ColorStateList.valueOf(
                                 ContextCompat.getColor(
                                     this@VerifyOtpActivity,
@@ -148,13 +237,13 @@ class VerifyOtpActivity : BaseActivity(), ValidationListener {
                                 )
                             )
                         )
-                        textInputOtp.boxStrokeColor =
+                        layoutOtp.boxStrokeColor =
                             ContextCompat.getColor(this@VerifyOtpActivity, R.color.alabaster)
 
                     }
                     val input = binding.etOtp.text.toString().trim()
                     if (!TextUtils.isEmpty(input)) {
-                        textInputOtp.setStartIconTintList(
+                        layoutOtp.setStartIconTintList(
                             ColorStateList.valueOf(
                                 ContextCompat.getColor(
                                     this@VerifyOtpActivity,
@@ -164,6 +253,32 @@ class VerifyOtpActivity : BaseActivity(), ValidationListener {
                         )
                     }
                 }
+        }
+    }
+
+    private fun callVerifyOtpApi() {
+        binding.apply {
+            if (isNetworkAvailable()) {
+                toggleLoader(true)
+                if (isFromLoginDoctor) {
+                    loginViewModel.callDoctorLoginValidateOtpApi(
+                        request =
+                        DoctorLoginValidateOtpRequestModel(
+                            loginWith, otp = etOtp.text.toString().trim().toIntOrNull() ?: 0
+                        )
+                    )
+                } else {
+                    loginViewModel.callPatientValidateOtpApi(
+                        request = PatientValidateOtpRequestModel(
+                            country_code = countryCode,
+                            number = loginWith,
+                            otp = etOtp.text.toString().trim().toIntOrNull() ?: 0
+                        )
+                    )
+                }
+            } else {
+                showToast(getString(R.string.please_check_your_internet_connection))
+            }
         }
     }
 
@@ -177,31 +292,47 @@ class VerifyOtpActivity : BaseActivity(), ValidationListener {
         )
     }
 
-    override fun onValidationSuccess(type: String, msg: Int) {
-
-    }
-
-    override fun onValidationFailure(type: String, msg: Int) {
-        clearErrorLabels()
-        binding.textInputOtp.error = getString(msg)
-    }
-
     private fun clearErrorLabels() {
-        binding.textInputOtp.error = ""
+        binding.layoutOtp.error = ""
     }
 
 
-    private fun callLoginSendOtpApi() {
-        toggleLoader(true)
+    private fun callDoctorLoginSendOtpApi() {
+        binding.apply {
+            if (isNetworkAvailable()) {
+                toggleLoader(true)
+                loginViewModel.callDoctorLoginSendOtpApi(
+                    request = DoctorLoginSendOtpRequestModel(
+                        loginWith
+                    )
+                )
+            } else {
+                showToast(getString(R.string.please_check_your_internet_connection))
+            }
+        }
+    }
+
+    private fun callPatientSendOtpApi() {
+        binding.apply {
+            if (isNetworkAvailable()) {
+                loginViewModel.callPatientSendOtpApi(
+                    request = PatientSendOtpRequestModel(
+                        country_code = countryCode.replace("+", ""),
+                        number = loginWith
+                    )
+                )
+            } else {
+                showToast(getString(R.string.please_check_your_internet_connection))
+            }
+        }
     }
 
     private fun callSendOtpApi() {
         BaseApplication.second = Constants.RESEND_OTP_SECOND
         if (isFromLoginDoctor) {
-            callLoginSendOtpApi()
-
+            callDoctorLoginSendOtpApi()
         } else {
-            callRegisterSendOtpApi()
+            callPatientSendOtpApi()
         }
 
     }

@@ -155,11 +155,11 @@
 
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeColor">@color/athensGray</item>
-        <item name="boxStrokeWidth">0.5dp</item>
-        <item name="boxCornerRadiusBottomEnd">5sp</item>
-        <item name="boxCornerRadiusBottomStart">5dp</item>
-        <item name="boxCornerRadiusTopEnd">5dp</item>
-        <item name="boxCornerRadiusTopStart">5dp</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
     </style>
 
     <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">

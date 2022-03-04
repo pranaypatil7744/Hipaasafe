@@ -4,6 +4,226 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.sign_up.SignUpActivity">
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="20dp"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/btnBack"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back_btn" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvLogin"
+        style="@style/Text_Heading_Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="35dp"
+        android:text="@string/sign_up"
+        android:textColor="@color/codGray"
+        android:textSize="26sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBack" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutMobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/bg_box"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="2dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="1dp"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/tvLogin"
+        tools:layout_editor_absoluteX="16dp">
+
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinner_country_code"
+            style="@style/proximanova_regular_small"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:clickable="false"
+            android:focusable="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:overlapAnchor="false" />
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etMobile"
+            style="@style/Text_Heading_Semi_Bold"
+            android:layout_width="0dp"
+            android:enabled="false"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:hint="@string/mobile_number"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:padding="18dp"
+            android:drawableEnd="@drawable/ic_check"
+            android:singleLine="true"
+            android:textColor="@color/codGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/spinner_country_code"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/errorText"
+        style="@style/proximanova_regular_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="7dp"
+        android:textColor="@color/monza"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/layoutMobile"
+        app:layout_constraintTop_toBottomOf="@+id/layoutMobile"
+        tools:text="@string/something_went_wrong" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutName"
+        style="@style/TextInputLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:hint="@string/name"
+        android:textColorHint="@color/heather"
+        app:boxStrokeColor="@color/athensGray"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@null"
+        app:hintTextColor="@color/heather"
+        app:layout_constraintTop_toBottomOf="@id/errorText"
+        app:startIconDrawable="@drawable/ic_profile"
+        app:startIconTint="@color/heather">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etName"
+            style="@style/Text_Heading_Semi_Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:padding="18dp"
+            android:singleLine="true"
+            android:textColor="@color/codGray" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutEmail"
+        style="@style/TextInputLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:hint="@string/email"
+        android:textColorHint="@color/heather"
+        app:boxStrokeColor="@color/athensGray"
+        app:errorEnabled="true"
+        app:boxStrokeWidth="1dp"
+        app:errorIconDrawable="@null"
+        app:hintTextColor="@color/heather"
+        app:layout_constraintTop_toBottomOf="@id/layoutName"
+        app:startIconDrawable="@drawable/ic_mail"
+        app:startIconTint="@color/heather">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEmail"
+            style="@style/Text_Heading_Semi_Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:padding="18dp"
+            android:singleLine="true"
+            android:textColor="@color/codGray" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutAge"
+        style="@style/TextInputLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:hint="@string/age"
+        android:textColorHint="@color/heather"
+        app:boxStrokeColor="@color/athensGray"
+        app:errorEnabled="true"
+        app:boxStrokeWidth="1dp"
+        app:errorIconDrawable="@null"
+        app:hintTextColor="@color/heather"
+        app:layout_constraintTop_toBottomOf="@id/layoutEmail"
+        app:startIconDrawable="@drawable/ic_calendar"
+        app:startIconTint="@color/heather">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etAge"
+            style="@style/Text_Heading_Semi_Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="3"
+            android:padding="18dp"
+            android:singleLine="true"
+            android:textColor="@color/codGray" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnContinue"
+        style="@style/MaterialButtonBaseStyle"
+        android:layout_height="50dp"
+        android:layout_marginBottom="27dp"
+        android:fontFamily="@font/metropolis_medium"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        app:cornerRadius="10dp"
+        android:text="@string/_continue"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/tvByClicking"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutAge" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvByClicking"
+        style="@style/proximanova_regular_small"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginTop="27dp"
+        android:text="@string/by_clicking_continu_you_agree_with_our"
+        android:textColor="@color/heather"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@id/tvTermCondition"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTermCondition"
+        style="@style/proximanova_regular_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="@string/terms_and_condition"
+        android:textColor="@color/azure_radiance"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
