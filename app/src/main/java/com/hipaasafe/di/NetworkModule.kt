@@ -8,6 +8,7 @@ import com.hipaasafe.data.source.remote.ApiNames
 import com.hipaasafe.data.source.remote.ApiService
 import com.hipaasafe.domain.repository.LoginRepository
 import com.google.gson.GsonBuilder
+import com.hipaasafe.Constants
 import com.hipaasafe.domain.usecase.login.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -65,11 +66,26 @@ fun createOkHttpClient(): OkHttpClient {
         .writeTimeout(120, TimeUnit.SECONDS)
         .addInterceptor(Interceptor { chain ->
             val original = chain.request()
+            val mUrl = original.url.toString()
+            val requestBuilder: Request.Builder
+            val token = BaseApplication.preferenceUtils.getValue(Constants.PreferenceKeys.access_token)
 
-            val requestBuilder: Request.Builder = original.newBuilder()
-                .header("Authorization", "application/json")
-                .header("Content-Type", "application/json")
-                .method(original.method, original.body)
+            if (!mUrl.contains(ApiNames.PatientSendOtp) &&
+                !mUrl.contains(ApiNames.DoctorLoginSendOtp) &&
+                !mUrl.contains(ApiNames.PatientValidateOtp) &&
+                !mUrl.contains(ApiNames.DoctorLoginValidateOtp)) {
+//                        // Request customization: add request headers
+                requestBuilder = original.newBuilder()
+                    .header("Authorization", token)
+                    .header("Content-Type", "application/json")
+                    .method(original.method, original.body)
+
+            } else {
+                requestBuilder = original.newBuilder()
+                    .header("Content-Type", "application/json")
+                    .method(original.method, original.body)
+            }
+
             val request = requestBuilder.build()
             chain.proceed(request)
         })

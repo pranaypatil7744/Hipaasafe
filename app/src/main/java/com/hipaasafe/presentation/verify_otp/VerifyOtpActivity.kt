@@ -160,7 +160,6 @@ class VerifyOtpActivity : BaseActivity() {
                         } else {
                             navigateToHome()
                         }
-
                     } else {
                         showToast(it.message)
                     }
@@ -200,7 +199,7 @@ class VerifyOtpActivity : BaseActivity() {
                     Constants.PreferenceKeys.mute_notifications,
                     data.mute_notifications ?: false
                 )
-                setValue(Constants.PreferenceKeys.access_token, data.access_token.toString())
+                setValue(Constants.PreferenceKeys.access_token,"Bearer "+data.access_token.toString())
                 setValue(
                     Constants.PreferenceKeys.profile_update,
                     data.patient_details?.profile_update ?: false
@@ -232,7 +231,7 @@ class VerifyOtpActivity : BaseActivity() {
                     Constants.PreferenceKeys.organization_domain,
                     data.doctor_details?.organization_domain
                 )
-                setValue(Constants.PreferenceKeys.access_token, data.access_token.toString())
+                setValue(Constants.PreferenceKeys.access_token,"Bearer "+ data.access_token.toString())
             }
         }
     }

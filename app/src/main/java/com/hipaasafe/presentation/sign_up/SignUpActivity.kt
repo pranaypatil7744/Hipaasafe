@@ -12,6 +12,7 @@ import com.hipaasafe.domain.model.patient_login.UserRegisterDataModel
 import com.hipaasafe.listener.ValidationListener
 import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.login.LoginViewModel
+import com.hipaasafe.utils.PreferenceUtils
 import com.hipaasafe.utils.isNetworkAvailable
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -25,6 +26,7 @@ class SignUpActivity : BaseActivity(), ValidationListener {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        preferenceUtils = PreferenceUtils(this)
         loginViewModel.validationListener = this
         getIntentData()
         setUpListener()

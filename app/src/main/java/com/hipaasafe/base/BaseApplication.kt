@@ -22,8 +22,8 @@ class BaseApplication:Application() {
     companion object{
         lateinit var mContext: Context
         var second = Constants.RESEND_OTP_SECOND
-        private var instance: BaseApplication? = null
-
+        var instance: BaseApplication? = null
+        lateinit var preferenceUtils: PreferenceUtils
         fun applicationContext(): Context {
             return instance!!.applicationContext
         }
@@ -38,6 +38,7 @@ class BaseApplication:Application() {
             androidContext(this@BaseApplication)
             modules(listOf(AppModule, NetworkModule))
         }
+        preferenceUtils = PreferenceUtils(mContext)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         setUpOneSignal()
