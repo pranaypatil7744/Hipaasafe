@@ -11,7 +11,8 @@ import com.hipaasafe.presentation.login.model.CountryModel
 import com.onesignal.OneSignal
 import java.io.IOException
 import java.lang.reflect.Type
-import java.util.ArrayList
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.regex.Pattern
 
 class AppUtils {
@@ -25,6 +26,12 @@ class AppUtils {
                 INSTANCE = AppUtils()
             }
         }
+    }
+
+    fun getCurrentDate(): String {
+        val time = Calendar.getInstance().time
+        val sdf = SimpleDateFormat("dd MMM yyyy")
+        return sdf.format(time)
     }
 
     fun convertSecondToTime(millis: Long): String {

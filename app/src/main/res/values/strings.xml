@@ -33,5 +33,13 @@
     <string name="please_enter_name">Please enter name</string>
     <string name="please_enter_age">Please enter age</string>
     <string name="success">Success</string>
+    <string name="navigation_drawer_open">Drawer Open</string>
+    <string name="navigation_drawer_close">Drawer Close</string>
+    <string name="my_appointments">My Appointments</string>
+    <string name="appointments">Appointments</string>
+    <string name="my_patients">My Patients</string>
+    <string name="my_teams">My Teams</string>
+    <string name="choose_date_range">Choose Date Range</string>
+    <string name="past_appointments">Past Appointments</string>
 
 </resources>
