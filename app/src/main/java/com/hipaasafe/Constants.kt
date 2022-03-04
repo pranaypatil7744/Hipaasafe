@@ -8,6 +8,13 @@ class Constants {
         const val LOGIN_WITH ="LOGIN_WITH"
         const val COUNTRY_CODE ="COUNTRY_CODE"
         const val RESEND_OTP_SECOND = 30000.toLong() //i.e 30 secs
+        const val ONE_SIGNAL_APP_ID = "29500431-ac41-47af-908c-fcc2ba1d978d"
 
+    }
+
+    class NotificationType {
+        companion object {
+            const val FRIEND_REQUEST = "friendRequest"
+        }
     }
 }

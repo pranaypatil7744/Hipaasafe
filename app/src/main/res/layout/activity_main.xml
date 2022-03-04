@@ -103,7 +103,7 @@
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spinner_country_code"
-            style="@style/proximanova_regular_small"
+            style="@style/Text_Semi_Bold"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -188,5 +188,10 @@
         app:layout_constraintBottom_toTopOf="@id/tvByClicking"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutMobile" />
+
+    <include
+        android:id="@+id/content_loading"
+        layout="@layout/content_loading"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

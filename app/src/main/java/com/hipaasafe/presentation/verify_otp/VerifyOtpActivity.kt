@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.Html
 import android.text.TextUtils
 import android.view.View
-import android.view.View.INVISIBLE
 import androidx.core.content.ContextCompat
 import com.blankj.utilcode.util.KeyboardUtils
 import com.hipaasafe.Constants
@@ -18,7 +17,6 @@ import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpRequestModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpRequestModel
 import com.hipaasafe.domain.model.patient_login.PatientSendOtpRequestModel
 import com.hipaasafe.domain.model.patient_login.PatientValidateOtpRequestModel
-import com.hipaasafe.listener.ValidationListener
 import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.login.LoginViewModel
 import com.hipaasafe.presentation.sign_up.SignUpActivity
@@ -317,7 +315,7 @@ class VerifyOtpActivity : BaseActivity() {
             if (isNetworkAvailable()) {
                 loginViewModel.callPatientSendOtpApi(
                     request = PatientSendOtpRequestModel(
-                        country_code = countryCode.replace("+", ""),
+                        country_code = countryCode,
                         number = loginWith
                     )
                 )

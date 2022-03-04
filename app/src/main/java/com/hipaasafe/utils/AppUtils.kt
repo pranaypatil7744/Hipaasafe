@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hipaasafe.BuildConfig
 import com.hipaasafe.presentation.login.model.CountryModel
+import com.onesignal.OneSignal
 import java.io.IOException
 import java.lang.reflect.Type
 import java.util.ArrayList
@@ -54,6 +55,14 @@ class AppUtils {
             return ""
         }
         return jsonString
+    }
+
+    fun getPlayerId(): String? {
+        var playerID: String? = ""
+
+        val deviceState = OneSignal.getDeviceState()
+        playerID = deviceState?.userId
+        return playerID
     }
 
     fun getCountriesList(context: Context): ArrayList<CountryModel> {

@@ -204,7 +204,7 @@ class LoginActivity : BaseActivity() {
             if (isNetworkAvailable()) {
                 loginViewModel.callPatientSendOtpApi(
                     request = PatientSendOtpRequestModel(
-                        country_code = selectedCountryCode.replace("+",""),
+                        country_code = selectedCountryCode,
                         number = etMobile.text.toString().trim()
                     )
                 )
