@@ -75,7 +75,7 @@ class SignUpActivity : BaseActivity(), ValidationListener {
                 setValue(Constants.PreferenceKeys.number, data.number.toString())
                 setValue(Constants.PreferenceKeys.role_id, data.role_id.toString())
                 setValue(Constants.PreferenceKeys.role_name, data.role_name.toString())
-                setValue(Constants.PreferenceKeys.profile_img, data.profile_img.toString())
+                setValue(Constants.PreferenceKeys.avatar, data.avatar.toString())
                 setValue(Constants.PreferenceKeys.organization_id, data.organization_id.toString())
                 setValue(
                     Constants.PreferenceKeys.mute_notifications,

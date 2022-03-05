@@ -184,7 +184,7 @@ class VerifyOtpActivity : BaseActivity() {
     private fun savePatientData(data: UserDataModel) {
         binding.apply {
             preferenceUtils.apply {
-                setValue(Constants.IS_LOGIN,true)
+                setValue(Constants.IS_LOGIN, true)
                 setValue(Constants.PreferenceKeys.id, data.id.toString())
                 setValue(Constants.PreferenceKeys.uid, data.uid.toString())
                 setValue(Constants.PreferenceKeys.name, data.name.toString())
@@ -193,13 +193,16 @@ class VerifyOtpActivity : BaseActivity() {
                 setValue(Constants.PreferenceKeys.number, data.number.toString())
                 setValue(Constants.PreferenceKeys.role_id, data.role_id.toString())
                 setValue(Constants.PreferenceKeys.role_name, data.role_name.toString())
-                setValue(Constants.PreferenceKeys.profile_img, data.profile_img.toString())
+                setValue(Constants.PreferenceKeys.avatar, data.avatar.toString())
                 setValue(Constants.PreferenceKeys.organization_id, data.organization_id.toString())
                 setValue(
                     Constants.PreferenceKeys.mute_notifications,
                     data.mute_notifications ?: false
                 )
-                setValue(Constants.PreferenceKeys.access_token,"Bearer "+data.access_token.toString())
+                setValue(
+                    Constants.PreferenceKeys.access_token,
+                    "Bearer " + data.access_token.toString()
+                )
                 setValue(
                     Constants.PreferenceKeys.profile_update,
                     data.patient_details?.profile_update ?: false
@@ -211,7 +214,7 @@ class VerifyOtpActivity : BaseActivity() {
     private fun saveDoctorData(data: DoctorDataModel) {
         binding.apply {
             preferenceUtils.apply {
-                setValue(Constants.IS_LOGIN,true)
+                setValue(Constants.IS_LOGIN, true)
                 setValue(Constants.PreferenceKeys.id, data.id.toString())
                 setValue(Constants.PreferenceKeys.uid, data.uid.toString())
                 setValue(Constants.PreferenceKeys.name, data.name.toString())
@@ -220,7 +223,7 @@ class VerifyOtpActivity : BaseActivity() {
                 setValue(Constants.PreferenceKeys.number, data.number.toString())
                 setValue(Constants.PreferenceKeys.role_id, data.role_id.toString())
                 setValue(Constants.PreferenceKeys.role_name, data.role_name.toString())
-                setValue(Constants.PreferenceKeys.profile_img, data.profile_img.toString())
+                setValue(Constants.PreferenceKeys.avatar, data.avatar.toString())
                 setValue(Constants.PreferenceKeys.location, data.doctor_details?.location)
                 setValue(Constants.PreferenceKeys.experience, data.doctor_details?.experience)
                 setValue(Constants.PreferenceKeys.speciality, data.doctor_details?.speciality)
@@ -231,7 +234,10 @@ class VerifyOtpActivity : BaseActivity() {
                     Constants.PreferenceKeys.organization_domain,
                     data.doctor_details?.organization_domain
                 )
-                setValue(Constants.PreferenceKeys.access_token,"Bearer "+ data.access_token.toString())
+                setValue(
+                    Constants.PreferenceKeys.access_token,
+                    "Bearer " + data.access_token.toString()
+                )
             }
         }
     }

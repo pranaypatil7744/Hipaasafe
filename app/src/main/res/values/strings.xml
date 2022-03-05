@@ -41,5 +41,19 @@
     <string name="my_teams">My Teams</string>
     <string name="choose_date_range">Choose Date Range</string>
     <string name="past_appointments">Past Appointments</string>
+    <string name="view_profile">View Profile</string>
+    <string name="help_support">Help &amp; Support</string>
+    <string name="notification">Notification</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="help">Help</string>
+    <string name="how_can_we_help_you">How can we help you?</string>
+    <string name="send_us_an_e_mail">Send us an e-mail</string>
+    <string name="you_can_call_us">You can call us</string>
+    <string name="info_docusecure_com">info@hipaasafe.com</string>
+    <string name="_91_9876543210">+91 9876543210</string>
+    <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
 
 </resources>

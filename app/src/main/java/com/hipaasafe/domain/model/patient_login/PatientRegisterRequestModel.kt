@@ -21,7 +21,7 @@ data class UserRegisterDataModel(
     var number:String? ="",
     var role_id:Int? =0,
     var role_name:String? ="",
-    var profile_img:String? ="",
+    var avatar:String? ="",
     var organization_id:String? ="",
     var mute_notifications:Boolean? =false,
     var patient_details:PatientDetailsModel? = PatientDetailsModel()

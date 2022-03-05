@@ -17,7 +17,7 @@ data class DoctorDataModel(
     var number: String? = "",
     var role_id: String? = "",
     var role_name: String? = "",
-    var profile_img: String? = "",
+    var avatar: String? = "",
     var doctor_details: DoctorDetailsModel? = DoctorDetailsModel(),
     var access_token: String? = "",
     var refresh_token: String? = ""

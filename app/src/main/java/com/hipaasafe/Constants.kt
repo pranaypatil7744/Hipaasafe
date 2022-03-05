@@ -29,7 +29,7 @@ class Constants {
             const val number ="number"
             const val role_id ="role_id"
             const val role_name ="role_name"
-            const val profile_img ="profile_img"
+            const val avatar ="avatar"
             const val organization_id ="organization_id"
             const val mute_notifications ="mute_notifications"
             const val age ="age"

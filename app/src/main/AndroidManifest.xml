@@ -18,9 +18,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hipaasafe"
         android:usesCleartextTraffic="true">
+        <activity android:name=".presentation.help.HelpActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"/>
         <activity
             android:name=".presentation.past_appointments.PastAppointmentsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".presentation.sign_up.SignUpActivity"
             android:exported="false"

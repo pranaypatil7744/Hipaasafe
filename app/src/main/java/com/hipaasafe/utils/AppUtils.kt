@@ -1,6 +1,8 @@
 package com.hipaasafe.utils
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.util.Patterns
 import android.view.View
@@ -70,6 +72,19 @@ class AppUtils {
         val deviceState = OneSignal.getDeviceState()
         playerID = deviceState?.userId
         return playerID
+    }
+
+    fun openDialer(context: Context, infoMobile: String) {
+        val i = Intent(Intent.ACTION_DIAL)
+        i.data = Uri.parse("tel:" + infoMobile)
+        context.startActivity(i)
+    }
+
+    fun openMailer(context: Context, mailTo: String) {
+        val i = Intent(Intent.ACTION_SENDTO)
+        i.data = Uri.parse("mailto: " + mailTo)
+        context.startActivity(i)
+
     }
 
     fun getCountriesList(context: Context): ArrayList<CountryModel> {
