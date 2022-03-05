@@ -7,6 +7,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
+import com.google.android.material.imageview.ShapeableImageView
 import com.hipaasafe.R
 import java.io.ByteArrayOutputStream
 
@@ -20,6 +21,14 @@ class ImageUtils {
                 INSTANCE = ImageUtils()
             }
         }
+    }
+    fun loadRemoteImageForProfile(imageView: ShapeableImageView, imageUrl: String?) {
+
+        imageView.rootView?.let { Glide.with(it) }
+            ?.load(imageUrl)
+            ?.placeholder(R.drawable.ic_default_profile_picture)
+            ?.error(R.drawable.ic_default_profile_picture)
+            ?.into(imageView)
     }
 
     fun loadLocalGIFImage(imageView: ImageView, image: Int) {

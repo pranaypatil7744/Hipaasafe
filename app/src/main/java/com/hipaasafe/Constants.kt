@@ -9,6 +9,7 @@ class Constants {
         const val COUNTRY_CODE ="COUNTRY_CODE"
         const val RESEND_OTP_SECOND = 30000.toLong() //i.e 30 secs
         const val ONE_SIGNAL_APP_ID = "29500431-ac41-47af-908c-fcc2ba1d978d"
+        const val DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 
     }
     class ErrorMsg{

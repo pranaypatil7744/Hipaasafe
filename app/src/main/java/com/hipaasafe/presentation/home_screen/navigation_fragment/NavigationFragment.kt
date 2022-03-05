@@ -18,6 +18,7 @@ import com.hipaasafe.presentation.home_screen.navigation_fragment.adapter.NavAda
 import com.hipaasafe.presentation.home_screen.navigation_fragment.model.NavItemType
 import com.hipaasafe.presentation.home_screen.navigation_fragment.model.NavigationModel
 import com.hipaasafe.presentation.login_main.LoginMainActivity
+import com.hipaasafe.presentation.notification.NotificationActivity
 import com.hipaasafe.utils.PreferenceUtils
 import com.onesignal.OneSignal
 
@@ -103,7 +104,8 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
                 startActivity(i)
             }
             getString(R.string.notification) -> {
-
+                val i = Intent(requireContext(), NotificationActivity::class.java)
+                startActivity(i)
             }
         }
     }

@@ -54,6 +54,8 @@
     <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout ?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="notifications">Notifications</string>
+
 
 
 </resources>
