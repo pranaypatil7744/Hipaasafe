@@ -33,6 +33,8 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
     private var navMenuList: ArrayList<NavigationModel> = ArrayList()
     lateinit var binding: FragmentNavigationBinding
     lateinit var navAdapter: NavAdapter
+    var name = ""
+    var profile = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,8 +47,20 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         preferenceUtils = PreferenceUtils(requireContext())
-        setUpNavMenuList()
         setUpAdapter()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getPreferenceData()
+        setUpNavMenuList()
+    }
+
+    private fun getPreferenceData() {
+        binding.apply {
+            name = preferenceUtils.getValue(Constants.PreferenceKeys.name)
+            profile = preferenceUtils.getValue(Constants.PreferenceKeys.avatar)
+        }
     }
 
     private fun setUpAdapter() {
@@ -61,7 +75,7 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
             navMenuList.clear()
             navMenuList.add(
                 NavigationModel(
-                    title = "Vikrant Kahar",
+                    title = name,
                     icon = R.drawable.ic_default_profile_picture,
                     navItemType = NavItemType.ITEM_PROFILE,
                 )

@@ -3,6 +3,7 @@ package com.hipaasafe.presentation.profile_view_details
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.databinding.ActivityProfileViewDetailsBinding
@@ -13,6 +14,10 @@ class ProfileViewDetailsActivity : BaseActivity() {
     lateinit var binding: ActivityProfileViewDetailsBinding
     lateinit var viewProfileAdapter: ViewProfileAdapter
     private val viewProfileList: ArrayList<ViewProfileModel> = ArrayList()
+    var name:String = ""
+    var email:String = ""
+    var mobile:String = ""
+    var age:String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileViewDetailsBinding.inflate(layoutInflater)
@@ -32,7 +37,17 @@ class ProfileViewDetailsActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        getPreferenceData()
         setUpViewProfileList()
+    }
+
+    private fun getPreferenceData() {
+        binding.apply {
+            name = preferenceUtils.getValue(Constants.PreferenceKeys.name)
+            email = preferenceUtils.getValue(Constants.PreferenceKeys.email)
+            mobile = preferenceUtils.getValue(Constants.PreferenceKeys.number)
+            age = preferenceUtils.getValue(Constants.PreferenceKeys.age)
+        }
     }
 
     private fun setUpViewProfileList() {
@@ -41,25 +56,25 @@ class ProfileViewDetailsActivity : BaseActivity() {
         viewProfileList.add(
             ViewProfileModel(
                 icon = R.drawable.ic_profile,
-                title = "Name", subTitle = "Vikrant Kahar"
+                title = "Name", subTitle = name
             )
         )
         viewProfileList.add(
             ViewProfileModel(
                 icon = R.drawable.ic_mail,
-                title = "Email", subTitle = "kahar12@gmail.com"
+                title = "Email", subTitle = email
             )
         )
         viewProfileList.add(
             ViewProfileModel(
                 icon = R.drawable.ic_call,
-                title = "Mobile Number", subTitle = "+91 9876543210"
+                title = "Mobile Number", subTitle = mobile
             )
         )
         viewProfileList.add(
             ViewProfileModel(
                 icon = R.drawable.ic_calendar,
-                title = "Age", subTitle = "24"
+                title = "Age", subTitle = age
             )
         )
         if (::viewProfileAdapter.isInitialized){
