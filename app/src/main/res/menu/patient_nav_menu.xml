@@ -11,18 +11,18 @@
         android:id="@+id/navigation_chat"
         android:enabled="true"
         android:icon="@drawable/ic_chat"
-        android:title="Chat" />
+        android:title="@string/chat" />
 
     <item
-        android:id="@+id/navigation_my_patients"
+        android:id="@+id/navigation_my_network"
         android:enabled="true"
         android:icon="@drawable/ic_patients"
-        android:title="@string/my_patients" />
+        android:title="@string/my_network" />
 
     <item
-        android:id="@+id/navigation_my_teams"
+        android:id="@+id/navigation_documents"
         android:enabled="true"
-        android:icon="@drawable/ic_speciality"
-        android:title="@string/my_teams" />
+        android:icon="@drawable/ic_doc"
+        android:title="@string/documents" />
 
 </menu>

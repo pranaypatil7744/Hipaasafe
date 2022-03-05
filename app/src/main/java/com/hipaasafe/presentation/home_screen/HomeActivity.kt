@@ -29,9 +29,10 @@ class HomeActivity : BaseActivity(),ToolbarActionListener {
         setUpView()
     }
 
-    private fun setUpToolbar() {
+     fun setUpToolbar() {
         binding.toolbar.apply {
             tvTitle.text = getString(R.string.my_appointments)
+            tvDate.visibility = VISIBLE
             tvDate.text = AppUtils.INSTANCE?.getCurrentDate()
             btnOne.apply {
                 setImageResource(R.drawable.ic_past_history)

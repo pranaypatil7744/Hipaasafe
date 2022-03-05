@@ -3,6 +3,7 @@ package com.hipaasafe.utils
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
 import android.view.View
@@ -85,6 +86,24 @@ class AppUtils {
         i.data = Uri.parse("mailto: " + mailTo)
         context.startActivity(i)
 
+    }
+
+    fun getSpecialityWithLocationAndExperience(
+        speciality: String?,
+        location: String?,
+        experience: String?
+    ): String {
+        var result = ""
+        if (!TextUtils.isEmpty(speciality)) {
+            result = "$speciality - "
+        }
+        if (!TextUtils.isEmpty(location)) {
+            result = "$result$location - "
+        }
+        if (!TextUtils.isEmpty(experience) || !TextUtils.equals(experience, "0.0")) {
+            result = "$result$experience yrs"
+        }
+        return result
     }
 
     fun getCountriesList(context: Context): ArrayList<CountryModel> {
