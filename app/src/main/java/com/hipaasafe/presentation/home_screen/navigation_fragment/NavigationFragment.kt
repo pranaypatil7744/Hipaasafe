@@ -19,6 +19,7 @@ import com.hipaasafe.presentation.home_screen.navigation_fragment.model.NavItemT
 import com.hipaasafe.presentation.home_screen.navigation_fragment.model.NavigationModel
 import com.hipaasafe.presentation.login_main.LoginMainActivity
 import com.hipaasafe.presentation.notification.NotificationActivity
+import com.hipaasafe.presentation.profile_view_details.ProfileViewDetailsActivity
 import com.hipaasafe.utils.PreferenceUtils
 import com.onesignal.OneSignal
 
@@ -94,7 +95,8 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
     }
 
     override fun onClickViewProfile(position: Int) {
-
+        val i = Intent(requireContext(),ProfileViewDetailsActivity::class.java)
+        startActivity(i)
     }
 
     override fun onClickMenu(position: Int) {
