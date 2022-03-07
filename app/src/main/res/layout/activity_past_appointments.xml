@@ -33,6 +33,7 @@
         android:singleLine="true"
         android:textColorHint="@color/scorpion"
         android:textSize="12sp"
+        android:visibility="gone"
         app:drawableTint="@color/scorpion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

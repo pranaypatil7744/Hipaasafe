@@ -102,12 +102,18 @@ class DocumentAdapter(
                         }else{
                             imgDoc.setImageResource(R.drawable.ic_default_pdf)
                         }
+                        btnForward.setOnClickListener {
+                            listener.clickOnForwardDoc(position)
+                        }
                     }
                 }
                 DocumentItemType.ITEM_PENDING_DOC.value -> {
                     itemPendingDocumentBinding?.apply {
                         tvTitle.text = data.title
                         tvSubTitle.text = data.subTitle
+                    }
+                    itemView.setOnClickListener {
+                        listener.clickOnPendingDoc(position)
                     }
                 }
             }

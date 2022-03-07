@@ -129,5 +129,7 @@
     <string name="select_from">Select from</string>
     <string name="upload_documents">Upload Documents</string>
     <string name="click_here_to_upload_reports_documents">Click here to upload reports/documents</string>
+    <string name="doctors_list">Doctors List</string>
+    <string name="share">Share</string>
 
 </resources>

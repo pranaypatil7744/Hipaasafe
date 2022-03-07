@@ -4,18 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseFragment
+import com.hipaasafe.databinding.BottomsheetForwardDocBinding
 import com.hipaasafe.databinding.FragmentDocumentBinding
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.DocumentAdapter
+import com.hipaasafe.presentation.home_screen.document_fragment.adapter.ForwardDocAdapter
 import com.hipaasafe.presentation.home_screen.document_fragment.model.DocumentItemType
 import com.hipaasafe.presentation.home_screen.document_fragment.model.DocumentsModel
+import com.hipaasafe.presentation.home_screen.document_fragment.model.ForwardDocumentModel
 
-class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager {
+class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
+    ForwardDocAdapter.ForwardClickManager {
 
     lateinit var binding: FragmentDocumentBinding
     lateinit var documentAdapter:DocumentAdapter
+    lateinit var forwardDocAdapter: ForwardDocAdapter
     private var documentsList: ArrayList<DocumentsModel> = ArrayList()
+    private var doctorList:ArrayList<ForwardDocumentModel> = ArrayList()
+    lateinit var bottomSheetForwardDocBinding: BottomsheetForwardDocBinding
 
     companion object {
         fun newInstance(): DocumentFragment {
@@ -121,16 +129,53 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager {
         }
     }
 
+    private fun openForwardListBottomSheet() {
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        val view = layoutInflater.inflate(R.layout.bottomsheet_forward_doc, null)
+        bottomSheetForwardDocBinding = BottomsheetForwardDocBinding.bind(view)
+        bottomSheetDialog.setContentView(view)
+        bottomSheetDialog.setCancelable(true)
+        bottomSheetForwardDocBinding.apply {
+            forwardDocAdapter = ForwardDocAdapter(requireContext(),doctorList, listener = this@DocumentFragment)
+            recyclerAttendanceHistory.adapter = forwardDocAdapter
+            imgClose.setOnClickListener {
+                bottomSheetDialog.dismiss()
+            }
+        }
+        bottomSheetDialog.show()
+    }
+
     override fun clickOnAddDocument(position: Int) {
 
     }
 
     override fun clickOnForwardDoc(position: Int) {
+        setUpDoctorListForForward()
+        openForwardListBottomSheet()
+    }
 
+    private fun setUpDoctorListForForward() {
+        binding.apply { 
+            doctorList.clear()
+            doctorList.add(ForwardDocumentModel(title = "Dr. Sanjeev Arora"))
+            doctorList.add(ForwardDocumentModel(title = "Aditi Chopra"))
+            doctorList.add(ForwardDocumentModel(title = "Adarsh M Patil"))
+            doctorList.add(ForwardDocumentModel(title = "Adarsh Bhargava"))
+            doctorList.add(ForwardDocumentModel(title = "Adhishwar Sharma"))
+            doctorList.add(ForwardDocumentModel(title = "Dr. Sanjeev Arora"))
+            doctorList.add(ForwardDocumentModel(title = "Aditi Chopra"))
+            doctorList.add(ForwardDocumentModel(title = "Adarsh M Patil"))
+            doctorList.add(ForwardDocumentModel(title = "Adarsh Bhargava"))
+        }
     }
 
     override fun clickOnPendingDoc(position: Int) {
 
+    }
+
+    override fun onItemClick(position: Int) {
+        doctorList[position].isSelected = !doctorList[position].isSelected
+        forwardDocAdapter.notifyItemChanged(position)
     }
 
 }
