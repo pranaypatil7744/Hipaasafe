@@ -62,7 +62,7 @@ class LoginViewModel constructor(
             )
             return
         }
-        validationListener?.onValidationSuccess(Constants.IS_LOGIN, R.string.success)
+        validationListener?.onValidationSuccess(Constants.SUCCESS, R.string.success)
     }
 
     fun callPatientRegisterApi(request: PatientRegisterRequestModel) {

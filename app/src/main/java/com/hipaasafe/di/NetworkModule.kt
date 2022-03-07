@@ -9,7 +9,10 @@ import com.hipaasafe.data.source.remote.ApiService
 import com.hipaasafe.domain.repository.LoginRepository
 import com.google.gson.GsonBuilder
 import com.hipaasafe.Constants
+import com.hipaasafe.data.repository.ProfileRepositoryImp
+import com.hipaasafe.domain.repository.ProfileRepository
 import com.hipaasafe.domain.usecase.login.*
+import com.hipaasafe.domain.usecase.profile.PatientUpdateProfileUseCase
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -126,4 +129,12 @@ fun createDoctorLoginValidateOtpUseCase(loginRepository: LoginRepository): Docto
 
 fun createPatientRegisterUseCase(loginRepository: LoginRepository): PatientRegisterUseCase {
     return PatientRegisterUseCase(loginRepository)
+}
+
+fun createProfileRepository(apiService: ApiService): ProfileRepository {
+    return ProfileRepositoryImp(apiService)
+}
+
+fun createPatientUpdateProfileUseCase(profileRepository: ProfileRepository): PatientUpdateProfileUseCase {
+    return PatientUpdateProfileUseCase(profileRepository)
 }

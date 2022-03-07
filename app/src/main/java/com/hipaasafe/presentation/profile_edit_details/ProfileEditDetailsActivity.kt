@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import com.blankj.utilcode.util.KeyboardUtils
@@ -17,32 +18,63 @@ import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.databinding.ActivityProfileEditDetailsBinding
 import com.hipaasafe.listener.ValidationListener
 import com.hipaasafe.presentation.login.model.CountryModel
-import com.hipaasafe.presentation.profile_edit_details.model.ProfileEditModel
+import com.hipaasafe.presentation.profile_edit_details.model.ProfileEditRequestModel
 import com.hipaasafe.utils.AppUtils
 import com.hipaasafe.utils.ImageUtils
 import com.hipaasafe.utils.PreferenceUtils
 import com.hipaasafe.utils.isNetworkAvailable
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.File
 
 class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
 
     lateinit var binding: ActivityProfileEditDetailsBinding
+    private val profileViewModel:ProfileViewModel by viewModel()
+
     var profileFile: File? = null
     var countryList: ArrayList<CountryModel> = ArrayList()
-
-
+    var selectedCountryCode:String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileEditDetailsBinding.inflate(layoutInflater)
         preferenceUtils = PreferenceUtils(this)
         setContentView(binding.root)
+        profileViewModel.validationListener = this
+        setUpObserver()
         setUpToolbar()
         setupView()
         setListener()
     }
 
+    private fun setUpObserver() {
+        binding.apply {
+            with(profileViewModel){
+                patientUpdateProfileResponseData.observe(this@ProfileEditDetailsActivity,{
+                    toggleLoader(false)
+                    if (it.success){
+                        val data = getProfileEditDetailsModel()
+                        preferenceUtils.apply {
+                            setValue(Constants.PreferenceKeys.name,data.name)
+                            setValue(Constants.PreferenceKeys.email,data.email)
+                            setValue(Constants.PreferenceKeys.country_code,data.country_code)
+                            setValue(Constants.PreferenceKeys.number,data.number)
+                            setValue(Constants.PreferenceKeys.age,data.age)
+                            finish()
+                        }
+                    }else{
+                        showToast(it.message)
+                    }
+                })
+                messageData.observe(this@ProfileEditDetailsActivity,{
+                    toggleLoader(false)
+                    showToast(it.toString())
+                })
+            }
+        }
+    }
+
     private fun setUpCountryCodes() {
-        val selectedCountryCode = preferenceUtils.getValue(Constants.PreferenceKeys.country_code)
+        selectedCountryCode = preferenceUtils.getValue(Constants.PreferenceKeys.country_code)
         binding.apply {
             countryList.addAll(
                 AppUtils.INSTANCE?.getCountriesList(this@ProfileEditDetailsActivity) ?: ArrayList()
@@ -110,7 +142,7 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
             }
             btnSaveDetails.setOnClickListener {
                 clearErrorLabels()
-
+                profileViewModel.validateEditProfileData(getProfileEditDetailsModel())
             }
             edtName.onFocusChangeListener =
                 View.OnFocusChangeListener { _: View, hasFocus: Boolean ->
@@ -247,15 +279,30 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                         )
                     }
                 }
+            spinnerCountryCode.onItemSelectedListener = object :
+                AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View, position: Int, id: Long
+                ) {
+                    selectedCountryCode = parent.getItemAtPosition(position).toString()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // write code to perform some action
+                }
+            }
         }
     }
 
-    private fun getProfileEditDetailsModel(): ProfileEditModel {
+    private fun getProfileEditDetailsModel(): ProfileEditRequestModel {
         binding.apply {
-            val request = ProfileEditModel()
-            request.name = binding.edtName.text.toString()
-            request.email = binding.edtEmail.text.toString()
+            val request = ProfileEditRequestModel()
+            request.name = edtName.text.toString().trim()
+            request.email = edtEmail.text.toString().trim()
+            request.number = etMobile.text.toString().trim()
             request.age = etAge.text.toString().trim()
+            request.country_code = selectedCountryCode
             request.fileToUpload = profileFile
             return request
         }
@@ -273,19 +320,13 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
 
     override fun onValidationSuccess(type: String, msg: Int) {
         if (isNetworkAvailable()) {
-            callEditProfileApi()
+            toggleLoader(true)
+            profileViewModel.callPatientUpdateProfileApi(getProfileEditDetailsModel())
         } else {
             showToast(getString(R.string.no_internet_connection_please_try_again_later))
         }
     }
 
-    private fun callEditProfileApi() {
-        binding.apply {
-            toggleLoader(true)
-            val request = getProfileEditDetailsModel()
-
-        }
-    }
 
     private fun toggleLoader(showLoader: Boolean) {
         toggleFadeView(
@@ -302,16 +343,18 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
         binding.apply {
             when (type) {
                 Constants.ErrorMsg.NAME_ERROR -> {
-                    edtName.error = getString(msg)
+                    layoutName.error = getString(msg)
                 }
                 Constants.ErrorMsg.EMAIL_ERROR -> {
-                    edtEmail.error = getString(msg)
+                    layoutEmail.error = getString(msg)
                 }
                 Constants.ErrorMsg.AGE_ERROR -> {
-                    etAge.error = getString(msg)
+                    layoutAge.error = getString(msg)
                 }
                 Constants.ErrorMsg.MOBILE_ERROR -> {
-
+                    errorText.text = getString(msg)
+                    errorText.visibility = VISIBLE
+                    layoutMobile.setBackgroundResource(R.drawable.bg_box_error)
                 }
             }
             KeyboardUtils.hideSoftInput(this@ProfileEditDetailsActivity)
