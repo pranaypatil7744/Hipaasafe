@@ -23,14 +23,12 @@ import com.hipaasafe.domain.model.patient_login.UserDataModel
 import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.login.LoginViewModel
 import com.hipaasafe.presentation.sign_up.SignUpActivity
-import com.hipaasafe.utils.AppUtils
-import com.hipaasafe.utils.ImageUtils
-import com.hipaasafe.utils.PreferenceUtils
-import com.hipaasafe.utils.isNetworkAvailable
+import com.hipaasafe.utils.*
+import com.onesignal.OneSignal
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
-class VerifyOtpActivity : BaseActivity() {
+class VerifyOtpActivity : BaseActivity(), CometListener {
 
     var isFromLoginDoctor: Boolean = false
     var loginWith: String = ""
@@ -140,17 +138,20 @@ class VerifyOtpActivity : BaseActivity() {
                     stopTimer()
                     if (it.success) {
                         saveDoctorData(it.data)
-                        navigateToHome()
+                        preferenceUtils.setValue(Constants.IS_LOGIN, true)
+                        OneSignal.disablePush(false)
+                        val token = preferenceUtils.getValue(Constants.FIREBASE_TOKEN)
+                        CometChatUtils.loginToComet(it.data.uid, it.data.name, this@VerifyOtpActivity,token)
                     } else {
                         showToast(it.message)
                     }
                 })
                 patientValidateOtpResponseData.observe(this@VerifyOtpActivity, {
-                    toggleLoader(false)
                     stopTimer()
                     if (it.success) {
                         savePatientData(it.data)
-                        if (it.data.patient_details?.profile_update == true) {
+                        if (it.data.patient_details?.profile_update == false) {
+                            toggleLoader(false)
                             val i = Intent(this@VerifyOtpActivity, SignUpActivity::class.java)
                             val b = Bundle()
                             b.putString(Constants.LOGIN_WITH, loginWith)
@@ -158,7 +159,10 @@ class VerifyOtpActivity : BaseActivity() {
                             i.putExtras(b)
                             startActivity(i)
                         } else {
-                            navigateToHome()
+                            preferenceUtils.setValue(Constants.IS_LOGIN, true)
+                            OneSignal.disablePush(false)
+                            val token = preferenceUtils.getValue(Constants.FIREBASE_TOKEN)
+                            CometChatUtils.loginToComet(it.data.uid, it.data.name, this@VerifyOtpActivity,token)
                         }
                     } else {
                         showToast(it.message)
@@ -175,7 +179,8 @@ class VerifyOtpActivity : BaseActivity() {
     private fun navigateToHome() {
         binding.apply {
             val i = Intent(this@VerifyOtpActivity, HomeActivity::class.java)
-            i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            i.flags =
+                Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(i)
             finish()
         }
@@ -184,7 +189,6 @@ class VerifyOtpActivity : BaseActivity() {
     private fun savePatientData(data: UserDataModel) {
         binding.apply {
             preferenceUtils.apply {
-                setValue(Constants.IS_LOGIN, true)
                 setValue(Constants.PreferenceKeys.id, data.id.toString())
                 setValue(Constants.PreferenceKeys.uid, data.uid.toString())
                 setValue(Constants.PreferenceKeys.name, data.name.toString())
@@ -416,5 +420,15 @@ class VerifyOtpActivity : BaseActivity() {
 
     private fun callRegisterSendOtpApi() {
 
+    }
+
+    override fun onCometLoginSuccess() {
+        toggleLoader(showLoader = false)
+        navigateToHome()
+    }
+
+    override fun onCometLoginFailure() {
+        toggleLoader(showLoader = false)
+        showToast(getString(R.string.something_went_wrong))
     }
 }

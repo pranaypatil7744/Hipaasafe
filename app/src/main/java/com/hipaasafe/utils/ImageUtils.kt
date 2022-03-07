@@ -31,6 +31,23 @@ class ImageUtils {
             ?.into(imageView)
     }
 
+    fun loadRemoteImageForGroupProfile(imageView: ImageView, imageUrl: String?) {
+        //Different fn since error and loaing placeholder can differ
+        imageView.rootView?.let { Glide.with(it) }
+            ?.load(imageUrl)
+            ?.placeholder(R.drawable.ic_default_group_picture)
+            ?.error(R.drawable.ic_default_group_picture)
+            ?.into(imageView)
+
+//        imageView.context?.let {
+//            Glide.with(it)
+//                .load(imageUrl)
+//                .placeholder(R.drawable.ic_default_group_picture)
+//                .error(R.drawable.ic_default_group_picture)
+//                .into(imageView)
+//        }
+    }
+
     fun loadLocalGIFImage(imageView: ImageView, image: Int) {
         try {
             imageView.run {

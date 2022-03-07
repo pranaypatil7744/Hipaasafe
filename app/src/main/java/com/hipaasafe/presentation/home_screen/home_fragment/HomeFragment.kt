@@ -12,6 +12,7 @@ import com.hipaasafe.databinding.FragmentHomeBinding
 import com.hipaasafe.presentation.adapter.PagerAdapter
 import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.home_screen.appointment_fragment.AppointmentFragment
+import com.hipaasafe.presentation.home_screen.comet_chat_group.CometChatGroupFragment
 import com.hipaasafe.presentation.home_screen.my_network.MyNetworkFragment
 
 class HomeFragment : BaseFragment() {
@@ -24,7 +25,7 @@ class HomeFragment : BaseFragment() {
     lateinit var binding: FragmentHomeBinding
     val myNetworkFragment = MyNetworkFragment.newInstance()
     val appointmentFragment = AppointmentFragment.newInstance()
-    val appointmentFragment2 = AppointmentFragment.newInstance()
+    val chatFragment = CometChatGroupFragment.newInstance()
     val appointmentFragment3 = AppointmentFragment.newInstance()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +44,7 @@ class HomeFragment : BaseFragment() {
         binding.apply {
             val fList: ArrayList<Fragment> = ArrayList()
             fList.add(appointmentFragment)
-            fList.add(appointmentFragment2)
+            fList.add(chatFragment)
             fList.add(myNetworkFragment)
             fList.add(appointmentFragment3)
             viewPager.adapter = PagerAdapter(requireActivity(), fList)

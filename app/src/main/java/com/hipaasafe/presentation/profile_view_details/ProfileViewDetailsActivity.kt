@@ -9,6 +9,7 @@ import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.databinding.ActivityProfileViewDetailsBinding
 import com.hipaasafe.presentation.profile_view_details.adapter.ViewProfileAdapter
 import com.hipaasafe.presentation.profile_view_details.model.ViewProfileModel
+import com.hipaasafe.utils.PreferenceUtils
 
 class ProfileViewDetailsActivity : BaseActivity() {
     lateinit var binding: ActivityProfileViewDetailsBinding
@@ -22,6 +23,7 @@ class ProfileViewDetailsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileViewDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        preferenceUtils = PreferenceUtils(this)
         setUpToolbar()
         setListener()
         setUpAdapter()

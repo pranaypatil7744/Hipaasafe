@@ -20,6 +20,7 @@ import com.hipaasafe.presentation.home_screen.navigation_fragment.model.Navigati
 import com.hipaasafe.presentation.login_main.LoginMainActivity
 import com.hipaasafe.presentation.notification.NotificationActivity
 import com.hipaasafe.presentation.profile_view_details.ProfileViewDetailsActivity
+import com.hipaasafe.utils.CometChatUtils
 import com.hipaasafe.utils.PreferenceUtils
 import com.onesignal.OneSignal
 
@@ -140,6 +141,7 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
                 OneSignal.clearOneSignalNotifications()
                 OneSignal.disablePush(true)
                 BaseApplication.second = Constants.RESEND_OTP_SECOND
+                CometChatUtils.logoutFromComet()
                 navigateToLoginScreen()
             }.setNegativeButton(getString(R.string.no)) { dialog, _ ->
                 dialog.cancel()

@@ -12,11 +12,14 @@ import com.hipaasafe.domain.model.patient_login.UserRegisterDataModel
 import com.hipaasafe.listener.ValidationListener
 import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.login.LoginViewModel
+import com.hipaasafe.utils.CometChatUtils
+import com.hipaasafe.utils.CometListener
 import com.hipaasafe.utils.PreferenceUtils
 import com.hipaasafe.utils.isNetworkAvailable
+import com.onesignal.OneSignal
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SignUpActivity : BaseActivity(), ValidationListener {
+class SignUpActivity : BaseActivity(), ValidationListener, CometListener {
     var countryCode: String = ""
     var mobileNo: String = ""
     lateinit var binding: ActivitySignUpBinding
@@ -40,7 +43,10 @@ class SignUpActivity : BaseActivity(), ValidationListener {
                     toggleLoader(false)
                     if (it.success) {
                         savePatientData(it.data)
-                        navigateToHome()
+                        preferenceUtils.setValue(Constants.IS_LOGIN, true)
+                        OneSignal.disablePush(false)
+                        val token = preferenceUtils.getValue(Constants.FIREBASE_TOKEN)
+                        CometChatUtils.loginToComet(it.data.uid, it.data.name, this@SignUpActivity,token)
                     } else {
                         showToast(it.message)
                     }
@@ -57,7 +63,8 @@ class SignUpActivity : BaseActivity(), ValidationListener {
     private fun navigateToHome() {
         binding.apply {
             val i = Intent(this@SignUpActivity, HomeActivity::class.java)
-            i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            i.flags =
+                Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(i)
             finish()
         }
@@ -184,5 +191,14 @@ class SignUpActivity : BaseActivity(), ValidationListener {
             layoutEmail.error = ""
             layoutAge.error = ""
         }
+    }
+    override fun onCometLoginSuccess() {
+        toggleLoader(showLoader = false)
+        navigateToHome()
+    }
+
+    override fun onCometLoginFailure() {
+        toggleLoader(showLoader = false)
+        showToast(getString(R.string.something_went_wrong))
     }
 }
