@@ -1,39 +1,43 @@
 package com.hipaasafe.presentation.profile_edit_details
 
-import android.app.AlertDialog
-import android.content.DialogInterface
+import android.app.Activity
+import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Base64
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.blankj.utilcode.util.KeyboardUtils
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.databinding.ActivityProfileEditDetailsBinding
+import com.hipaasafe.databinding.BottomSheetAddPhotoBinding
 import com.hipaasafe.listener.ValidationListener
 import com.hipaasafe.presentation.login.model.CountryModel
 import com.hipaasafe.presentation.profile_edit_details.model.ProfileEditRequestModel
-import com.hipaasafe.utils.AppUtils
-import com.hipaasafe.utils.ImageUtils
-import com.hipaasafe.utils.PreferenceUtils
-import com.hipaasafe.utils.isNetworkAvailable
+import com.hipaasafe.utils.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.File
 
 class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
 
     lateinit var binding: ActivityProfileEditDetailsBinding
-    private val profileViewModel:ProfileViewModel by viewModel()
+    private val profileViewModel: ProfileViewModel by viewModel()
+    private lateinit var addPhotoBottomSheetDialogBinding: BottomSheetAddPhotoBinding
 
     var profileFile: File? = null
     var countryList: ArrayList<CountryModel> = ArrayList()
-    var selectedCountryCode:String = ""
+    var selectedCountryCode: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileEditDetailsBinding.inflate(layoutInflater)
@@ -48,24 +52,24 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
 
     private fun setUpObserver() {
         binding.apply {
-            with(profileViewModel){
-                patientUpdateProfileResponseData.observe(this@ProfileEditDetailsActivity,{
+            with(profileViewModel) {
+                patientUpdateProfileResponseData.observe(this@ProfileEditDetailsActivity, {
                     toggleLoader(false)
-                    if (it.success){
+                    if (it.success) {
                         val data = getProfileEditDetailsModel()
                         preferenceUtils.apply {
-                            setValue(Constants.PreferenceKeys.name,data.name)
-                            setValue(Constants.PreferenceKeys.email,data.email)
-                            setValue(Constants.PreferenceKeys.country_code,data.country_code)
-                            setValue(Constants.PreferenceKeys.number,data.number)
-                            setValue(Constants.PreferenceKeys.age,data.age)
+                            setValue(Constants.PreferenceKeys.name, data.name)
+                            setValue(Constants.PreferenceKeys.email, data.email)
+                            setValue(Constants.PreferenceKeys.country_code, data.country_code)
+                            setValue(Constants.PreferenceKeys.number, data.number)
+                            setValue(Constants.PreferenceKeys.age, data.age)
                             finish()
                         }
-                    }else{
+                    } else {
                         showToast(it.message)
                     }
                 })
-                messageData.observe(this@ProfileEditDetailsActivity,{
+                messageData.observe(this@ProfileEditDetailsActivity, {
                     toggleLoader(false)
                     showToast(it.toString())
                 })
@@ -114,28 +118,66 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
         }
     }
 
-    private fun showDialogForProfile() {
-        val myAlertDialog = AlertDialog.Builder(this)
-        myAlertDialog.setTitle("")
-        myAlertDialog.setMessage(R.string.select_from)
+    private fun openAddPhotoBottomSheet() {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.bottom_sheet_add_photo, null)
+        addPhotoBottomSheetDialogBinding = BottomSheetAddPhotoBinding.bind(view)
+        bottomSheetDialog.apply {
+            setCancelable(true)
+            setContentView(view)
+            show()
+        }
+        val intent = Intent(this, AddImageUtils::class.java)
+        val b = Bundle()
+        addPhotoBottomSheetDialogBinding.apply {
+            imgPdf.visibility = INVISIBLE
+            tvPdf.visibility = INVISIBLE
+            tvAddPhoto.text = getString(R.string.choose_image)
+            imgCamera.setOnClickListener {
+                b.putBoolean(Constants.IS_CAMERA, true)
+                intent.putExtras(b)
+                addImageUtils.launch(intent)
+                bottomSheetDialog.dismiss()
+            }
+            imgGallery.setOnClickListener {
+                b.putBoolean(Constants.IS_CAMERA, false)
+                intent.putExtras(b)
+                addImageUtils.launch(intent)
+                bottomSheetDialog.dismiss()
+            }
+//            imgPdf.setOnClickListener {
+//                b.putBoolean(Constants.IS_CAMERA, false)
+//                b.putBoolean(Constants.IS_PDF, true)
+//                intent.putExtras(b)
+//                pdfResult.launch(intent)
+//                bottomSheetDialog.dismiss()
+//            }
+        }
 
-        myAlertDialog.setPositiveButton(R.string.camera,
-            DialogInterface.OnClickListener { arg0, arg1 ->
-
-            })
-        myAlertDialog.setNegativeButton(R.string.gallery,
-            DialogInterface.OnClickListener { arg0, arg1 ->
-
-            })
-
-        myAlertDialog.show()
     }
+
+    private val addImageUtils =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val data = it.data?.extras
+                val fileName = data?.get(Constants.IntentExtras.EXTRA_FILE_NAME)
+                val url = data?.get(Constants.IntentExtras.EXTRA_FILE_PATH)
+                val bitmapFile =
+                    File(url.toString())
+//                val bitmap: Bitmap = BitmapFactory.decodeFile(bitmapFile.toString())
+//                val imageBitmap = ImageUtils.INSTANCE?.bitMapToString(bitmap).toString()
+//                val imageExtn = fileName.toString().split(".").last()
+                binding.apply {
+                    ImageUtils.INSTANCE?.loadLocalImage(imgDoc,bitmapFile)
+                }
+            }
+        }
 
 
     private fun setListener() {
         binding.apply {
             imgCamera.setOnClickListener {
-
+                openAddPhotoBottomSheet()
             }
             toolbarHome.btnBack.setOnClickListener {
                 finish()
@@ -157,7 +199,10 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                             )
                         )
                         layoutName.boxStrokeColor =
-                            ContextCompat.getColor(this@ProfileEditDetailsActivity, R.color.azure_radiance)
+                            ContextCompat.getColor(
+                                this@ProfileEditDetailsActivity,
+                                R.color.azure_radiance
+                            )
 
                     } else {
                         layoutName.setStartIconTintList(
@@ -169,7 +214,10 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                             )
                         )
                         layoutName.boxStrokeColor =
-                            ContextCompat.getColor(this@ProfileEditDetailsActivity, R.color.alabaster)
+                            ContextCompat.getColor(
+                                this@ProfileEditDetailsActivity,
+                                R.color.alabaster
+                            )
 
                     }
                     val input = edtName.text.toString().trim()
@@ -198,7 +246,10 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                             )
                         )
                         layoutEmail.boxStrokeColor =
-                            ContextCompat.getColor(this@ProfileEditDetailsActivity, R.color.azure_radiance)
+                            ContextCompat.getColor(
+                                this@ProfileEditDetailsActivity,
+                                R.color.azure_radiance
+                            )
 
                     } else {
                         layoutEmail.setStartIconTintList(
@@ -210,7 +261,10 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                             )
                         )
                         layoutEmail.boxStrokeColor =
-                            ContextCompat.getColor(this@ProfileEditDetailsActivity, R.color.alabaster)
+                            ContextCompat.getColor(
+                                this@ProfileEditDetailsActivity,
+                                R.color.alabaster
+                            )
 
                     }
                     val input = edtEmail.text.toString().trim()
@@ -252,7 +306,10 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                             )
                         )
                         layoutAge.boxStrokeColor =
-                            ContextCompat.getColor(this@ProfileEditDetailsActivity, R.color.azure_radiance)
+                            ContextCompat.getColor(
+                                this@ProfileEditDetailsActivity,
+                                R.color.azure_radiance
+                            )
 
                     } else {
                         layoutAge.setStartIconTintList(
@@ -264,7 +321,10 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                             )
                         )
                         layoutAge.boxStrokeColor =
-                            ContextCompat.getColor(this@ProfileEditDetailsActivity, R.color.alabaster)
+                            ContextCompat.getColor(
+                                this@ProfileEditDetailsActivity,
+                                R.color.alabaster
+                            )
 
                     }
                     val input = etAge.text.toString().trim()

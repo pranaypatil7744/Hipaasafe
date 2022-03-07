@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -18,13 +19,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hipaasafe"
         android:usesCleartextTraffic="true">
-        <activity android:name=".presentation.profile_edit_details.ProfileEditDetailsActivity"
+        <activity android:name=".utils.AddImageUtils"
             android:screenOrientation="portrait"
             android:exported="false"/>
         <activity
-            android:name=".presentation.main_chat.MainCometChatActivity"
+            android:name=".presentation.upload_documents.UploadDocumentsActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
+        <activity
+            android:name=".presentation.profile_edit_details.ProfileEditDetailsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.main_chat.MainCometChatActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.profile_view_details.ProfileViewDetailsActivity"
             android:exported="false"
@@ -76,6 +85,17 @@
         <meta-data
             android:name="com.onesignal.NotificationServiceExtension"
             android:value="com.hipaasafe.onesignal.NotificationOpenedHandler" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.hipaasafe.fileprovider"
+            android:enabled="true"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 
 </manifest>

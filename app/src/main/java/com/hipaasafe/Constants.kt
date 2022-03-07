@@ -4,6 +4,7 @@ import com.cometchat.pro.constants.CometChatConstants
 
 class Constants {
     companion object {
+        const val AUTHORITY = "com.hipaasafe.fileprovider"
         const val VIEW_ANIMATE_DURATION = 400L
         const val IS_LOGIN = "IS_LOGIN"
         const val SUCCESS = "SUCCESS"
@@ -16,10 +17,38 @@ class Constants {
         const val Notifications = "Notifications"
         const val IsImportant = "is_important"
         const val IsForwarded = "is_forwarded"
+        const val IsFromAdd= "IsFromAdd"
+        const val IS_PDF = "IS_PDF"
+        const val IS_SELFIE_CAMERA = "IS_SELFIE_CAMERA"
+        const val IS_CAMERA = "IS_CAMERA"
         const val FIREBASE_TOKEN = "FIREBASE_TOKEN"
         const val NotificationCount = "NotificationCount"
+        const val PendingDocumentName = "PendingDocumentName"
+        const val PendingDocumentBy = "PendingDocumentBy"
+        const val DoctorsList = "DoctorsList"
 
+    }
+    class AskedPermission {
+        companion object {
+            const val IS_ASKED_CAMERA_PERMISSION = "IS_ASKED_CAMERA_PERMISSION"
+            const val CAMERA_PERMISSION_COUNT = "CAMERA_PERMISSION_COUNT"
+            const val IS_ASKED_STORAGE_PERMISSION = "IS_ASKED_STORAGE_PERMISSION"
+            const val STORAGE_PERMISSION_COUNT = "STORAGE_PERMISSION_COUNT"
+            const val IS_ASKED_LOCATION_PERMISSION = "IS_ASKED_LOCATION_PERMISSION"
+            const val LOCATION_PERMISSION_COUNT = "LOCATION_PERMISSION_COUNT"
+            const val IS_ASKED_CALL_PERMISSION = "IS_ASKED_CALL_PERMISSION"
+            const val CALL_PERMISSION_COUNT = "CALL_PERMISSION_COUNT"
+        }
+    }
 
+    class PermissionRequestCodes {
+        companion object {
+            const val PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 11000
+            const val REQUEST_CODE_CHECK_SETTINGS = 1000
+            const val STORAGE_PERMISSION_CODE = 100
+            const val CAMERA_PERMISSION_CODE = 101
+            const val CALL_PHONE_PERMISSION_CODE = 102
+        }
     }
 
     class ErrorMsg {
@@ -28,6 +57,17 @@ class Constants {
             const val EMAIL_ERROR = "EMAIL_ERROR"
             const val AGE_ERROR = "AGE_ERROR"
             const val MOBILE_ERROR = "MOBILE_ERROR"
+        }
+    }
+
+    class IntentExtras {
+        companion object {
+            const val EXTRA_LATITUDE = "latitude"
+            const val EXTRA_LONGITUDE = "longitude"
+            const val EXTRA_PICKUP_ADDRESS = "pickup_address"
+            const val EXTRA_FILE_NAME = "EXTRA_FILE_NAME"
+            const val EXTRA_FILE_PATH = "EXTRA_FILE_PATH"
+            const val EXTRA_IMAGE_BIT_MAP = "EXTRA_IMAGE_BIT_MAP"
         }
     }
 

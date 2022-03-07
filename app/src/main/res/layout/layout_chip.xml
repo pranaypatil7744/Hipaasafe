@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/chip"
+    app:closeIcon="@drawable/ic_close_chip"
+    app:iconStartPadding="5dp"
+    app:chipStartPadding="5dp"
+    android:textColor="@color/codGray"
+    android:background="@color/heather"
+    tools:text="Pranay patil"
+    android:checkable="false"
+    app:chipIcon="@drawable/ic_default_profile_picture"
+    app:closeIconEnabled="true" />

@@ -40,10 +40,8 @@ class SignUpActivity : BaseActivity(), ValidationListener, CometListener {
         binding.apply {
             with(loginViewModel) {
                 patientRegisterResponseData.observe(this@SignUpActivity, {
-                    toggleLoader(false)
                     if (it.success) {
                         savePatientData(it.data)
-                        preferenceUtils.setValue(Constants.IS_LOGIN, true)
                         OneSignal.disablePush(false)
                         val token = preferenceUtils.getValue(Constants.FIREBASE_TOKEN)
                         CometChatUtils.loginToComet(it.data.uid, it.data.name, this@SignUpActivity,token)
@@ -92,6 +90,7 @@ class SignUpActivity : BaseActivity(), ValidationListener, CometListener {
                     Constants.PreferenceKeys.profile_update,
                     data.patient_details?.profile_update ?: false
                 )
+                setValue(Constants.PreferenceKeys.age,data.patient_details?.age.toString())
             }
         }
     }

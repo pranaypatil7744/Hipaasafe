@@ -131,5 +131,20 @@
     <string name="click_here_to_upload_reports_documents">Click here to upload reports/documents</string>
     <string name="doctors_list">Doctors List</string>
     <string name="share">Share</string>
+    <string name="share_upload">Share &amp; Upload</string>
+    <string name="document">Document</string>
+    <string name="click_here_to_upload">Click here to upload</string>
+    <string name="enter_name_eg_chest_x_ray">Enter Name (Eg : Chest X-Ray)</string>
+    <string name="document_name">Document Name</string>
+    <string name="share_to">Share to</string>
+    <string name="please_select_at_least_1_doctor">Please select at least 1 doctor</string>
+    <string name="allow_permission">Allow Permission</string>
+    <string name="go_to_settings">Go to Settings</string>
+    <string name="deny">Deny</string>
+    <string name="please_grant_the_camera_permission_to_continue">Please grant the camera permission to continue</string>
+    <string name="please_grant_the_storage_permission_to_continue">Please grant the storage permission to continue</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="pdf">Pdf</string>
+
 
 </resources>

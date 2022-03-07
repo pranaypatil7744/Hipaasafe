@@ -33,6 +33,6 @@ data class UserDataModel(
     var refresh_token:String? ="",
 )
 data class PatientDetailsModel(
-    var age:Int? =0,
+    var age:String? ="",
     var profile_update:Boolean= false
 )

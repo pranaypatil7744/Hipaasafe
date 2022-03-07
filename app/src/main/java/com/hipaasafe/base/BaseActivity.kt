@@ -1,5 +1,6 @@
 package com.hipaasafe.base
 
+import android.content.Context
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
@@ -14,6 +15,7 @@ import com.hipaasafe.utils.PreferenceUtils
 
 open class BaseActivity:AppCompatActivity() {
     lateinit var preferenceUtils: PreferenceUtils
+    var mCurrentPhotoPath: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
@@ -21,6 +23,10 @@ open class BaseActivity:AppCompatActivity() {
 
     fun showToast(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    fun showLongToast(context: Context, msg:String){
+        Toast.makeText(context,msg, Toast.LENGTH_LONG).show()
     }
 
     fun toggleFadeView(

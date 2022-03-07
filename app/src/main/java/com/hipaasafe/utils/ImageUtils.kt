@@ -1,8 +1,11 @@
 package com.hipaasafe.utils
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Environment
 import android.util.Base64
+import android.util.Log
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -11,6 +14,9 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.hipaasafe.R
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class ImageUtils {
@@ -22,6 +28,34 @@ class ImageUtils {
                 INSTANCE = ImageUtils()
             }
         }
+    }
+    fun saveImage(myBitmap: Bitmap, context: Context): String {
+        /**
+         * Returns absolute Path of Image
+         */
+        val pictureFile = createFile(context)
+        val bytes = ByteArrayOutputStream()
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 30, bytes)
+        val byteArray = bytes.toByteArray()
+        try {
+            val fos = FileOutputStream(pictureFile)
+            fos.write(byteArray)
+            fos.close()
+        } catch (error: Exception) {
+            Log.e("Image", "File" + pictureFile.name + "not saved: " + error.message)
+        }
+        return pictureFile.absolutePath
+    }
+
+
+    fun createFile(context: Context): File {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+        val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        )
     }
 
     fun loadLocalImage(imageView: ImageView?, image: File?) {

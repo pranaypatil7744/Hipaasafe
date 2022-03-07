@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottomsheet_bg"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvAddPhoto"
+        style="@style/metropolis_bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/choose_image"
+        android:textColor="@color/codGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/btnClose"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:srcCompat="@drawable/ic_close_chip"
+        android:layout_margin="10dp"
+        android:scaleType="fitXY"
+        android:visibility="gone"
+        app:tint="@color/silver_chalice"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgCamera"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        app:srcCompat="@drawable/camera"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAddPhoto"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/metropolis_regular_small"
+        android:text="@string/camera"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintTop_toBottomOf="@id/imgCamera"
+        app:layout_constraintStart_toStartOf="@id/imgCamera"
+        app:layout_constraintEnd_toEndOf="@id/imgCamera"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgGallery"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="30dp"
+        app:srcCompat="@drawable/gallery"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toEndOf="@id/imgCamera"
+        app:layout_constraintTop_toBottomOf="@id/tvAddPhoto"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvGallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/metropolis_regular_small"
+        android:text="@string/gallery"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/imgGallery"
+        app:layout_constraintStart_toStartOf="@id/imgGallery"
+        app:layout_constraintEnd_toEndOf="@id/imgGallery"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgPdf"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="30dp"
+        app:srcCompat="@drawable/ic_pick_pdf"
+        android:scaleType="centerInside"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/imgGallery"
+        app:layout_constraintTop_toBottomOf="@id/tvAddPhoto"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/metropolis_regular_small"
+        android:text="@string/pdf"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/imgPdf"
+        app:layout_constraintStart_toStartOf="@id/imgPdf"
+        app:layout_constraintEnd_toEndOf="@id/imgPdf"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
