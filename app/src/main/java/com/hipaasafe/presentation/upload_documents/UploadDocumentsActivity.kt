@@ -1,7 +1,10 @@
 package com.hipaasafe.presentation.upload_documents
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.isEmpty
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -10,12 +13,16 @@ import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.databinding.ActivityUploadDocumentsBinding
+import com.hipaasafe.databinding.BottomSheetAddPhotoBinding
 import com.hipaasafe.databinding.BottomsheetForwardDocBinding
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.ForwardDocAdapter
 import com.hipaasafe.presentation.home_screen.document_fragment.model.ForwardDocumentModel
+import com.hipaasafe.utils.AddImageUtils
 
 class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickManager {
     lateinit var binding: ActivityUploadDocumentsBinding
+    private lateinit var addPhotoBottomSheetDialogBinding: BottomSheetAddPhotoBinding
+
     lateinit var bottomSheetForwardDocBinding: BottomsheetForwardDocBinding
     lateinit var doctorListAdapter: ForwardDocAdapter
     private var doctorList: ArrayList<ForwardDocumentModel> = ArrayList()
@@ -23,6 +30,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
     var pendingDocName: String = ""
     var pendingDocBy: String = ""
     var isFromAddDocument: Boolean = false
+    var uploadDocPath:String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,16 +49,95 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                 }
             }
             layoutAddDoc.setOnClickListener {
-                it.visibility = INVISIBLE
-                layoutUploadDoc.visibility = VISIBLE
-                tvUploadedDocName.text = "Document.pdf"
+                openAddPhotoBottomSheet()
             }
             btnDiscard.setOnClickListener {
-                layoutUploadDoc.visibility = INVISIBLE
-                layoutAddDoc.visibility = VISIBLE
+                showAddDocumentLayout()
             }
         }
     }
+
+    private fun hideAddDocumentLayout(){
+        binding.apply {
+            layoutAddDoc.visibility = INVISIBLE
+            layoutUploadDoc.visibility = VISIBLE
+        }
+    }
+    private fun showAddDocumentLayout(){
+        binding.apply {
+            layoutAddDoc.visibility = VISIBLE
+            layoutUploadDoc.visibility = INVISIBLE
+            uploadDocPath = ""
+        }
+    }
+
+    private fun openAddPhotoBottomSheet() {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.bottom_sheet_add_photo, null)
+        addPhotoBottomSheetDialogBinding = BottomSheetAddPhotoBinding.bind(view)
+        bottomSheetDialog.apply {
+            setCancelable(true)
+            setContentView(view)
+            show()
+        }
+        val intent = Intent(this, AddImageUtils::class.java)
+        val b = Bundle()
+        addPhotoBottomSheetDialogBinding.apply {
+            imgPdf.visibility = VISIBLE
+            tvPdf.visibility = VISIBLE
+            tvAddPhoto.text = getString(R.string.choose_document)
+            imgCamera.setOnClickListener {
+                b.putBoolean(Constants.IS_CAMERA, true)
+                intent.putExtras(b)
+                addImageUtils.launch(intent)
+                bottomSheetDialog.dismiss()
+            }
+            imgGallery.setOnClickListener {
+                b.putBoolean(Constants.IS_CAMERA, false)
+                intent.putExtras(b)
+                addImageUtils.launch(intent)
+                bottomSheetDialog.dismiss()
+            }
+            imgPdf.setOnClickListener {
+                b.putBoolean(Constants.IS_CAMERA, false)
+                b.putBoolean(Constants.IS_PDF, true)
+                intent.putExtras(b)
+                pdfResult.launch(intent)
+                bottomSheetDialog.dismiss()
+            }
+        }
+
+    }
+
+    private val pdfResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val data = it.data?.extras
+                uploadDocPath = data?.get(Constants.IntentExtras.EXTRA_FILE_PATH).toString()
+                val fileName = data?.get(Constants.IntentExtras.EXTRA_FILE_NAME)
+                binding.apply {
+                    imgDoc.setImageResource(R.drawable.ic_default_pdf)
+                    tvUploadedDocName.text = fileName.toString()
+                    hideAddDocumentLayout()
+                }
+            }
+        }
+
+
+    private val addImageUtils =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val data = it.data?.extras
+                val fileName = data?.get(Constants.IntentExtras.EXTRA_FILE_NAME)
+                uploadDocPath = data?.get(Constants.IntentExtras.EXTRA_FILE_PATH).toString()
+                val imageExtn = fileName.toString().split(".").last()
+                binding.apply {
+                    imgDoc.setImageResource(R.drawable.ic_default_img)
+                    tvUploadedDocName.text = fileName.toString()
+                    hideAddDocumentLayout()
+                }
+            }
+        }
 
     private fun getIntentData() {
         binding.apply {

@@ -59,6 +59,7 @@
     <string name="view_details">View details</string>
     <string name="my_network">My Network</string>
     <string name="documents">Documents</string>
+    <string name="choose_document">Choose Document</string>
     <string name="chat">Chat</string>
     <string name="call_initiate_error">Unable to initiate call</string>
     <string name="channel_description">Voice and Video Call Channel</string>

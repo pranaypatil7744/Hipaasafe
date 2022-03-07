@@ -168,7 +168,7 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
 //                val imageBitmap = ImageUtils.INSTANCE?.bitMapToString(bitmap).toString()
 //                val imageExtn = fileName.toString().split(".").last()
                 binding.apply {
-                    ImageUtils.INSTANCE?.loadLocalImage(imgDoc,bitmapFile)
+                    ImageUtils.INSTANCE?.loadLocalImage(imgDoc, bitmapFile)
                 }
             }
         }
