@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="10dp"
+    android:elevation="4dp"
+    app:cardCornerRadius="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        android:background="@color/azure_radiance">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btnAdd"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_add" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            style="@style/metropolis_regular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btnAdd"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Upload Documents" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSubTitle"
+            style="@style/metropolis_light_x_small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/french_pass"
+            app:layout_constraintEnd_toEndOf="@id/tvTitle"
+            app:layout_constraintStart_toEndOf="@id/btnAdd"
+            app:layout_constraintStart_toStartOf="@id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            tools:text="Click here to upload reports/documents" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

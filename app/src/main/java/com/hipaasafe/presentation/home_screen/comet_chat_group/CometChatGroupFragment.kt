@@ -51,7 +51,6 @@ class CometChatGroupFragment : BaseFragment(), GroupChatListAdapter.ChatListClic
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpToolbar()
         setUpAdapter()
         setUpListener()
     }
@@ -144,13 +143,6 @@ class CometChatGroupFragment : BaseFragment(), GroupChatListAdapter.ChatListClic
                     }
                 }
             })
-        }
-    }
-
-    private fun setUpToolbar() {
-        binding.toolbar.apply {
-            btnBack.visibility = GONE
-            divider.visibility = VISIBLE
         }
     }
 

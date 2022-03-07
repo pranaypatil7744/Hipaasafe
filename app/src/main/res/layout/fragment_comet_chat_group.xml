@@ -6,10 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".presentation.home_screen.comet_chat_group.CometChatGroupFragment">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar_main"/>
-
     <LinearLayout
         android:id="@+id/layoutNoChat"
         android:layout_width="match_parent"
@@ -19,7 +15,7 @@
         android:padding="20dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="wrap_content"
@@ -52,7 +48,7 @@
         android:visibility="invisible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <include
         android:id="@+id/content_loading"

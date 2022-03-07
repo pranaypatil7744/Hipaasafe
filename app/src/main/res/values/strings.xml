@@ -127,5 +127,7 @@
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="select_from">Select from</string>
+    <string name="upload_documents">Upload Documents</string>
+    <string name="click_here_to_upload_reports_documents">Click here to upload reports/documents</string>
 
 </resources>

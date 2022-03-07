@@ -13,6 +13,7 @@ import com.hipaasafe.presentation.adapter.PagerAdapter
 import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.home_screen.appointment_fragment.AppointmentFragment
 import com.hipaasafe.presentation.home_screen.comet_chat_group.CometChatGroupFragment
+import com.hipaasafe.presentation.home_screen.document_fragment.DocumentFragment
 import com.hipaasafe.presentation.home_screen.my_network.MyNetworkFragment
 
 class HomeFragment : BaseFragment() {
@@ -26,7 +27,7 @@ class HomeFragment : BaseFragment() {
     val myNetworkFragment = MyNetworkFragment.newInstance()
     val appointmentFragment = AppointmentFragment.newInstance()
     val chatFragment = CometChatGroupFragment.newInstance()
-    val appointmentFragment3 = AppointmentFragment.newInstance()
+    val documentFragment = DocumentFragment.newInstance()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,7 +47,7 @@ class HomeFragment : BaseFragment() {
             fList.add(appointmentFragment)
             fList.add(chatFragment)
             fList.add(myNetworkFragment)
-            fList.add(appointmentFragment3)
+            fList.add(documentFragment)
             viewPager.adapter = PagerAdapter(requireActivity(), fList)
             viewPager.isUserInputEnabled = false
             navigationView.setOnNavigationItemSelectedListener {

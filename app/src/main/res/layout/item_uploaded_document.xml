@@ -1,0 +1,55 @@
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingHorizontal="20dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgDoc"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_default_pdf" />
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/btnForward"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@id/imgDoc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/azure_radiance"
+        app:srcCompat="@drawable/ic_forward_to_contact" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTitle"
+        style="@style/metropolis_regular"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/codGray"
+        app:layout_constraintEnd_toStartOf="@id/btnForward"
+        app:layout_constraintBottom_toBottomOf="@id/imgDoc"
+        app:layout_constraintStart_toEndOf="@id/imgDoc"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Upload Documents" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/devider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/athensGray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgDoc" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

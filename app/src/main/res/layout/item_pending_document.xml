@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="10dp"
+    android:elevation="4dp"
+    app:cardCornerRadius="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/azure_radiance_10"
+        android:paddingVertical="16dp"
+        android:paddingHorizontal="20dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgDoc"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_default_doc" />
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgNext"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/azure_radiance"
+            app:srcCompat="@drawable/ic_next" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            style="@style/metropolis_medium_small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/azure_radiance"
+            app:layout_constraintEnd_toStartOf="@id/imgNext"
+            app:layout_constraintStart_toEndOf="@id/imgDoc"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Upload Documents" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSubTitle"
+            style="@style/metropolis_light_x_small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/codGray"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            app:layout_constraintEnd_toStartOf="@id/imgNext"
+            app:layout_constraintStart_toEndOf="@id/imgDoc"
+            app:layout_constraintStart_toStartOf="@id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            tools:text="Click here to upload reports/documents" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
