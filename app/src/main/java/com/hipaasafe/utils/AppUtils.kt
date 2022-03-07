@@ -302,10 +302,10 @@ class AppUtils {
         return gson.fromJson(stringData, objectType)
     }
 
-    fun getUSIndex(countryList: ArrayList<CountryModel>): Int {
+    fun getCountryIndex(countryCode:String,countryList: ArrayList<CountryModel>): Int {
         for (i in 0 until countryList.size) {
             val country = countryList[i]
-            if (country.dial_code.equals("+1")) {
+            if (country.dial_code.equals(countryCode)) {
                 return i
             }
         }

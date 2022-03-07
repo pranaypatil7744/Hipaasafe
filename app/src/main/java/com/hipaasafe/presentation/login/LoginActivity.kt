@@ -133,7 +133,7 @@ class LoginActivity : BaseActivity() {
             })
 
         binding.spinnerCountryCode.adapter = adapterCodes
-        val usIndex = AppUtils.INSTANCE?.getUSIndex(countryList) ?: 0
+        val usIndex = AppUtils.INSTANCE?.getCountryIndex("+1",countryList) ?: 0
 
         if (usIndex > 0) {
             binding.spinnerCountryCode.setSelection(usIndex)
@@ -202,7 +202,7 @@ class LoginActivity : BaseActivity() {
                     } else {
                         layoutMobile.setBackgroundResource(R.drawable.bg_box)
                     }
-                    val input = etEmail.text.toString().trim()
+                    val input = etMobile.text.toString().trim()
                     if (!TextUtils.isEmpty(input)) {
                         layoutMobile.setBackgroundResource(R.drawable.bg_box_focused)
                     }

@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hipaasafe"
         android:usesCleartextTraffic="true">
+        <activity android:name=".presentation.profile_edit_details.ProfileEditDetailsActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"/>
         <activity
             android:name=".presentation.main_chat.MainCometChatActivity"
             android:screenOrientation="portrait"

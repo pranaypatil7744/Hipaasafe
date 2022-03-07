@@ -10,6 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.google.android.material.imageview.ShapeableImageView
 import com.hipaasafe.R
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 
 class ImageUtils {
@@ -20,6 +21,21 @@ class ImageUtils {
             if (INSTANCE == null) {
                 INSTANCE = ImageUtils()
             }
+        }
+    }
+
+    fun loadLocalImage(imageView: ImageView?, image: File?) {
+        try {
+            imageView?.run {
+                Glide.with(context)
+                    .load(image)
+                    .override(width, height)
+//                    .placeholder(R.drawable.ic_fanaboard_loader_optimized)
+                    .downsample(DownsampleStrategy.CENTER_INSIDE)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .into(this)
+            }
+        } catch (e: Exception) {
         }
     }
     fun loadRemoteImageForProfile(imageView: ShapeableImageView, imageUrl: String?) {

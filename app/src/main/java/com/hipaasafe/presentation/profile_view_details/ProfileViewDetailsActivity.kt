@@ -1,5 +1,6 @@
 package com.hipaasafe.presentation.profile_view_details
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -7,6 +8,7 @@ import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.databinding.ActivityProfileViewDetailsBinding
+import com.hipaasafe.presentation.profile_edit_details.ProfileEditDetailsActivity
 import com.hipaasafe.presentation.profile_view_details.adapter.ViewProfileAdapter
 import com.hipaasafe.presentation.profile_view_details.model.ViewProfileModel
 import com.hipaasafe.utils.PreferenceUtils
@@ -87,7 +89,8 @@ class ProfileViewDetailsActivity : BaseActivity() {
     private fun setListener() {
         binding.apply {
             btnEditDetails.setOnClickListener {
-
+                val i = Intent(this@ProfileViewDetailsActivity,ProfileEditDetailsActivity::class.java)
+                startActivity(i)
             }
         }
     }

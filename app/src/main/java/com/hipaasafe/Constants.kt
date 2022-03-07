@@ -26,6 +26,7 @@ class Constants {
             const val NAME_ERROR = "NAME_ERROR"
             const val EMAIL_ERROR = "EMAIL_ERROR"
             const val AGE_ERROR = "AGE_ERROR"
+            const val MOBILE_ERROR = "MOBILE_ERROR"
         }
     }
 
