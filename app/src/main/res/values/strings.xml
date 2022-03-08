@@ -156,6 +156,13 @@
     <string name="confirmed">Confirmed</string>
     <string name="rescheduled_requested">Rescheduled Requested</string>
     <string name="waiting_for_next_appointment_confirmation">Waiting for next appointment confirmation</string>
+    <string name="clinic_visit">Clinic Visit</string>
+    <string name="make_an_appointment">Make an appointment</string>
+    <string name="now_it_s_your_turn">Now it\'s your turn!</string>
+    <string name="a_doctor_sees_pain_death_suffering_on_a_daily_basis_but_they_provide_only_care_and_cure">A doctor sees pain, death, suffering on a daily basis but they provide only care and cure.</string>
+    <string name="got_it">Got it</string>
+    <string name="we_re_still_waiting_in_the_queue">We\'re still waiting in the queue</string>
+    <string name="saving_the_world_happens_one_person_at_a_time">Saving the world happens one person at a time</string>
 
 
 </resources>
