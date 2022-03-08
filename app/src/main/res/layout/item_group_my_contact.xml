@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutContact"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="2dp"
+    android:padding="10dp">
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btnIsSelect"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_item_not_selected" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ic_profile"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="10dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearance="@style/circleImageView50"
+        app:layout_constraintBottom_toBottomOf="@+id/btnIsSelect"
+        app:layout_constraintStart_toEndOf="@id/btnIsSelect"
+        app:layout_constraintTop_toTopOf="@+id/btnIsSelect"
+        app:srcCompat="@drawable/ic_default_profile_picture" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvName"
+        style="@style/metropolis_regular"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ic_profile"
+        app:layout_constraintTop_toTopOf="@+id/ic_profile"
+        tools:text="Shalini Sakpal Shalini SakpalShalini SakpalShalini SakpalShalini Sakpal" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvSpecialtyLocExp"
+        style="@style/metropolis_regular_small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="20dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/heather"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvName"
+        app:layout_constraintTop_toBottomOf="@+id/tvName"
+        tools:text="Cardiologist - Mumbai - 5 yrs" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

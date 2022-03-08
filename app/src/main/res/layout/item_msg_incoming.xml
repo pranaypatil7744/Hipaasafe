@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="8dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="100dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_chat_text2"
+        android:paddingHorizontal="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:minWidth="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSenderName"
+                style="@style/metropolis_regular_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/azure_radiance"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="William Johnson"
+                tools:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgImp"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:scaleType="centerInside"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvSenderName"
+                app:srcCompat="@drawable/img_is_important" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvMsg"
+                style="@style/metropolis_regular_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="all"
+                android:textColor="@color/codGray"
+                android:textColorLink="@color/azure_radiance"
+                app:layout_constraintStart_toEndOf="@id/imgImp"
+                app:layout_constraintTop_toBottomOf="@+id/tvSenderName"
+                tools:text="Lorem ipsum dolAenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDate"
+            style="@style/metropolis_regular_xx_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="3dp"
+            android:textColor="@color/heather"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/container_details"
+            tools:text="5:45 pm" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvEdited"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edited"
+        style="@style/metropolis_semi_bold_xx_small"
+        android:gravity="start"
+        android:visibility="gone"
+        android:textColor="@color/azure_radiance"
+        android:layout_marginTop="3dp"
+        android:paddingHorizontal="3dp"
+        app:layout_constraintStart_toStartOf="@id/containerMsg"
+        app:layout_constraintTop_toBottomOf="@id/containerMsg"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvEditDate"
+        style="@style/metropolis_regular_xx_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/heather"
+        android:textSize="8sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/tvEdited"
+        app:layout_constraintBottom_toBottomOf="@id/tvEdited"
+        app:layout_constraintTop_toTopOf="@id/tvEdited"
+        tools:layout_editor_absoluteX="245dp"
+        tools:text="5:45 pm"
+        tools:textColor="@color/heather" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

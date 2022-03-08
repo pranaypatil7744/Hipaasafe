@@ -4,6 +4,214 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.main_chat.MainCometChatActivity">
+    tools:context=".presentation.comet_chat_main_screen.MainCometChatActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_chat"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvOnGoingCall"
+        style="@style/metropolis_regular_small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/green_600"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="@string/tap_to_join_ongoing_call"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerChatMessages"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/layoutTypeMsg"
+        app:layout_constraintTop_toBottomOf="@id/tvOnGoingCall" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutEditMsg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/alabaster"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/layoutTypeMsg"
+        app:layout_constraintEnd_toEndOf="@id/layoutTypeMsg"
+        app:layout_constraintStart_toStartOf="@id/layoutTypeMsg">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/layoutEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_marginVertical="5dp"
+            app:cardBackgroundColor="@color/purple_heart"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:background="@drawable/bg_chat_text"
+                android:backgroundTint="@color/tropical_blue"
+                android:padding="5dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvEditMsgTitle"
+                    style="@style/metropolis_regular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:paddingHorizontal="5dp"
+                    android:singleLine="true"
+                    android:text="@string/edit_message"
+                    app:layout_constraintEnd_toStartOf="@id/btnEditClose"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/btnEditClose"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:padding="2dp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvEditMsgTitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvEditMsgTitle"
+                    app:srcCompat="@drawable/ic_cancel" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvEditMsg"
+                    style="@style/metropolis_regular_x_small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:paddingHorizontal="5dp"
+                    android:textColor="@color/silver_chalice"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvEditMsgTitle"
+                    tools:text="Hello" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutReplyMsg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/alabaster"
+        android:paddingHorizontal="4dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/layoutTypeMsg"
+        app:layout_constraintEnd_toEndOf="@id/layoutTypeMsg"
+        app:layout_constraintStart_toStartOf="@id/layoutTypeMsg">
+
+        <include
+            android:id="@+id/replyLayout"
+            layout="@layout/layout_reply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutTypeMsg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/alabaster"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="@id/btnSendMsg"
+        app:layout_constraintEnd_toStartOf="@id/btnSendMsg"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etEnterMsg"
+            style="@style/metropolis_regular_small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:background="@android:color/transparent"
+            android:gravity="start"
+            android:hint="@string/write_a_message"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:padding="8dp"
+            android:scrollbars="vertical"
+            android:textColor="@color/codGray"
+            android:textColorHint="@color/heather"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnIsImpMsg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnAttachMedia"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_attach"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:tint="@color/scorpion" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnIsImpMsg"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/img_is_important_gray"
+            app:layout_constraintBottom_toBottomOf="@id/btnAttachMedia"
+            app:layout_constraintEnd_toStartOf="@id/btnAttachMedia"
+            app:layout_constraintTop_toTopOf="@id/btnAttachMedia"
+            app:layout_constraintVertical_bias="1.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btnSendMsg"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_margin="10dp"
+        android:alpha="0.5"
+        android:src="@drawable/ic_send"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <include
+        android:id="@+id/content_loading"
+        layout="@layout/content_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

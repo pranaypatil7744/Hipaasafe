@@ -1,0 +1,101 @@
+<androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/layoutReplyMsg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="visible"
+    app:layout_constraintStart_toStartOf="@id/layoutTypeMsg"
+    app:layout_constraintEnd_toEndOf="@id/layoutTypeMsg"
+    app:layout_constraintBottom_toTopOf="@id/layoutTypeMsg"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/layoutReply"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="1dp"
+        android:layout_marginVertical="5dp"
+        app:cardBackgroundColor="@color/medium_purple"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/containerLayoutReply"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="3dp"
+            android:background="@drawable/bg_chat_text"
+            android:backgroundTint="@color/tropical_blue">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvReplyMsgTitle"
+                style="@style/metropolis_regular_xx_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/medium_purple"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:paddingHorizontal="5dp"
+                app:layout_constraintEnd_toStartOf="@id/imgReplyMsg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Pranay"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgReplyMsg"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:srcCompat="@drawable/ic_defaulf_image"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/btnReplyClose"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                app:srcCompat="@drawable/ic_cancel"
+                android:padding="2dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@id/tvReplyMsgTitle"
+                app:layout_constraintBottom_toBottomOf="@id/tvReplyMsgTitle"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgImpReply"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:scaleType="centerInside"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/tvReplyMsg"
+                app:layout_constraintEnd_toStartOf="@id/tvReplyMsg"
+                app:layout_constraintStart_toStartOf="@id/tvReplyMsgTitle"
+                app:layout_constraintTop_toTopOf="@id/tvReplyMsg"
+                app:srcCompat="@drawable/img_is_important" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvReplyMsg"
+                style="@style/metropolis_regular_x_small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="5dp"
+                android:maxLines="2"
+                android:textColor="@color/silver_chalice"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imgReplyMsg"
+                app:layout_constraintStart_toEndOf="@id/imgImpReply"
+                app:layout_constraintTop_toBottomOf="@id/tvReplyMsgTitle"
+                app:layout_constraintVertical_bias="0.35"
+                tools:text="Hello dfhsf jsoifjsfj hfsoffskfjsf f" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,16 +1,27 @@
 package com.hipaasafe.utils
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.location.Geocoder
+import android.media.AudioManager
 import android.net.Uri
 import android.text.TextUtils
+import android.text.format.DateFormat
 import android.util.Log
 import android.util.Patterns
 import android.view.View
+import android.widget.RelativeLayout
+import android.widget.Toast
 import com.cometchat.pro.constants.CometChatConstants
 import com.cometchat.pro.core.Call
+import com.cometchat.pro.core.CallSettings
 import com.cometchat.pro.core.CometChat
+import com.cometchat.pro.exceptions.CometChatException
 import com.cometchat.pro.models.*
+import com.google.android.material.snackbar.Snackbar
+import com.hipaasafe.call_manager.CometChatCallActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hipaasafe.BuildConfig
@@ -29,12 +40,185 @@ class AppUtils {
     lateinit var preferenceUtils: PreferenceUtils
     companion object {
         var INSTANCE: AppUtils? = null
+        private const val TAG = "Utils"
 
         fun setInstance() {
             if (INSTANCE == null) {
                 INSTANCE = AppUtils()
             }
         }
+    }
+
+    fun getDateId(var0: Long): String? {
+        val var2 = Calendar.getInstance(Locale.ENGLISH)
+        var2.timeInMillis = var0
+        return DateFormat.format("ddMMyyyy", var2).toString()
+    }
+
+    fun getDate(var0: Long): String? {
+        val var2 = Calendar.getInstance(Locale.ENGLISH)
+        var2.timeInMillis = var0
+        return DateFormat.format("dd/MM/yyyy", var2).toString()
+    }
+    fun getHeaderDate(timestamp: Long): String? {
+        val messageTimestamp = Calendar.getInstance()
+        messageTimestamp.timeInMillis = timestamp
+        val now = Calendar.getInstance()
+        //        if (now.get(5) == messageTimestamp.get(5)) {
+        return DateFormat.format("hh:mm a", messageTimestamp).toString()
+//        } else {
+//            return now.get(5) - messageTimestamp.get(5) == 1 ? "Yesterday " + DateFormat.format("hh:mm a", messageTimestamp).toString() : DateFormat.format("d MMMM", messageTimestamp).toString() + " " + DateFormat.format("hh:mm a", messageTimestamp).toString();
+//        }
+    }
+    fun openInMap(context: Context,latitude: Double,longitude: Double,label:String){
+        val uriBegin = "geo:$latitude,$longitude"
+        val encodedQuery = Uri.encode(label)
+        val uriString = "$uriBegin?q=$encodedQuery&z=16"
+        val uri = Uri.parse(uriString)
+        val mapIntent = Intent(Intent.ACTION_VIEW, uri)
+        mapIntent.setPackage("com.google.android.apps.maps");
+        context.startActivity(mapIntent)
+    }
+
+    fun getAddress(context: Context?, latitude: Double, longitude: Double): String? {
+        val geocoder = Geocoder(context, Locale.getDefault())
+        try {
+            val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+            if (addresses != null && addresses.size > 0) {
+                return addresses[0].getAddressLine(0)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    val CHAT_USER_COLOR = intArrayOf(
+        Color.parseColor("#F49F36"),
+        Color.parseColor("#2196f3"),
+        Color.parseColor("#9c27b0"),
+        Color.parseColor("#673ab7"),
+        Color.parseColor("#4caf50"),
+        Color.parseColor("#ff5722"),
+        Color.parseColor("#009688"),
+        Color.parseColor("#607d8b"),
+        Color.parseColor("#e91e63"),
+        Color.parseColor("#D4F918"),
+        Color.parseColor("#ff9800"),
+        Color.parseColor("#795548"),
+        Color.parseColor("#C5F7DF"),
+        Color.parseColor("#9e9e9e"),
+        Color.parseColor("#4C6800"),
+        Color.parseColor("#A3B4A2"),
+        Color.parseColor("#98F9E1"),
+        Color.parseColor("#E60F0B"),
+        Color.parseColor("#4BC2C2"),
+        Color.parseColor("#2A3335"),
+        Color.parseColor("#AD5BDF"),
+        Color.parseColor("#02974C"),
+        Color.parseColor("#F8FA64"),
+        Color.parseColor("#29699A"),
+        Color.parseColor("#2D2FFA"),
+        Color.parseColor("#0FDED1")
+    )
+    fun joinOnGoingCall(context: Context) {
+        val intent = Intent(context, CometChatCallActivity::class.java)
+        intent.putExtra(Constants.CometChatConstant.JOIN_ONGOING, true)
+        context.startActivity(intent)
+    }
+
+    fun getFileSize(fileSize: Int): String? {
+        return if (fileSize > 1024) {
+            if (fileSize > 1024 * 1024) {
+                (fileSize / (1024 * 1024)).toString() + " MB"
+            } else {
+                (fileSize / 1024).toString() + " KB"
+            }
+        } else {
+            "$fileSize B"
+        }
+    }
+
+    fun getAudioManager(context: Context): AudioManager? {
+        return context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    }
+
+    fun startCall(activity: Activity, call: Call, mainView: RelativeLayout?) {
+        val callSettings = CallSettings.CallSettingsBuilder(activity, mainView)
+            .setSessionId(call.sessionId)
+            .startWithAudioMuted(true)
+            .startWithVideoMuted(true)
+            .build()
+        CometChat.startCall(callSettings, object : CometChat.OngoingCallListener {
+            override fun onUserJoined(user: User) {
+                Log.e("onUserJoined: ", user.uid)
+            }
+
+            override fun onUserLeft(user: User) {
+                Snackbar.make(
+                    activity.window.decorView.rootView,
+                    "User Left: " + user.name,
+                    Snackbar.LENGTH_LONG
+                ).show()
+                Log.e("onUserLeft: ", user.uid)
+            }
+
+            override fun onError(e: CometChatException) {
+                e.message?.let { Log.e("onError: ", it) }
+                Toast.makeText(activity,e.code,Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onCallEnded(call: Call) {
+                Log.e(TAG, "onCallEnded: $call")
+                activity.finish()
+            }
+
+            override fun onUserListUpdated(p0: MutableList<User>?) {
+                Log.e(TAG, "onUserListUpdated: " + p0.toString())
+            }
+
+            override fun onAudioModesUpdated(p0: MutableList<AudioMode>?) {
+                Log.e(TAG, "onAudioModesUpdated: " + p0.toString())
+            }
+
+        })
+    }
+    fun startCallIntent(
+        context: Context, user: User, type: String?,
+        isOutgoing: Boolean, sessionId: String
+    ) {
+        val videoCallIntent = Intent(context, CometChatCallActivity::class.java)
+        videoCallIntent.putExtra(Constants.CometChatConstant.NAME, user.name)
+        videoCallIntent.putExtra(Constants.CometChatConstant.UID, user.uid)
+        videoCallIntent.putExtra(Constants.CometChatConstant.SESSION_ID, sessionId)
+        videoCallIntent.putExtra(Constants.CometChatConstant.AVATAR, user.avatar)
+        videoCallIntent.action = type
+        videoCallIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        if (isOutgoing) {
+            videoCallIntent.type = "outgoing"
+        } else {
+            videoCallIntent.type = "incoming"
+        }
+        context.startActivity(videoCallIntent)
+    }
+
+    fun startGroupCallIntent(
+        context: Context, group: Group, type: String?,
+        isOutgoing: Boolean, sessionId: String
+    ) {
+        val videoCallIntent = Intent(context, CometChatCallActivity::class.java)
+        videoCallIntent.putExtra(Constants.CometChatConstant.NAME, group.name)
+        videoCallIntent.putExtra(Constants.CometChatConstant.UID, group.guid)
+        videoCallIntent.putExtra(Constants.CometChatConstant.SESSION_ID, sessionId)
+        videoCallIntent.putExtra(Constants.CometChatConstant.AVATAR, group.icon)
+        videoCallIntent.action = type
+        videoCallIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        if (isOutgoing) {
+            videoCallIntent.type = "outgoing"
+        } else {
+            videoCallIntent.type = "incoming"
+        }
+        context.startActivity(videoCallIntent)
     }
 
     fun getLastMessageDate(timestamp: Long): String? {

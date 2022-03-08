@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@android:color/transparent"
+    android:elevation="0dp">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarChat"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp"
+            app:elevation="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btnBack"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_back_btn" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgChatIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btnBack"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/circleImageView50"
+                    app:srcCompat="@drawable/ic_default_group_picture" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvChatName"
+                    style="@style/metropolis_semi_bold_small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/black"
+                    android:visibility="visible"
+                    android:ellipsize="end"
+                    app:layout_constraintEnd_toStartOf="@+id/toolbarIcon2"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@id/imgChatIcon"
+                    app:layout_constraintTop_toTopOf="@+id/imgChatIcon"
+                    tools:text="Purshottam Jangid" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvOnline"
+                    style="@style/metropolis_light_xx_small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:drawablePadding="5dp"
+                    tools:text="online"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/heather"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@id/toolbarIcon2"
+                    app:layout_constraintStart_toStartOf="@+id/tvChatName"
+                    app:layout_constraintTop_toBottomOf="@+id/tvChatName"
+                    tools:visibility="visible" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvLastActive"
+                    style="@style/metropolis_light_x_small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:drawablePadding="5dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:visibility="gone"
+                    android:textColor="@color/heather"
+                    app:layout_constraintEnd_toStartOf="@+id/toolbarIcon2"
+                    app:layout_constraintStart_toStartOf="@+id/tvChatName"
+                    app:layout_constraintTop_toBottomOf="@+id/tvChatName"
+                    tools:text="1 minute ago" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/toolbarIcon1"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@android:color/transparent"
+                    android:visibility="visible"
+                    android:scaleType="fitCenter"
+                    android:padding="2dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/img_audio_call" />
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/toolbarIcon2"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="5dp"
+                    android:scaleType="fitCenter"
+                    android:background="@android:color/transparent"
+                    android:visibility="visible"
+                    android:padding="2dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/toolbarIcon1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/img_video_call" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+</RelativeLayout>

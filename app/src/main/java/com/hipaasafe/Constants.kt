@@ -17,6 +17,8 @@ class Constants {
         const val Notifications = "Notifications"
         const val IsImportant = "is_important"
         const val IsForwarded = "is_forwarded"
+        const val IS_FROM_GROUP_CHAT = "IS_FROM_GROUP_CHAT"
+
         const val IsFromAdd= "IsFromAdd"
         const val IS_PDF = "IS_PDF"
         const val IS_SELFIE_CAMERA = "IS_SELFIE_CAMERA"
@@ -26,6 +28,7 @@ class Constants {
         const val PendingDocumentName = "PendingDocumentName"
         const val PendingDocumentBy = "PendingDocumentBy"
         const val DoctorsList = "DoctorsList"
+
 
     }
     class AskedPermission {
@@ -38,6 +41,10 @@ class Constants {
             const val LOCATION_PERMISSION_COUNT = "LOCATION_PERMISSION_COUNT"
             const val IS_ASKED_CALL_PERMISSION = "IS_ASKED_CALL_PERMISSION"
             const val CALL_PERMISSION_COUNT = "CALL_PERMISSION_COUNT"
+            const val IS_CONTACT_PERMISSION_ASKED = "IS_CONTACT_PERMISSION_ASKED"
+            const val IS_PROFILE_PERMISSION_ASKED = "IS_PROFILE_PERMISSION_ASKED"
+            const val IS_LOCATION_PERMISSION_ASKED = "IS_LOCATION_PERMISSION_ASKED"
+            const val IS_STORAGE_PERMISSION_ASKED = "IS_STORAGE_PERMISSION_ASKED"
         }
     }
 
@@ -105,6 +112,14 @@ class Constants {
             const val STATUS = "status"
             const val NAME = "name"
             const val TYPE = "type"
+            const val MESSAGE_CATEGORY = "message_category"
+            const val FILE_NAME = "file_name"
+            const val FILE_URL = "file_url"
+            const val FILE_MIME_TYPE = "file_mime"
+            const val FILE_EXTENSION = "file_extension"
+            const val FILE_SIZE = "file_size"
+            const val speciality = "speciality"
+            const val experience = "experience"
             const val GROUP_OWNER = "group_owner"
             const val MEMBER_COUNT = "member_count"
             const val GROUP_MEMBER = "group_members"
@@ -114,6 +129,10 @@ class Constants {
             const val GROUP_TYPE = "group_type"
             const val SESSION_ID = "sessionId"
             const val GUID = "guid"
+            const val JOIN_ONGOING = "join_ongoing_call"
+            const val ID = "id"
+            const val INCOMING = "incoming"
+
             const val LOCATION = "location"
             const val CUSTOM_MESSAGE = "custom_message"
             const val LOCATION_LATITUDE = "latitude"
@@ -129,6 +148,11 @@ class Constants {
             const val MEETING = "meeting"
             const val chat_users_presence_enabled = "core.chat.users.presence.enabled"
             const val chat_messages_receipts_enabled = "core.chat.messages.receipts.enabled"
+            val EXTRA_MIME_DOC = arrayOf("text/plane", "text/html", "application/pdf", "application/msword","application/vnd.ms-word.document.macroEnabled.12",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                , "application/vnd.ms.excel","application/vnd.ms-excel.sheet.macroEnabled.12","application/vnd.ms-excel.sheet.binary.macroEnabled.12",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","application/mspowerpoint","application/vnd.ms-powerpoint",
+                "application/vnd.openxmlformats-officedocument.presentationml.presentation","application/zip")
         }
 
         object MapUrl {

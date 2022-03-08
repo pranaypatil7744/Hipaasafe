@@ -19,6 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hipaasafe"
         android:usesCleartextTraffic="true">
+
+
+
+        <activity android:name=".presentation.forward_message_screen.ForwardMessageActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"/>
         <activity android:name=".utils.AddImageUtils"
             android:screenOrientation="portrait"
             android:exported="false"/>
@@ -31,7 +37,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".presentation.main_chat.MainCometChatActivity"
+            android:name=".presentation.comet_chat_main_screen.MainCometChatActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

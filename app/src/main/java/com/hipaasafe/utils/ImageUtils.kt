@@ -29,6 +29,14 @@ class ImageUtils {
             }
         }
     }
+
+    fun loadRemoteImage(imageView: ImageView, imageUrl: String?) {
+        imageView.rootView?.let { Glide.with(it) }
+            ?.load(imageUrl)
+            ?.placeholder(R.drawable.ic_defaulf_image)
+            ?.error(R.drawable.ic_defaulf_image)
+            ?.into(imageView)
+    }
     fun saveImage(myBitmap: Bitmap, context: Context): String {
         /**
          * Returns absolute Path of Image

@@ -25,7 +25,7 @@ import com.hipaasafe.AppConfig
 import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseApplication
-import com.hipaasafe.presentation.main_chat.MainCometChatActivity
+import com.hipaasafe.presentation.comet_chat_main_screen.MainCometChatActivity
 import com.hipaasafe.utils.PreferenceUtils
 import org.json.JSONException
 import org.json.JSONObject

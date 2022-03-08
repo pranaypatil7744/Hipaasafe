@@ -11,7 +11,10 @@ import com.hipaasafe.databinding.ItemMyNetworkBinding
 import com.hipaasafe.presentation.home_screen.my_network.model.DoctorModel
 import com.hipaasafe.utils.AppUtils
 
-class MyNetworkAdapter(val context: Context, private val myNetworkList: ArrayList<DoctorModel>) :
+class MyNetworkAdapter(
+    val context: Context, private val myNetworkList: ArrayList<DoctorModel>,
+    private val listener: MyNetworkClickManager
+) :
     RecyclerView.Adapter<MyNetworkAdapter.ViewHolder>() {
     class ViewHolder(val binding: ItemMyNetworkBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -31,15 +34,22 @@ class MyNetworkAdapter(val context: Context, private val myNetworkList: ArrayLis
                 data.experience
             )
             imgProfile.setImageResource(R.drawable.ic_default_profile_picture)
-            if (myNetworkList.size - 1 == position){
+            if (myNetworkList.size - 1 == position) {
                 devider.visibility = GONE
-            }else{
+            } else {
                 devider.visibility = VISIBLE
+            }
+            btnChat.setOnClickListener {
+                listener.clickOnChat(position)
             }
         }
     }
 
     override fun getItemCount(): Int {
         return myNetworkList.size
+    }
+
+    interface MyNetworkClickManager {
+        fun clickOnChat(position: Int)
     }
 }
