@@ -18,26 +18,28 @@ data class DoctorDataModel(
     var role_id: String? = "",
     var role_name: String? = "",
     var avatar: String? = "",
+    var organization_id: String? = "",
+    var mute_notifications: Boolean? = false,
     var doctor_details: DoctorDetailsModel? = DoctorDetailsModel(),
     var access_token: String? = "",
     var refresh_token: String? = ""
 )
 
 data class DoctorDetailsModel(
-    var id: String? = "",
-    var uid: String? = "",
     var location: String? = "",
     var experience: String? = "",
-    var speciality: String? = "",
-    var tags: ArrayList<String> = ArrayList(),
-    var organization_domain: String? = "",
-    var createdAt: String? = "",
-    var updatedAt: String? = "",
+    var qr_code: String? = "",
+    var speciality: SpecialityModel = SpecialityModel(),
+    var tags: ArrayList<SpecialityModel> = ArrayList()
+)
+data class SpecialityModel(
+    var speciality_id:Int?=0,
+    var title:String? =""
 )
 
 data class DoctorLoginValidateOtpRequestModel(
     var email: String= "",
     var otp: Int = 0,
     var player_id: String? =AppUtils.INSTANCE?.getPlayerId(),
-    var device_platform:String? = "android"
+    var device_platform:String? = "ANDROID"
 )

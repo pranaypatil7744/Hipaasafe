@@ -106,7 +106,7 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                 ImageUtils.INSTANCE?.loadLocalImage(imgDoc, profileFile)
             } else {
                 ImageUtils.INSTANCE?.loadRemoteImageForProfile(
-                    binding.imgDoc,
+                    imgDoc,
                     preferenceUtils.getValue(Constants.PreferenceKeys.avatar)
                 )
             }
@@ -145,13 +145,6 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                 addImageUtils.launch(intent)
                 bottomSheetDialog.dismiss()
             }
-//            imgPdf.setOnClickListener {
-//                b.putBoolean(Constants.IS_CAMERA, false)
-//                b.putBoolean(Constants.IS_PDF, true)
-//                intent.putExtras(b)
-//                pdfResult.launch(intent)
-//                bottomSheetDialog.dismiss()
-//            }
         }
 
     }

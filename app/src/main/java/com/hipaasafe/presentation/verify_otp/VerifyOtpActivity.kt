@@ -134,15 +134,14 @@ class VerifyOtpActivity : BaseActivity(), CometListener {
                     }
                 })
                 doctorLoginValidateOtpResponseData.observe(this@VerifyOtpActivity, {
-                    toggleLoader(false)
                     stopTimer()
                     if (it.success) {
                         saveDoctorData(it.data)
-                        preferenceUtils.setValue(Constants.IS_LOGIN, true)
                         OneSignal.disablePush(false)
                         val token = preferenceUtils.getValue(Constants.FIREBASE_TOKEN)
                         CometChatUtils.loginToComet(it.data.uid, it.data.name, this@VerifyOtpActivity,token)
                     } else {
+                        toggleLoader(false)
                         showToast(it.message)
                     }
                 })
@@ -211,6 +210,10 @@ class VerifyOtpActivity : BaseActivity(), CometListener {
                     Constants.PreferenceKeys.profile_update,
                     data.patient_details?.profile_update ?: false
                 )
+                setValue(
+                    Constants.PreferenceKeys.age,
+                    data.patient_details?.age
+                )
             }
         }
     }
@@ -230,13 +233,13 @@ class VerifyOtpActivity : BaseActivity(), CometListener {
                 setValue(Constants.PreferenceKeys.avatar, data.avatar.toString())
                 setValue(Constants.PreferenceKeys.location, data.doctor_details?.location)
                 setValue(Constants.PreferenceKeys.experience, data.doctor_details?.experience)
-                setValue(Constants.PreferenceKeys.speciality, data.doctor_details?.speciality)
+                setValue(Constants.PreferenceKeys.qr_code, data.doctor_details?.qr_code)
+                setValue(Constants.PreferenceKeys.mute_notifications, data.mute_notifications?:false)
+                setValue(Constants.PreferenceKeys.speciality, Gson().toJson(data.doctor_details?.speciality))
                 setValue(Constants.PreferenceKeys.tags, Gson().toJson(data.doctor_details?.tags))
-                setValue(Constants.PreferenceKeys.createdAt, data.doctor_details?.createdAt)
-                setValue(Constants.PreferenceKeys.updatedAt, data.doctor_details?.updatedAt)
                 setValue(
-                    Constants.PreferenceKeys.organization_domain,
-                    data.doctor_details?.organization_domain
+                    Constants.PreferenceKeys.organization_id,
+                    data.organization_id
                 )
                 setValue(
                     Constants.PreferenceKeys.access_token,

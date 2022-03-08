@@ -146,6 +146,7 @@
     <string name="please_grant_the_storage_permission_to_continue">Please grant the storage permission to continue</string>
     <string name="choose_image">Choose Image</string>
     <string name="pdf">Pdf</string>
+    <string name="do_not_disturb">Do Not Disturb</string>
 
 
 </resources>

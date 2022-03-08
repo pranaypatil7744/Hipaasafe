@@ -22,6 +22,8 @@ import com.hipaasafe.presentation.notification.NotificationActivity
 import com.hipaasafe.presentation.profile_view_details.ProfileViewDetailsActivity
 import com.hipaasafe.utils.CometChatUtils
 import com.hipaasafe.utils.PreferenceUtils
+import com.hipaasafe.utils.enum.CometChatEnum
+import com.hipaasafe.utils.enum.LoginUserType
 import com.onesignal.OneSignal
 
 class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
@@ -36,6 +38,7 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
     lateinit var navAdapter: NavAdapter
     var name = ""
     var profile = ""
+    var loginUserId:Int = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,6 +64,7 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
         binding.apply {
             name = preferenceUtils.getValue(Constants.PreferenceKeys.name)
             profile = preferenceUtils.getValue(Constants.PreferenceKeys.avatar)
+            loginUserId = preferenceUtils.getValue(Constants.PreferenceKeys.role_id).toIntOrNull()?:0
         }
     }
 
@@ -77,7 +81,7 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
             navMenuList.add(
                 NavigationModel(
                     title = name,
-                    icon = R.drawable.ic_default_profile_picture,
+                    profile = profile,
                     navItemType = NavItemType.ITEM_PROFILE,
                 )
             )
@@ -96,6 +100,15 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
                     icon = R.drawable.ic_notification
                 )
             )
+            if (loginUserId == LoginUserType.DOCTOR.value){
+                navMenuList.add(
+                    NavigationModel(
+                        navItemType = NavItemType.ITEM_DND,
+                        title = getString(R.string.do_not_disturb),
+                        icon = R.drawable.ic_dnd
+                    )
+                )
+            }
             navMenuList.add(
                 NavigationModel(
                     navItemType = NavItemType.ITEM_SIGN_OUT,
@@ -129,6 +142,10 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
 
     override fun onClickSignOut(position: Int) {
         showLogoutDialog()
+    }
+
+    override fun onClickDnd(position: Int) {
+
     }
 
     private fun showLogoutDialog() {

@@ -89,6 +89,7 @@ class Constants {
             const val access_token = "access_token"
             const val location = "location"
             const val experience = "experience"
+            const val qr_code = "qr_code"
             const val speciality = "speciality"
             const val tags = "tags"
             const val createdAt = "createdAt"

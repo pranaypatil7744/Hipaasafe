@@ -94,5 +94,5 @@ dependencies {
     implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
 
     implementation 'com.cometchat:pro-android-chat-sdk:3.0.0'
-    implementation 'com.cometchat:pro-android-calls-sdk:2.1.0'
+    implementation 'com.cometchat:pro-android-calls-sdk:2.1.1'
 }

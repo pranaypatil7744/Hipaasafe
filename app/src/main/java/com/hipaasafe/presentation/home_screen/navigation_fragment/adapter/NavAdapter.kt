@@ -5,12 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hipaasafe.R
-import com.hipaasafe.databinding.ItemNavDividerBinding
-import com.hipaasafe.databinding.ItemNavMenuBinding
-import com.hipaasafe.databinding.ItemNavProfileBinding
-import com.hipaasafe.databinding.ItemNavTitleBinding
+import com.hipaasafe.databinding.*
 import com.hipaasafe.presentation.home_screen.navigation_fragment.model.NavItemType
 import com.hipaasafe.presentation.home_screen.navigation_fragment.model.NavigationModel
+import com.hipaasafe.utils.ImageUtils
 
 class NavAdapter(
     val context: Context,
@@ -23,6 +21,11 @@ class NavAdapter(
         var itemNavMenuBinding: ItemNavMenuBinding? = null
         var itemNavDividerBinding: ItemNavDividerBinding? = null
         var itemNavTitleBinding: ItemNavTitleBinding? = null
+        var itemNavToggleBinding:ItemNavToggleBinding? =null
+
+        constructor(binding: ItemNavToggleBinding) : super(binding.root) {
+            itemNavToggleBinding = binding
+        }
 
         constructor(binding: ItemNavMenuBinding) : super(binding.root) {
             itemNavMenuBinding = binding
@@ -62,6 +65,12 @@ class NavAdapter(
                 ViewHolder(binding)
             }
 
+            NavItemType.ITEM_DND.value -> {
+                val v = LayoutInflater.from(context).inflate(R.layout.item_nav_toggle, parent, false)
+                val binding = ItemNavToggleBinding.bind(v)
+                ViewHolder(binding)
+            }
+
             else -> {
                 val v =
                     LayoutInflater.from(context).inflate(R.layout.item_nav_divider, parent, false)
@@ -78,6 +87,7 @@ class NavAdapter(
                 holder.itemNavProfileBinding?.apply {
                     data.icon?.let { imgProfile.setImageResource(it) }
                     tvName.text = data.title
+                    ImageUtils.INSTANCE?.loadRemoteImageForProfile(imgProfile,data.profile)
                     btnClose.setOnClickListener {
                         listener.onClickClose(position)
                     }
@@ -92,6 +102,14 @@ class NavAdapter(
                     tvMenu.text = data.title
                     holder.itemView.setOnClickListener {
                         listener.onClickMenu(position)
+                    }
+                }
+            }
+            NavItemType.ITEM_DND.value -> {
+                holder.itemNavToggleBinding?.apply {
+                    toggleDnd.text = data.title
+                    holder.itemView.setOnClickListener {
+                        listener.onClickDnd(position)
                     }
                 }
             }
@@ -119,6 +137,7 @@ class NavAdapter(
         fun onClickViewProfile(position: Int)
         fun onClickMenu(position: Int)
         fun onClickSignOut(position: Int)
+        fun onClickDnd(position: Int)
     }
 
 }
