@@ -156,13 +156,9 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
         binding.apply {
             if (isFromAddDocument) {
                 hintSelectDoctor.visibility = VISIBLE
-                etDocumentName.isEnabled = true
-                btnDown.isClickable = true
             } else {
                 etDocumentName.setText(pendingDocName)
                 hintSelectDoctor.visibility = INVISIBLE
-                etDocumentName.isEnabled = false
-                btnDown.isClickable = false
                 val chip = layoutInflater.inflate(R.layout.layout_chip,chipsDoctors,false) as Chip
                 chip.apply {
                     text = pendingDocBy

@@ -8,6 +8,9 @@
     <color name="white">#FFFFFF</color>
     <color name="codGray">#1C1C1C</color>
     <color name="athensGray">#E0E3E9</color>
+    <color name="carrot_orange">#EB8B2F</color>
+    <color name="dusty_gray">#949494</color>
+    <color name="carrot_orange_10">#1AEB8B2F</color>
     <color name="turquoise">#4CD8C3</color>
     <color name="tundora">#474747</color>
     <color name="turquoise_10">#1A4CD8C3</color>
@@ -18,12 +21,15 @@
     <color name="nobel">#B3B3B3</color>
 
     <color name="gray">#808080</color>
+    <color name="slate_gray">#697F8E</color>
     <color name="alabaster">#F8F8F8</color>
     <color name="black">#000000</color>
     <color name="black4f">#4F000000</color>
     <color name="blizzard_blue">#BBDBF2</color>
     <color name="light_turquoise">#EDFBF9</color>
     <color name="scorpion">#575757</color>
+    <color name="apple">#3DC12E</color>
+    <color name="persian_red">#D42B2B</color>
     <color name="azure_radiance">#0098FF</color>
     <color name="azure_radiance40">#660098FF</color>
     <color name="azure_radiance_10">#1A0098FF</color>

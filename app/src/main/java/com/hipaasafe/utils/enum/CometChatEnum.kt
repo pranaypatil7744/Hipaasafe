@@ -10,6 +10,6 @@ enum class ConversationMode(private val label: String) {
 
 enum class LoginUserType(val value:Int){
     DOCTOR(3),
-    PATIENT(5),
-    NURSE(4)
+    PATIENT(4),
+    NURSE(5)
 }

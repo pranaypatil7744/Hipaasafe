@@ -147,6 +147,15 @@
     <string name="choose_image">Choose Image</string>
     <string name="pdf">Pdf</string>
     <string name="do_not_disturb">Do Not Disturb</string>
+    <string name="this_appointment_is_in_24_hrs_from_now">This appointment is in 24 hrs from now.</string>
+    <string name="confirm_i_will_be_there">Confirm, I will be there</string>
+    <string name="cancel">Cancel</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="upcoming_appointments">Upcoming Appointments</string>
+    <string name="request_reschedule">Request Reschedule</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="rescheduled_requested">Rescheduled Requested</string>
+    <string name="waiting_for_next_appointment_confirmation">Waiting for next appointment confirmation</string>
 
 
 </resources>

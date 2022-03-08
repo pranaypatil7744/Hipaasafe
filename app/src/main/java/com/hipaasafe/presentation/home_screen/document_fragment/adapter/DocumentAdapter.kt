@@ -110,7 +110,7 @@ class DocumentAdapter(
                 DocumentItemType.ITEM_PENDING_DOC.value -> {
                     itemPendingDocumentBinding?.apply {
                         tvTitle.text = data.title
-                        tvSubTitle.text = data.subTitle
+                        tvSubTitle.text = "By '"+data.subTitle+"'"
                     }
                     itemView.setOnClickListener {
                         listener.clickOnPendingDoc(position)

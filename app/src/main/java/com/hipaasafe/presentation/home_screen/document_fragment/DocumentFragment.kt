@@ -117,14 +117,14 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                 DocumentsModel(
                     documentItemType = DocumentItemType.ITEM_PENDING_DOC,
                     title = "Blood Count Report Required",
-                    subTitle = "By 'Dr Puroshottam Jangid'"
+                    subTitle = "Dr Puroshottam Jangid"
                 )
             )
             documentsList.add(
                 DocumentsModel(
                     documentItemType = DocumentItemType.ITEM_PENDING_DOC,
                     title = "X-Ray Chest Report Required",
-                    subTitle = "By 'Dr Puroshottam Jangid'"
+                    subTitle = "Dr Puroshottam Jangid"
                 )
             )
             if (::documentAdapter.isInitialized){
