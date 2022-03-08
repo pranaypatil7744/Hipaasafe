@@ -22,7 +22,6 @@ import com.hipaasafe.presentation.notification.NotificationActivity
 import com.hipaasafe.presentation.profile_view_details.ProfileViewDetailsActivity
 import com.hipaasafe.utils.CometChatUtils
 import com.hipaasafe.utils.PreferenceUtils
-import com.hipaasafe.utils.enum.CometChatEnum
 import com.hipaasafe.utils.enum.LoginUserType
 import com.onesignal.OneSignal
 
