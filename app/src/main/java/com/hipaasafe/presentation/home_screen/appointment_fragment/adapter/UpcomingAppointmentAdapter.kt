@@ -14,6 +14,7 @@ import com.hipaasafe.databinding.ItemNavDividerBinding
 import com.hipaasafe.presentation.home_screen.appointment_fragment.model.AppointmentItemType
 import com.hipaasafe.presentation.home_screen.appointment_fragment.model.AppointmentStatus
 import com.hipaasafe.presentation.home_screen.appointment_fragment.model.UpcomingAppointmentModel
+import com.hipaasafe.utils.AppUtils
 
 class UpcomingAppointmentAdapter(
     val context: Context,
@@ -80,8 +81,14 @@ class UpcomingAppointmentAdapter(
                         tvSpeciality.text = data.speciality
                         when (data.appointmentStatus) {
                             AppointmentStatus.ITEM_PENDING -> {
-                                layoutPending.visibility = VISIBLE
-                                btnReschedule.visibility = GONE
+                                val isRescheduleHide = AppUtils.INSTANCE?.checkIsRescheduleHide(data.date+" "+data.time)
+                                if (isRescheduleHide == true){
+                                    layoutPending.visibility = GONE
+                                    btnReschedule.visibility = VISIBLE
+                                }else{
+                                    layoutPending.visibility = VISIBLE
+                                    btnReschedule.visibility = GONE
+                                }
                                 layoutReschedule.visibility = GONE
                                 imgStatus.visibility = GONE
                                 tvStatus.visibility = GONE
@@ -92,10 +99,13 @@ class UpcomingAppointmentAdapter(
                                 btnConfirm.setOnClickListener {
                                     listener.clickedOnConfirmAppointment(position)
                                 }
+                                btnReschedule.setOnClickListener {
+                                    listener.clickedOnRescheduleAppointment(position)
+                                }
                             }
                             AppointmentStatus.ITEM_CONFIRM -> {
                                 layoutPending.visibility = GONE
-                                btnReschedule.visibility = VISIBLE
+                                btnReschedule.visibility = GONE
                                 layoutReschedule.visibility = GONE
                                 tvDateTime.text = data.date + "  |  " + data.time + "  |  "
                                 tvStatus.apply {
@@ -106,9 +116,6 @@ class UpcomingAppointmentAdapter(
                                 imgStatus.apply {
                                     visibility = VISIBLE
                                     setImageResource(R.drawable.ic_check)
-                                }
-                                btnReschedule.setOnClickListener {
-                                    listener.clickedOnRescheduleAppointment(position)
                                 }
                             }
                             AppointmentStatus.ITEM_CANCEL -> {

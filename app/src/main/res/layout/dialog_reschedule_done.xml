@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="6dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="328dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="12dp"
+        android:paddingBottom="20dp"
+        android:paddingHorizontal="26dp">
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btnClose"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:tint="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_close" />
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgMain"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_timer" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            style="@style/metropolis_semi_bold_large"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/reschedule_request_sent"
+            android:textColor="@color/codGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgMain" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnYes"
+            style="@style/MaterialButtonBaseStyle"
+            android:layout_width="match_parent"
+            android:text="@string/understood"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:letterSpacing="0"
+            android:fontFamily="@font/metropolis_regular"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/tvMsg" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMsg"
+            style="@style/metropolis_regular_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:textColor="@color/scorpion"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            android:text="@string/your_next_appointment_will_be_scheduled_as_per_the_doctor_s_availability"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

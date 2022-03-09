@@ -15,37 +15,49 @@
         layout="@layout/content_loading"
         android:visibility="gone" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/etSearch"
-        style="@style/metropolis_regular"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="10sp"
-        android:background="@drawable/bg_box"
-        android:drawableStart="@drawable/ic_calendar"
-        android:drawablePadding="10dp"
-        android:hint="@string/choose_date_range"
-        android:imeOptions="actionSearch"
-        android:inputType="none"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="18dp"
-        android:singleLine="true"
-        android:textColorHint="@color/scorpion"
-        android:textSize="12sp"
-        android:visibility="gone"
-        app:drawableTint="@color/scorpion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerPastAppointments"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:paddingVertical="10dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etSearch" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etSearch"
+                style="@style/metropolis_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="10sp"
+                android:background="@drawable/bg_box"
+                android:drawableStart="@drawable/ic_calendar"
+                android:drawablePadding="10dp"
+                android:hint="@string/choose_date_range"
+                android:imeOptions="actionSearch"
+                android:inputType="none"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="18dp"
+                android:singleLine="true"
+                android:textColorHint="@color/scorpion"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:drawableTint="@color/scorpion"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerPastAppointments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="10dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/etSearch" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

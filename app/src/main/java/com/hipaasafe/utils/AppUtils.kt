@@ -27,6 +27,7 @@ import com.google.gson.reflect.TypeToken
 import com.hipaasafe.BuildConfig
 import com.hipaasafe.Constants
 import com.hipaasafe.R
+import com.hipaasafe.presentation.home_screen.appointment_fragment.model.AppointmentStatus
 import com.hipaasafe.presentation.login.model.CountryModel
 import com.onesignal.OneSignal
 import java.io.IOException
@@ -49,6 +50,30 @@ class AppUtils {
         }
     }
 
+    fun getBookingStatus(string: String):AppointmentStatus{
+
+        when(string){
+            Constants.CONFIRMED -> {
+              return AppointmentStatus.ITEM_CONFIRM
+            }
+            Constants.CANCELLED -> {
+                return AppointmentStatus.ITEM_CANCEL
+            }
+            Constants.RESCHEDULED -> {
+               return AppointmentStatus.ITEM_RESCHEDULED
+            }
+            Constants.PENDING -> {
+                return AppointmentStatus.ITEM_PENDING
+            }
+            Constants.COMPLETED -> {
+                return AppointmentStatus.ITEM_COMPLETED
+            }
+            else ->{
+                return AppointmentStatus.ITEM_PENDING
+            }
+        }
+    }
+
     fun getDateId(var0: Long): String? {
         val var2 = Calendar.getInstance(Locale.ENGLISH)
         var2.timeInMillis = var0
@@ -60,6 +85,7 @@ class AppUtils {
         var2.timeInMillis = var0
         return DateFormat.format("dd/MM/yyyy", var2).toString()
     }
+
     fun getHeaderDate(timestamp: Long): String? {
         val messageTimestamp = Calendar.getInstance()
         messageTimestamp.timeInMillis = timestamp
@@ -242,6 +268,30 @@ class AppUtils {
         return user.uid == CometChat.getLoggedInUser().uid
     }
 
+    fun checkIsRescheduleHide(dateTime:String):Boolean{
+        val appointmentDate = convertStringToDate("yyyy-MM-dd HH:mm:ss",dateTime)
+        val checkDate = getAfter24hrTime()
+        return checkDate.before(appointmentDate)
+    }
+
+
+    fun getAfter24hrTime():Date{
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_MONTH, 1)
+        return calendar.time
+    }
+
+    private fun convertStringToDate(
+        dateFormatToRead: String,
+        dateToRead: String
+    ): Date {
+        return try {
+            val sdf = SimpleDateFormat(dateFormatToRead)
+            sdf.parse(dateToRead) ?: Date()
+        } catch (e: java.lang.Exception) {
+            Date()
+        }
+    }
     fun getLastMessage(context: Context, lastMessage: BaseMessage): String? {
         var message: String? = null
         if (lastMessage.deletedAt == 0L) {

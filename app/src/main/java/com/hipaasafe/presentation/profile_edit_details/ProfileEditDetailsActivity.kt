@@ -388,7 +388,6 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
             binding.contentLoading.imageLoading,
             showLoader
         )
-
     }
 
     override fun onValidationFailure(type: String, msg: Int) {

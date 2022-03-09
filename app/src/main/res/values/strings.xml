@@ -221,6 +221,14 @@
     <string name="got_it">Got it</string>
     <string name="we_re_still_waiting_in_the_queue">We\'re still waiting in the queue</string>
     <string name="saving_the_world_happens_one_person_at_a_time">Saving the world happens one person at a time</string>
+    <string name="are_you_sure_you_want_to_cancel_the_appointment">Are you sure you want to cancel the Appointment</string>
+    <string name="yes_cancel">Yes, Cancel</string>
+    <string name="go_back">Go back</string>
+    <string name="yes_request_reschedule">Yes, Request Reschedule</string>
+    <string name="are_you_sure_you_want_to_reschedule">Are you sure you want to reschedule</string>
+    <string name="understood">Understood</string>
+    <string name="your_next_appointment_will_be_scheduled_as_per_the_doctor_s_availability">Your next appointment will be scheduled as per the doctor\'s availability</string>
+    <string name="reschedule_request_sent">Reschedule Request Sent</string>
 
 
 </resources>

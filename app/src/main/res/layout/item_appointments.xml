@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="5dp"
-    android:layout_marginVertical="5dp">
+    android:layout_marginVertical="5dp"
+    android:paddingVertical="5dp">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvDateTime"
@@ -79,8 +79,10 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="12dp"
         android:backgroundTint="@color/white"
+        android:fontFamily="@font/metropolis_regular"
         android:text="@string/request_reschedule"
         android:textColor="@color/slate_gray"
+        android:textSize="14sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,11 +94,11 @@
         android:id="@+id/layoutPending"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="12dp"
         android:elevation="4dp"
         android:visibility="gone"
         app:cardCornerRadius="10dp"
-        android:layout_marginHorizontal="16dp"
         app:layout_constraintTop_toBottomOf="@id/tvSpeciality">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -128,7 +130,9 @@
                 android:layout_height="35dp"
                 android:layout_marginTop="10dp"
                 android:backgroundTint="@color/apple"
+                android:fontFamily="@font/metropolis_medium"
                 android:text="@string/confirm_i_will_be_there"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvInfoMsg" />
 
@@ -140,8 +144,10 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
                 android:backgroundTint="@color/white"
+                android:fontFamily="@font/metropolis_medium"
                 android:text="@string/cancel"
                 android:textColor="@color/codGray"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@id/btnConfirm"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvInfoMsg" />
@@ -152,11 +158,11 @@
         android:id="@+id/layoutReschedule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="12dp"
         android:elevation="4dp"
         android:visibility="gone"
         app:cardCornerRadius="10dp"
-        android:layout_marginHorizontal="16dp"
         app:layout_constraintTop_toBottomOf="@id/tvSpeciality">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -180,16 +186,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.appcompat.widget.AppCompatTextView
-                app:layout_constraintTop_toBottomOf="@id/tvRescheduleTitle"
+                android:id="@+id/tvRescheduleMsg"
+                style="@style/metropolis_regular_small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvRescheduleMsg"
                 android:layout_marginStart="35dp"
                 android:layout_marginTop="4dp"
-                style="@style/metropolis_regular_small"
+                android:text="@string/waiting_for_next_appointment_confirmation"
                 android:textColor="@color/dusty_gray"
-                android:text="@string/waiting_for_next_appointment_confirmation"/>
+                app:layout_constraintTop_toBottomOf="@id/tvRescheduleTitle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

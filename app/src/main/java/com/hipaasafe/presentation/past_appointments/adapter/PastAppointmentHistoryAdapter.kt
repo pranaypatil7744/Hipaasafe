@@ -28,7 +28,7 @@ class PastAppointmentHistoryAdapter(
         val data = historyList[position]
         holder.binding.apply {
             tvTitle.text = data.title
-            tvSubTitle.text = data.date + " | " + data.time
+            tvSubTitle.text = data.date + "  |  " + data.time
             if (historyList.size - 1 == position){
                 divider.visibility = GONE
             }else{

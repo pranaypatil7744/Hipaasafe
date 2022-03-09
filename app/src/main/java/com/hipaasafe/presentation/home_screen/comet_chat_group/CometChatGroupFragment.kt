@@ -17,6 +17,7 @@ import com.hipaasafe.R
 import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.FragmentCometChatGroupBinding
 import com.hipaasafe.presentation.home_screen.comet_chat_group.adapter.GroupChatListAdapter
+import com.hipaasafe.utils.CometChatUtils
 import com.hipaasafe.utils.enum.ConversationMode
 import com.hipaasafe.utils.isNetworkAvailable
 import java.util.*
@@ -312,6 +313,10 @@ class CometChatGroupFragment : BaseFragment(), GroupChatListAdapter.ChatListClic
                 recyclerChatsList.visibility = VISIBLE
             }
         }
+    }
+
+    override fun clickOnChatGroup(position: Int, group: Group) {
+        CometChatUtils.startGroupIntent(group,requireContext())
     }
 
 }

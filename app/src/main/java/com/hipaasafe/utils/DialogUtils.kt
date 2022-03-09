@@ -15,11 +15,88 @@ import com.cometchat.pro.models.BaseMessage
 import com.hipaasafe.BuildConfig
 import com.hipaasafe.R
 import com.hipaasafe.databinding.DialogBlockUserBinding
+import com.hipaasafe.databinding.DialogCancelAppointmentConfirmationBinding
 import com.hipaasafe.databinding.DialogPermissionBinding
+import com.hipaasafe.databinding.DialogRescheduleDoneBinding
 
 class DialogUtils {
     companion object {
         private lateinit var permissionDialog: Dialog
+        private lateinit var bookingCancelConfirmationDialog: Dialog
+        private lateinit var rescheduleDoneDialog: Dialog
+
+
+        fun showRescheduleDoneDialog(
+            activity: Activity,
+            listener: DialogManager
+        ) {
+            val binding =
+                DialogRescheduleDoneBinding.inflate(LayoutInflater.from(activity))
+            rescheduleDoneDialog = Dialog(activity)
+            rescheduleDoneDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            rescheduleDoneDialog.setContentView(binding.root)
+            rescheduleDoneDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            rescheduleDoneDialog.window?.attributes?.windowAnimations =
+                R.style.DialogTheme
+            rescheduleDoneDialog.window?.setLayout(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+            )
+            rescheduleDoneDialog.setCancelable(false)
+            rescheduleDoneDialog.setCanceledOnTouchOutside(false)
+            binding.apply {
+                btnClose.setOnClickListener {
+                    rescheduleDoneDialog.dismiss()
+                }
+                btnYes.setOnClickListener {
+                    rescheduleDoneDialog.dismiss()
+                   listener.onContinueClick()
+                }
+            }
+            rescheduleDoneDialog.show()
+        }
+
+
+
+        fun showCancelConfirmationDialog(
+            activity: Activity,
+            listener: DialogManager,
+            title: String,
+            btnText: String,
+            isCancel: Boolean
+        ) {
+            val binding =
+                DialogCancelAppointmentConfirmationBinding.inflate(LayoutInflater.from(activity))
+            bookingCancelConfirmationDialog = Dialog(activity)
+            bookingCancelConfirmationDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            bookingCancelConfirmationDialog.setContentView(binding.root)
+            bookingCancelConfirmationDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            bookingCancelConfirmationDialog.window?.attributes?.windowAnimations =
+                R.style.DialogTheme
+            bookingCancelConfirmationDialog.window?.setLayout(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+            )
+            bookingCancelConfirmationDialog.setCancelable(false)
+            bookingCancelConfirmationDialog.setCanceledOnTouchOutside(false)
+            binding.apply {
+                tvTitle.text = title
+                btnYes.text = btnText
+                tvBack.setOnClickListener {
+                    bookingCancelConfirmationDialog.dismiss()
+                }
+                btnYes.setOnClickListener {
+                    bookingCancelConfirmationDialog.dismiss()
+                    if (isCancel) {
+                        listener.onCancelClick()
+                    } else {
+//                        listener.onContinueClick()
+                        showRescheduleDoneDialog(activity,listener)
+                    }
+                }
+            }
+            bookingCancelConfirmationDialog.show()
+        }
 
 
         fun showPermissionDialog(
@@ -90,9 +167,9 @@ class DialogUtils {
             title: String,
             msg: String,
             btnText: String,
-            isBlock: Boolean=false,
-            isDeleteGroup:Boolean = false,
-            isExitGroup:Boolean = false
+            isBlock: Boolean = false,
+            isDeleteGroup: Boolean = false,
+            isExitGroup: Boolean = false
         ) {
             val binding = DialogBlockUserBinding.inflate(LayoutInflater.from(context))
             val dialog = Dialog(context)
@@ -140,5 +217,6 @@ class DialogUtils {
         fun onDeleteGroup() {}
         fun onExitGroup() {}
         fun onEFaxContinueClick(faxNo: String, baseMessage: BaseMessage) {}
+        fun onCancelClick() {}
     }
 }

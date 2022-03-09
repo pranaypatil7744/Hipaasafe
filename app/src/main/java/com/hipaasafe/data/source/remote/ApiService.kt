@@ -1,5 +1,8 @@
 package com.hipaasafe.data.source.remote
 
+import com.hipaasafe.domain.model.appointment.GetAppointmentResponseModel
+import com.hipaasafe.domain.model.appointment.ModifyAppointmentRequestModel
+import com.hipaasafe.domain.model.appointment.ModifyAppointmentResponseModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpRequestModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpResponseModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpRequestModel
@@ -7,9 +10,7 @@ import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpResponseMod
 import com.hipaasafe.domain.model.patient_login.*
 import com.hipaasafe.presentation.profile_edit_details.model.ProfileEditRequestModel
 import com.hipaasafe.presentation.profile_edit_details.model.ProfileEditResponseModel
-import retrofit2.http.Body
-import retrofit2.http.POST
-import retrofit2.http.PUT
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -30,4 +31,14 @@ interface ApiService {
 
     @PUT(ApiNames.PatientUpdateProfile)
     suspend fun callPatientUpdateProfile(@Body request:ProfileEditRequestModel):ProfileEditResponseModel
+
+    @GET(ApiNames.GetAppointmentsApi)
+    suspend fun callGetAppointmentsApi(
+        @Query("page")page:Int,
+        @Query("limit")limit:Int,
+        @Query("type")type:String,
+    ):GetAppointmentResponseModel
+
+    @PUT(ApiNames.ModifyAppointmentsApi)
+    suspend fun callModifyAppointmentApi(@Body request:ModifyAppointmentRequestModel):ModifyAppointmentResponseModel
 }

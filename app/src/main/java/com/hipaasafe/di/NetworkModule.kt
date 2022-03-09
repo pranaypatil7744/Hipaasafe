@@ -9,8 +9,12 @@ import com.hipaasafe.data.source.remote.ApiService
 import com.hipaasafe.domain.repository.LoginRepository
 import com.google.gson.GsonBuilder
 import com.hipaasafe.Constants
+import com.hipaasafe.data.repository.AppointmentRepositoryImp
 import com.hipaasafe.data.repository.ProfileRepositoryImp
+import com.hipaasafe.domain.repository.AppointmentRepository
 import com.hipaasafe.domain.repository.ProfileRepository
+import com.hipaasafe.domain.usecase.appointment.GetAppointmentsUseCase
+import com.hipaasafe.domain.usecase.appointment.ModifyAppointmentUseCase
 import com.hipaasafe.domain.usecase.login.*
 import com.hipaasafe.domain.usecase.profile.PatientUpdateProfileUseCase
 import okhttp3.Interceptor
@@ -71,12 +75,14 @@ fun createOkHttpClient(): OkHttpClient {
             val original = chain.request()
             val mUrl = original.url.toString()
             val requestBuilder: Request.Builder
-            val token = BaseApplication.preferenceUtils.getValue(Constants.PreferenceKeys.access_token)
+            val token =
+                BaseApplication.preferenceUtils.getValue(Constants.PreferenceKeys.access_token)
 
             if (!mUrl.contains(ApiNames.PatientSendOtp) &&
                 !mUrl.contains(ApiNames.DoctorLoginSendOtp) &&
                 !mUrl.contains(ApiNames.PatientValidateOtp) &&
-                !mUrl.contains(ApiNames.DoctorLoginValidateOtp)) {
+                !mUrl.contains(ApiNames.DoctorLoginValidateOtp)
+            ) {
 //                        // Request customization: add request headers
                 requestBuilder = original.newBuilder()
                     .header("Authorization", token)
@@ -137,4 +143,16 @@ fun createProfileRepository(apiService: ApiService): ProfileRepository {
 
 fun createPatientUpdateProfileUseCase(profileRepository: ProfileRepository): PatientUpdateProfileUseCase {
     return PatientUpdateProfileUseCase(profileRepository)
+}
+
+fun createAppointmentRepository(apiService: ApiService): AppointmentRepository {
+    return AppointmentRepositoryImp(apiService)
+}
+
+fun createGetAppointmentsUseCase(appointmentRepository: AppointmentRepository): GetAppointmentsUseCase {
+    return GetAppointmentsUseCase(appointmentRepository)
+}
+
+fun createModifyAppointmentUseCase(appointmentRepository: AppointmentRepository): ModifyAppointmentUseCase {
+    return ModifyAppointmentUseCase(appointmentRepository)
 }
