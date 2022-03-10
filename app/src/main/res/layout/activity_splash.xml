@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/azure_radiance"
+    android:background="#009CFF"
     tools:context=".presentation.splash.SplashActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/img_hipaasafe_logo" />
+        app:srcCompat="@drawable/ic_hipaasafe_gif" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

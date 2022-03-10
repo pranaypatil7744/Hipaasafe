@@ -4,6 +4,7 @@ import java.io.Serializable
 
 data class ForwardDocumentModel(
     var title:String? = "",
-    var icon:Int? =null,
-    var isSelected:Boolean = false
+    var icon:String? ="",
+    var isSelected:Boolean = false,
+    var guid:String? = ""
 ):Serializable

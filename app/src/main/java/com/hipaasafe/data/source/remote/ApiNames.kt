@@ -13,5 +13,8 @@ class ApiNames {
         const val PatientUpdateProfile = "user/patient/update-profile"
         const val GetAppointmentsApi = "query/appointments/fetch/upcoming-past"
         const val ModifyAppointmentsApi = "appointment/patient/modify"
+        const val GetReportsList = "static/hospital-reports/list"
+        const val GetMyDoctorsList = "query/patients/fetch/my-doctors"
+        const val UploadReportFileApi = "user/test-reports/upload"
     }
 }

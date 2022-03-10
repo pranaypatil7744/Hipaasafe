@@ -1,8 +1,10 @@
 package com.hipaasafe.di
 
 import com.hipaasafe.presentation.home_screen.appointment_fragment.AppointmentViewModel
+import com.hipaasafe.presentation.home_screen.my_network.MyNetworkViewModel
 import com.hipaasafe.presentation.login.LoginViewModel
 import com.hipaasafe.presentation.profile_edit_details.ProfileViewModel
+import com.hipaasafe.presentation.upload_documents.DocumentViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -11,6 +13,8 @@ import org.koin.dsl.module
 val AppModule = module {
     viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
     viewModel { ProfileViewModel(get()) }
+    viewModel { MyNetworkViewModel(get()) }
+    viewModel { DocumentViewModel(get(),get()) }
     viewModel { AppointmentViewModel(get(), get()) }
 
     single { createLoginRepository(get(named("normalService"))) }
@@ -26,5 +30,12 @@ val AppModule = module {
     single { createAppointmentRepository(get(named("normalService"))) }
     single { createGetAppointmentsUseCase(get()) }
     single { createModifyAppointmentUseCase(get()) }
+
+    single { createDoctorsRepository(get(named("normalService"))) }
+    single { createGetDoctorsUseCase(get()) }
+
+    single { createReportsRepository(get(named("normalService"))) }
+    single { createGetReportsUseCase(get()) }
+    single { createUploadReportFileUseCase(get()) }
 
 }

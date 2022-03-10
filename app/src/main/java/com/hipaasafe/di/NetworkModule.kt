@@ -3,20 +3,19 @@ package com.hipaasafe.di
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.hipaasafe.base.BaseApplication
-import com.hipaasafe.data.repository.LoginRepositoryImp
 import com.hipaasafe.data.source.remote.ApiNames
 import com.hipaasafe.data.source.remote.ApiService
-import com.hipaasafe.domain.repository.LoginRepository
 import com.google.gson.GsonBuilder
 import com.hipaasafe.Constants
-import com.hipaasafe.data.repository.AppointmentRepositoryImp
-import com.hipaasafe.data.repository.ProfileRepositoryImp
-import com.hipaasafe.domain.repository.AppointmentRepository
-import com.hipaasafe.domain.repository.ProfileRepository
+import com.hipaasafe.data.repository.*
+import com.hipaasafe.domain.repository.*
 import com.hipaasafe.domain.usecase.appointment.GetAppointmentsUseCase
 import com.hipaasafe.domain.usecase.appointment.ModifyAppointmentUseCase
+import com.hipaasafe.domain.usecase.doctors.GetDoctorsUseCase
 import com.hipaasafe.domain.usecase.login.*
 import com.hipaasafe.domain.usecase.profile.PatientUpdateProfileUseCase
+import com.hipaasafe.domain.usecase.reports.GetReportsUseCase
+import com.hipaasafe.domain.usecase.reports.UploadReportsFileUseCase
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -155,4 +154,24 @@ fun createGetAppointmentsUseCase(appointmentRepository: AppointmentRepository): 
 
 fun createModifyAppointmentUseCase(appointmentRepository: AppointmentRepository): ModifyAppointmentUseCase {
     return ModifyAppointmentUseCase(appointmentRepository)
+}
+
+fun createDoctorsRepository(apiService: ApiService): DoctorsRepository {
+    return DoctorsRepositoryImp(apiService)
+}
+
+fun createGetDoctorsUseCase(doctorsRepository: DoctorsRepository): GetDoctorsUseCase {
+    return GetDoctorsUseCase(doctorsRepository)
+}
+
+fun createReportsRepository(apiService: ApiService): ReportsRepository {
+    return ReportsRepositoryImp(apiService)
+}
+
+fun createGetReportsUseCase(reportsRepository: ReportsRepository): GetReportsUseCase {
+    return GetReportsUseCase(reportsRepository)
+}
+
+fun createUploadReportFileUseCase(reportsRepository: ReportsRepository): UploadReportsFileUseCase {
+    return UploadReportsFileUseCase(reportsRepository)
 }

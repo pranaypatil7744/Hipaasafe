@@ -11,22 +11,28 @@ import com.hipaasafe.R
 import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.BottomsheetForwardDocBinding
 import com.hipaasafe.databinding.FragmentDocumentBinding
+import com.hipaasafe.domain.model.get_doctors.GetDoctorsRequestModel
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.DocumentAdapter
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.ForwardDocAdapter
 import com.hipaasafe.presentation.home_screen.document_fragment.model.DocumentItemType
 import com.hipaasafe.presentation.home_screen.document_fragment.model.DocumentsModel
 import com.hipaasafe.presentation.home_screen.document_fragment.model.ForwardDocumentModel
+import com.hipaasafe.presentation.home_screen.my_network.MyNetworkViewModel
+import com.hipaasafe.presentation.home_screen.my_network.model.DoctorModel
 import com.hipaasafe.presentation.upload_documents.UploadDocumentsActivity
+import com.hipaasafe.utils.isNetworkAvailable
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     ForwardDocAdapter.ForwardClickManager {
 
     lateinit var binding: FragmentDocumentBinding
-    lateinit var documentAdapter:DocumentAdapter
+    lateinit var documentAdapter: DocumentAdapter
     lateinit var forwardDocAdapter: ForwardDocAdapter
     private var documentsList: ArrayList<DocumentsModel> = ArrayList()
-    private var doctorList:ArrayList<ForwardDocumentModel> = ArrayList()
+    private var doctorList: ArrayList<ForwardDocumentModel> = ArrayList()
     lateinit var bottomSheetForwardDocBinding: BottomsheetForwardDocBinding
+    private val myNetworkViewModel: MyNetworkViewModel by viewModel()
 
     companion object {
         fun newInstance(): DocumentFragment {
@@ -46,12 +52,71 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpAdapter()
-        setUpDoctorListForForward()
+        setUpObserver()
+        callDoctorsApi()
+    }
+
+    private fun callDoctorsApi() {
+        binding.apply {
+            if (requireContext().isNetworkAvailable()) {
+                toggleLoader(true)
+                myNetworkViewModel.callPatientUpdateProfileApi(
+                    GetDoctorsRequestModel(page = 1, limit = 30)
+                )
+            } else {
+                showToast(getString(R.string.please_check_your_internet_connection))
+            }
+        }
+    }
+
+    private fun toggleLoader(showLoader: Boolean) {
+        toggleFadeView(
+            binding.root,
+            binding.contentLoading.layoutLoading,
+            binding.contentLoading.imageLoading,
+            showLoader
+        )
+    }
+
+    private fun setUpObserver() {
+        binding.apply {
+            with(myNetworkViewModel) {
+                myNetworkListResponseData.observe(this@DocumentFragment.viewLifecycleOwner) {
+                    toggleLoader(false)
+                    if (it.success == true) {
+                        if (it.data.count != 0) {
+                            doctorList.clear()
+                            for (i in it.data.rows ?: arrayListOf()) {
+                                doctorList.add(
+                                    ForwardDocumentModel(
+                                        title = i.list_doctor_details.name,
+                                        icon = i.list_doctor_details.avatar,
+                                        guid = i.guid
+                                    )
+                                )
+                            }
+                            if (::forwardDocAdapter.isInitialized) {
+                                forwardDocAdapter.notifyDataSetChanged()
+                            }
+                        } else {
+                            showToast("no data")
+                        }
+                    } else {
+                        showToast(it.message.toString())
+                    }
+                }
+                messageData.observe(requireActivity()) {
+                    toggleLoader(false)
+                    showToast(it.toString())
+                }
+            }
+        }
     }
 
     private fun setUpAdapter() {
         binding.apply {
-            documentAdapter = DocumentAdapter(requireContext(),documentsList,this@DocumentFragment)
+            documentAdapter =
+                DocumentAdapter(requireContext(), documentsList, this@DocumentFragment)
             recyclerDocuments.adapter = documentAdapter
         }
     }
@@ -127,7 +192,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                     subTitle = "Dr Puroshottam Jangid"
                 )
             )
-            if (::documentAdapter.isInitialized){
+            if (::documentAdapter.isInitialized) {
                 documentAdapter.notifyDataSetChanged()
             }
         }
@@ -140,19 +205,24 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         bottomSheetDialog.setContentView(view)
         bottomSheetDialog.setCancelable(true)
         bottomSheetForwardDocBinding.apply {
-            forwardDocAdapter = ForwardDocAdapter(requireContext(),doctorList, listener = this@DocumentFragment)
+            forwardDocAdapter =
+                ForwardDocAdapter(requireContext(), doctorList, listener = this@DocumentFragment)
             recyclerAttendanceHistory.adapter = forwardDocAdapter
             imgClose.setOnClickListener {
                 bottomSheetDialog.dismiss()
+                for (i in doctorList){
+                    i.isSelected = false
+                }
+                forwardDocAdapter.notifyDataSetChanged()
             }
             btnShare.setOnClickListener {
                 val checkSelected = doctorList.find {
                     it.isSelected
                 }
-                if (checkSelected != null){
+                if (checkSelected != null) {
                     bottomSheetDialog.dismiss()
 
-                }else{
+                } else {
                     showToast(getString(R.string.please_select_at_least_1_doctor))
                 }
             }
@@ -161,10 +231,10 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     }
 
     override fun clickOnAddDocument(position: Int) {
-        val i = Intent(requireContext(),UploadDocumentsActivity::class.java)
+        val i = Intent(requireContext(), UploadDocumentsActivity::class.java)
         val bundle = Bundle()
-        bundle.putBoolean(Constants.IsFromAdd,true)
-        bundle.putSerializable(Constants.DoctorsList,doctorList)
+        bundle.putBoolean(Constants.IsFromAdd, true)
+        bundle.putSerializable(Constants.DoctorsList, doctorList)
         i.putExtras(bundle)
         startActivity(i)
     }
@@ -173,28 +243,13 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         openForwardListBottomSheet()
     }
 
-    private fun setUpDoctorListForForward() {
-        binding.apply { 
-            doctorList.clear()
-            doctorList.add(ForwardDocumentModel(title = "Dr. Sanjeev Arora", icon = R.drawable.ic_default_profile_picture))
-            doctorList.add(ForwardDocumentModel(title = "Aditi Chopra", icon = R.drawable.ic_default_profile_picture))
-            doctorList.add(ForwardDocumentModel(title = "Adarsh M Patil", icon = R.drawable.ic_default_profile_picture))
-            doctorList.add(ForwardDocumentModel(title = "Adarsh Bhargava", icon = R.drawable.ic_default_profile_picture))
-            doctorList.add(ForwardDocumentModel(title = "Adhishwar Sharma", icon = R.drawable.ic_default_profile_picture))
-            doctorList.add(ForwardDocumentModel(title = "Dr. Sanjeev Arora", icon = R.drawable.ic_default_profile_picture))
-            doctorList.add(ForwardDocumentModel(title = "Aditi Chopra", icon = R.drawable.ic_default_profile_picture))
-            doctorList.add(ForwardDocumentModel(title = "Adarsh M Patil", icon = R.drawable.ic_default_profile_picture))
-            doctorList.add(ForwardDocumentModel(title = "Adarsh Bhargava", icon = R.drawable.ic_default_profile_picture))
-        }
-    }
-
     override fun clickOnPendingDoc(position: Int) {
-        val i = Intent(requireContext(),UploadDocumentsActivity::class.java)
+        val i = Intent(requireContext(), UploadDocumentsActivity::class.java)
         val bundle = Bundle()
-        bundle.putBoolean(Constants.IsFromAdd,false)
-        bundle.putString(Constants.PendingDocumentName,documentsList[position].title)
-        bundle.putString(Constants.PendingDocumentBy,documentsList[position].subTitle)
-        bundle.putSerializable(Constants.DoctorsList,doctorList)
+        bundle.putBoolean(Constants.IsFromAdd, false)
+        bundle.putString(Constants.PendingDocumentName, documentsList[position].title)
+        bundle.putString(Constants.PendingDocumentBy, documentsList[position].subTitle)
+        bundle.putSerializable(Constants.DoctorsList, doctorList)
         i.putExtras(bundle)
         startActivity(i)
     }

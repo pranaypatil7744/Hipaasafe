@@ -13,4 +13,10 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"/>
 
+    <include
+        android:id="@+id/content_loading"
+        layout="@layout/content_loading"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

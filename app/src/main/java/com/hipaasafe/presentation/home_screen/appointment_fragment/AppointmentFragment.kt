@@ -1,8 +1,6 @@
 package com.hipaasafe.presentation.home_screen.appointment_fragment
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -11,7 +9,6 @@ import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.FragmentAppointmentBinding
-import com.hipaasafe.domain.model.appointment.AppointmentItemsModel
 import com.hipaasafe.domain.model.appointment.GetAppointmentsRequestModel
 import com.hipaasafe.domain.model.appointment.ModifyAppointmentRequestModel
 import com.hipaasafe.presentation.home_screen.appointment_fragment.adapter.UpcomingAppointmentAdapter

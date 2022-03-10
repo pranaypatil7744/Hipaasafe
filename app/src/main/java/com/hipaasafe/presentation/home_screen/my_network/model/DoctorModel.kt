@@ -5,6 +5,6 @@ data class DoctorModel(
     var location:String? = "",
     var speciality:String? = "",
     var experience:String? = "",
-    var avatar:Int? = null,
+    var avatar:String? = "",
     var guid:String? =""
 )
