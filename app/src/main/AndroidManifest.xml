@@ -20,18 +20,22 @@
         android:theme="@style/Theme.Hipaasafe"
         android:usesCleartextTraffic="true">
 
-
-
-        <activity android:name=".presentation.forward_message_screen.ForwardMessageActivity"
-            android:screenOrientation="portrait"
-            android:exported="false"/>
-        <activity android:name=".utils.AddImageUtils"
-            android:screenOrientation="portrait"
-            android:exported="false"/>
+        <activity
+            android:name=".call_manager.CometChatCallActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.forward_message_screen.ForwardMessageActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".utils.AddImageUtils"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.upload_documents.UploadDocumentsActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.profile_edit_details.ProfileEditDetailsActivity"
             android:exported="false"

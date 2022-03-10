@@ -1,10 +1,13 @@
 package com.hipaasafe.presentation.home_screen.my_network
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cometchat.pro.constants.CometChatConstants
+import com.cometchat.pro.core.CometChat
+import com.cometchat.pro.exceptions.CometChatException
 import com.cometchat.pro.models.Group
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseFragment
@@ -113,11 +116,38 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
         }
     }
 
+    private fun joinGroup(group: Group?) {
+        CometChat.joinGroup(
+            group!!.guid,
+            group.groupType,
+            "",
+            object : CometChat.CallbackListener<Group?>() {
+                override fun onSuccess(g: Group?) {
+                    if (g != null) {
+                        toggleLoader(false)
+                        startGroupIntent(g, requireContext())
+                    }
+                }
+
+                override fun onError(e: CometChatException) {
+                    toggleLoader(false)
+                    if (e.code == "ERR_ALREADY_JOINED"){
+                        startGroupIntent(group, requireContext())
+                    }else{
+                        showToast(e.message.toString())
+                    }
+                }
+            })
+    }
+
     override fun clickOnChat(position: Int) {
+        toggleLoader(true)
         val group = Group()
         group.guid = myNetworkList[position].guid
-        group.groupType = CometChatConstants.RECEIVER_TYPE_GROUP
-        startGroupIntent(group, requireContext())
+        group.groupType = CometChatConstants.GROUP_TYPE_PRIVATE
+        group.name = myNetworkList[position].name
+        group.icon = myNetworkList[position].avatar
+        joinGroup(group)
     }
 
 }
