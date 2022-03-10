@@ -16,12 +16,14 @@ import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.databinding.ActivityUploadDocumentsBinding
 import com.hipaasafe.databinding.BottomSheetAddPhotoBinding
 import com.hipaasafe.databinding.BottomsheetForwardDocBinding
+import com.hipaasafe.domain.model.get_doctors.GetDoctorsRequestModel
 import com.hipaasafe.domain.model.reports.GetReportsListRequestModel
 import com.hipaasafe.domain.model.reports.ReportsDataModel
 import com.hipaasafe.domain.model.reports.UploadAndShareDocumentRequestModel
 import com.hipaasafe.domain.model.reports.UploadReportFileRequestModel
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.ForwardDocAdapter
 import com.hipaasafe.presentation.home_screen.document_fragment.model.ForwardDocumentModel
+import com.hipaasafe.presentation.home_screen.my_network.MyNetworkViewModel
 import com.hipaasafe.utils.AddImageUtils
 import com.hipaasafe.utils.isNetworkAvailable
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -33,15 +35,21 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
 
     lateinit var bottomSheetForwardDocBinding: BottomsheetForwardDocBinding
     private val documentViewModel: DocumentViewModel by viewModel()
-    lateinit var doctorListAdapter: ForwardDocAdapter
+    private val myNetworkViewModel: MyNetworkViewModel by viewModel()
+
+    private lateinit var doctorListAdapter: ForwardDocAdapter
     private var doctorList: ArrayList<ForwardDocumentModel> = ArrayList()
     var repostList: ArrayList<ReportsDataModel> = ArrayList()
     private var unselectedDoctorsList: ArrayList<ForwardDocumentModel> = ArrayList()
     var pendingDocName: String = ""
     var pendingDocBy: String = ""
+    var pendingDocGuid: String = ""
     var isFromAddDocument: Boolean = false
     var uploadDocPath: String = ""
     var fileName: String = ""
+    var uploadedFile: String = ""
+    var selectedDocumentId: Int = 0
+    var selectedDoctorUids: ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +59,29 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
         setUpObserver()
         setUpToolbar()
         setUpListener()
+        callDoctorsApi()
         callGetReportsList()
+    }
+
+    private fun callDoctorsApi() {
+        binding.apply {
+            if (isNetworkAvailable()) {
+                toggleLoader(true)
+                myNetworkViewModel.callPatientUpdateProfileApi(
+                    GetDoctorsRequestModel(page = 1, limit = 30)
+                )
+            } else {
+                showToast(getString(R.string.please_check_your_internet_connection))
+            }
+        }
+    }
+
+    private fun getUploadAndShareDocumentRequestModel(): UploadAndShareDocumentRequestModel {
+        val request = UploadAndShareDocumentRequestModel()
+        request.document_file = uploadedFile
+        request.report_name_id = selectedDocumentId
+        request.doctor_uids = selectedDoctorUids
+        return request
     }
 
     private fun setUpObserver() {
@@ -81,10 +111,11 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                     }
                 }
                 uploadReportFileResponseData.observe(this@UploadDocumentsActivity) {
-                    toggleLoader(false)
                     if (it.success == true) {
-                        showToast(it.data?.uploaded_file.toString())
+                        uploadedFile = it.data?.uploaded_file.toString()
+                        callUploadAndShareDocumentApi()
                     } else {
+                        toggleLoader(false)
                         showToast(it.message.toString())
                     }
                 }
@@ -95,6 +126,38 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                             finish()
                         } else {
 
+                        }
+                    } else {
+                        showToast(it.message.toString())
+                    }
+                }
+                messageData.observe(this@UploadDocumentsActivity) {
+                    toggleLoader(false)
+                    showToast(it.toString())
+                }
+            }
+
+            with(myNetworkViewModel) {
+                myNetworkListResponseData.observe(this@UploadDocumentsActivity) {
+                    toggleLoader(false)
+                    if (it.success == true) {
+                        if (it.data.count != 0) {
+                            doctorList.clear()
+                            for (i in it.data.rows ?: arrayListOf()) {
+                                doctorList.add(
+                                    ForwardDocumentModel(
+                                        title = i.list_doctor_details.name,
+                                        icon = i.list_doctor_details.avatar,
+                                        guid = i.guid,
+                                        isSelected = false
+                                    )
+                                )
+                            }
+                            if (::doctorListAdapter.isInitialized) {
+                                doctorListAdapter.notifyDataSetChanged()
+                            }
+                        } else {
+                            showToast("no data")
                         }
                     } else {
                         showToast(it.message.toString())
@@ -147,7 +210,29 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
             }
 
             btnShareAndUpload.setOnClickListener {
-                callUploadReportFileApi()
+                val selectedList = doctorList.filter {
+                    it.isSelected
+                }
+                if (selectedList.isNotEmpty()) {
+                    for (i in selectedList) {
+                        selectedDoctorUids.add(i.guid.toString())
+                    }
+                }
+                when {
+                    uploadDocPath.isEmpty() -> {
+                        showToast("Please upload document")
+                    }
+                    selectedDocumentId == 0 -> {
+                        showToast("Please select document name")
+                    }
+                    selectedDoctorUids.isEmpty() -> {
+                        showToast(getString(R.string.please_select_at_least_1_doctor))
+                    }
+                    else -> {
+//                        showToast("Success")
+                        callUploadReportFileApi()
+                    }
+                }
             }
 
             layoutAddDoc.setOnClickListener {
@@ -155,6 +240,10 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
             }
             btnDiscard.setOnClickListener {
                 showAddDocumentLayout()
+            }
+
+            etDocumentName.setOnItemClickListener { parent, view, position, id ->
+                selectedDocumentId = repostList[position].id ?: 0
             }
         }
     }
@@ -177,11 +266,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
         if (isNetworkAvailable()) {
             toggleLoader(true)
             documentViewModel.callUploadAndShareDocumentApi(
-                request = UploadAndShareDocumentRequestModel(
-                    document_file = "",
-                    report_name_id = 0,
-                    doctor_uids = arrayListOf()
-                )
+                getUploadAndShareDocumentRequestModel()
             )
         } else {
             showToast(getString(R.string.please_check_your_internet_connection))
@@ -276,10 +361,10 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
         binding.apply {
             intent.extras?.run {
                 isFromAddDocument = getBoolean(Constants.IsFromAdd)
-                doctorList =
-                    getSerializable(Constants.DoctorsList) as ArrayList<ForwardDocumentModel>
                 pendingDocName = getString(Constants.PendingDocumentName).toString()
                 pendingDocBy = getString(Constants.PendingDocumentBy).toString()
+                pendingDocGuid = getString(Constants.PendingDocumentGuid).toString()
+                selectedDocumentId = getInt(Constants.PendingDocumentId)
                 setUpView()
             }
         }
@@ -292,6 +377,8 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
             } else {
                 etDocumentName.setText(pendingDocName)
                 hintSelectDoctor.visibility = INVISIBLE
+                selectedDoctorUids.clear()
+                selectedDoctorUids.add(pendingDocGuid)
                 val chip = layoutInflater.inflate(R.layout.layout_chip, chipsDoctors, false) as Chip
                 chip.apply {
                     text = pendingDocBy
@@ -318,19 +405,19 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
         bottomSheetDialog.setContentView(view)
         bottomSheetDialog.setCancelable(true)
         bottomSheetForwardDocBinding.apply {
-            unselectedDoctorsList = doctorList.filter {
-                !it.isSelected
-            } as ArrayList<ForwardDocumentModel>
+//            unselectedDoctorsList = doctorList.filter {
+//                !it.isSelected
+//            } as ArrayList<ForwardDocumentModel>
             doctorListAdapter = ForwardDocAdapter(
                 this@UploadDocumentsActivity,
-                unselectedDoctorsList,
+                doctorList,
                 listener = this@UploadDocumentsActivity
             )
             recyclerAttendanceHistory.adapter = doctorListAdapter
             btnShare.text = getString(R.string._continue)
             btnShare.setOnClickListener {
                 doctorListAdapter.notifyDataSetChanged()
-                val checkSelected = unselectedDoctorsList.find {
+                val checkSelected = doctorList.find {
                     it.isSelected
                 }
                 if (checkSelected != null) {
@@ -343,6 +430,10 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                 }
             }
             imgClose.setOnClickListener {
+                for (i in doctorList){
+                    i.isSelected = false
+                }
+                doctorListAdapter.notifyDataSetChanged()
                 bottomSheetDialog.dismiss()
             }
         }
@@ -351,13 +442,15 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
 
     private fun setUpSelectedDoctorsChips() {
         binding.apply {
-            val selectedDoctors = unselectedDoctorsList.filter {
+            chipsDoctors.removeAllViews()
+            val selectedDoctors = doctorList.filter {
                 it.isSelected
             }
             for (i in selectedDoctors) {
                 val chip = layoutInflater.inflate(R.layout.layout_chip, chipsDoctors, false) as Chip
                 chip.apply {
                     text = i.title
+                    tag = i.guid
                     chipIcon =
                         ContextCompat.getDrawable(
                             this@UploadDocumentsActivity,
@@ -368,7 +461,13 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                         val c = it as Chip
                         if (chipsDoctors.isEmpty()) {
                             hintSelectDoctor.visibility = VISIBLE
-                            unselectedDoctorsList = doctorList
+                        }
+                        val list = doctorList.find {
+                            it.guid?.equals(c.tag) == true
+                        }
+                        if (list != null){
+                            val index = doctorList.indexOf(list)
+                            doctorList[index].isSelected = false
                         }
                     }
                 }
@@ -392,7 +491,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
     }
 
     override fun onItemClick(position: Int) {
-        unselectedDoctorsList[position].isSelected = !unselectedDoctorsList[position].isSelected
+        doctorList[position].isSelected = !doctorList[position].isSelected
         doctorListAdapter.notifyItemChanged(position)
     }
 }

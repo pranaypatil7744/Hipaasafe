@@ -182,14 +182,18 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                 DocumentsModel(
                     documentItemType = DocumentItemType.ITEM_PENDING_DOC,
                     title = "Blood Count Report Required",
-                    subTitle = "Dr Puroshottam Jangid"
+                    subTitle = "Dr Puroshottam Jangid",
+                    uploadDocumentId = 7,
+                    guid = "1234"
                 )
             )
             documentsList.add(
                 DocumentsModel(
                     documentItemType = DocumentItemType.ITEM_PENDING_DOC,
                     title = "X-Ray Chest Report Required",
-                    subTitle = "Dr Puroshottam Jangid"
+                    subTitle = "Dr Puroshottam Jangid",
+                    uploadDocumentId = 8,
+                    guid = "1234"
                 )
             )
             if (::documentAdapter.isInitialized) {
@@ -234,7 +238,6 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         val i = Intent(requireContext(), UploadDocumentsActivity::class.java)
         val bundle = Bundle()
         bundle.putBoolean(Constants.IsFromAdd, true)
-        bundle.putSerializable(Constants.DoctorsList, doctorList)
         i.putExtras(bundle)
         startActivity(i)
     }
@@ -249,7 +252,8 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         bundle.putBoolean(Constants.IsFromAdd, false)
         bundle.putString(Constants.PendingDocumentName, documentsList[position].title)
         bundle.putString(Constants.PendingDocumentBy, documentsList[position].subTitle)
-        bundle.putSerializable(Constants.DoctorsList, doctorList)
+        bundle.putString(Constants.PendingDocumentGuid, documentsList[position].guid)
+        bundle.putInt(Constants.PendingDocumentId, documentsList[position].uploadDocumentId)
         i.putExtras(bundle)
         startActivity(i)
     }

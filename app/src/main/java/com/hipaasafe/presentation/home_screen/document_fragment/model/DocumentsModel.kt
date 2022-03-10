@@ -6,6 +6,8 @@ data class DocumentsModel(
     var documentItemType: DocumentItemType,
     var title:String? = "",
     var subTitle:String? = "",
+    var guid:String? ="",
+    var uploadDocumentId:Int =0,
 ):Serializable
 enum class DocumentItemType(val value:Int){
     ITEM_ADD_DOC(1),

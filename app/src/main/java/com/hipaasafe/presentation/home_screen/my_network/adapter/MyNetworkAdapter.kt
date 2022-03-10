@@ -10,6 +10,7 @@ import com.hipaasafe.R
 import com.hipaasafe.databinding.ItemMyNetworkBinding
 import com.hipaasafe.presentation.home_screen.my_network.model.DoctorModel
 import com.hipaasafe.utils.AppUtils
+import com.hipaasafe.utils.ImageUtils
 
 class MyNetworkAdapter(
     val context: Context, private val myNetworkList: ArrayList<DoctorModel>,
@@ -33,7 +34,7 @@ class MyNetworkAdapter(
                 data.location,
                 data.experience
             )
-            imgProfile.setImageResource(R.drawable.ic_default_profile_picture)
+            ImageUtils.INSTANCE?.loadRemoteImageForGroupProfile(imgProfile,data.avatar)
             if (myNetworkList.size - 1 == position) {
                 devider.visibility = GONE
             } else {
