@@ -1,4 +1,4 @@
-package com.hipaasafe.presentation.help
+package com.hipaasafe.presentation.help.model
 
 data class HelpModel(
     var icon: Int? = 0,

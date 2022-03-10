@@ -1,8 +1,6 @@
 package com.hipaasafe.data.repository
 
 import com.hipaasafe.data.source.remote.ApiService
-import com.hipaasafe.domain.model.LoginRequestModel
-import com.hipaasafe.domain.model.LoginResponseModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpRequestModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpResponseModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpRequestModel

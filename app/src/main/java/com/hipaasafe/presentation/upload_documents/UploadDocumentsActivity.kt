@@ -18,6 +18,7 @@ import com.hipaasafe.databinding.BottomSheetAddPhotoBinding
 import com.hipaasafe.databinding.BottomsheetForwardDocBinding
 import com.hipaasafe.domain.model.reports.GetReportsListRequestModel
 import com.hipaasafe.domain.model.reports.ReportsDataModel
+import com.hipaasafe.domain.model.reports.UploadAndShareDocumentRequestModel
 import com.hipaasafe.domain.model.reports.UploadReportFileRequestModel
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.ForwardDocAdapter
 import com.hipaasafe.presentation.home_screen.document_fragment.model.ForwardDocumentModel
@@ -83,6 +84,18 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                     toggleLoader(false)
                     if (it.success == true) {
                         showToast(it.data?.uploaded_file.toString())
+                    } else {
+                        showToast(it.message.toString())
+                    }
+                }
+                uploadAndShareDocumentResponseData.observe(this@UploadDocumentsActivity) {
+                    toggleLoader(false)
+                    if (it.success == true) {
+                        if (isFromAddDocument) {
+                            finish()
+                        } else {
+
+                        }
                     } else {
                         showToast(it.message.toString())
                     }
@@ -153,6 +166,21 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                 request =
                 UploadReportFileRequestModel(
                     user_reports = File(uploadDocPath), fileName = fileName
+                )
+            )
+        } else {
+            showToast(getString(R.string.please_check_your_internet_connection))
+        }
+    }
+
+    private fun callUploadAndShareDocumentApi() {
+        if (isNetworkAvailable()) {
+            toggleLoader(true)
+            documentViewModel.callUploadAndShareDocumentApi(
+                request = UploadAndShareDocumentRequestModel(
+                    document_file = "",
+                    report_name_id = 0,
+                    doctor_uids = arrayListOf()
                 )
             )
         } else {

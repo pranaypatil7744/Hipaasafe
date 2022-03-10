@@ -1,17 +1,14 @@
 package com.hipaasafe.data.repository
 
 import com.hipaasafe.data.source.remote.ApiService
-import com.hipaasafe.domain.model.reports.GetReportsListRequestModel
-import com.hipaasafe.domain.model.reports.GetReportsListResponseModel
-import com.hipaasafe.domain.model.reports.UploadReportFileRequestModel
-import com.hipaasafe.domain.model.reports.UploadReportFileResponseModel
-import com.hipaasafe.domain.repository.ReportsRepository
+import com.hipaasafe.domain.model.reports.*
+import com.hipaasafe.domain.repository.DocumentsRepository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.util.*
 
-class ReportsRepositoryImp constructor(private val apiService: ApiService) : ReportsRepository {
+class DocumentsRepositoryImp constructor(private val apiService: ApiService) : DocumentsRepository {
     override suspend fun callGetReportsList(request: GetReportsListRequestModel): GetReportsListResponseModel {
         return apiService.callGetReportsList(request.page, request.limit)
     }
@@ -26,10 +23,14 @@ class ReportsRepositoryImp constructor(private val apiService: ApiService) : Rep
         val body = requestFile.let {
             MultipartBody.Part.createFormData(
                 "user_reports",
-                if (!request.user_reports.exists()) "" else ""+ Date().time+ request.fileName,
+                if (!request.user_reports.exists()) "" else "" + Date().time + request.fileName,
                 it
             )
         }
         return apiService.callUploadReportFileApi(body)
+    }
+
+    override suspend fun callUploadAndShareDocumentApi(request: UploadAndShareDocumentRequestModel): UploadAndShareDocumentResponseModel {
+        return apiService.callUploadAndShareDocumentApi(request)
     }
 }

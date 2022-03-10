@@ -16,5 +16,7 @@ class ApiNames {
         const val GetReportsList = "static/hospital-reports/list"
         const val GetMyDoctorsList = "query/patients/fetch/my-doctors"
         const val UploadReportFileApi = "user/test-reports/upload"
+        const val UploadAndShareDocumentApi = "documents/user/test-reports/add-new"
+        const val GetStaticDetailsApi = "static/common/get"
     }
 }

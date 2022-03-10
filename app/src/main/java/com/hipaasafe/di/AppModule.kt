@@ -1,5 +1,6 @@
 package com.hipaasafe.di
 
+import com.hipaasafe.presentation.help.HelpViewModel
 import com.hipaasafe.presentation.home_screen.appointment_fragment.AppointmentViewModel
 import com.hipaasafe.presentation.home_screen.my_network.MyNetworkViewModel
 import com.hipaasafe.presentation.login.LoginViewModel
@@ -14,7 +15,8 @@ val AppModule = module {
     viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
     viewModel { ProfileViewModel(get()) }
     viewModel { MyNetworkViewModel(get()) }
-    viewModel { DocumentViewModel(get(),get()) }
+    viewModel { HelpViewModel(get()) }
+    viewModel { DocumentViewModel(get(),get(),get()) }
     viewModel { AppointmentViewModel(get(), get()) }
 
     single { createLoginRepository(get(named("normalService"))) }
@@ -37,5 +39,9 @@ val AppModule = module {
     single { createReportsRepository(get(named("normalService"))) }
     single { createGetReportsUseCase(get()) }
     single { createUploadReportFileUseCase(get()) }
+    single { createUploadAndShareDocumentUseCase(get()) }
+
+    single { createStaticDetailsRepository(get(named("normalService"))) }
+    single { createStaticDetailsUseCase(get()) }
 
 }

@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hipaasafe.R
 import com.hipaasafe.databinding.ItemHelpBinding
 import com.hipaasafe.databinding.ItemHowCanHelpBinding
-import com.hipaasafe.presentation.help.HelpItemType
-import com.hipaasafe.presentation.help.HelpModel
+import com.hipaasafe.presentation.help.model.HelpItemType
+import com.hipaasafe.presentation.help.model.HelpModel
 
 class HelpAdapter(
     val context: Context,

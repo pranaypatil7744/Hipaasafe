@@ -7,6 +7,7 @@ class Constants {
         const val AUTHORITY = "com.hipaasafe.fileprovider"
         const val VIEW_ANIMATE_DURATION = 400L
         const val IS_LOGIN = "IS_LOGIN"
+        const val MOBILE = "MOBILE"
         const val SUCCESS = "SUCCESS"
         const val IS_DOCTOR_LOGIN = "IS_DOCTOR_LOGIN"
         const val LOGIN_WITH = "LOGIN_WITH"

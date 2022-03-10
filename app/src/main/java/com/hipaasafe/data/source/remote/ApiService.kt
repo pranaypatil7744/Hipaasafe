@@ -7,11 +7,13 @@ import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpRequestModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpResponseModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpRequestModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpResponseModel
-import com.hipaasafe.domain.model.get_doctors.GetDoctorsRequestModel
 import com.hipaasafe.domain.model.get_doctors.GetDoctorsResponseModel
 import com.hipaasafe.domain.model.patient_login.*
 import com.hipaasafe.domain.model.reports.GetReportsListResponseModel
+import com.hipaasafe.domain.model.reports.UploadAndShareDocumentRequestModel
+import com.hipaasafe.domain.model.reports.UploadAndShareDocumentResponseModel
 import com.hipaasafe.domain.model.reports.UploadReportFileResponseModel
+import com.hipaasafe.domain.model.static_details.GetStaticDetailsResponseModel
 import com.hipaasafe.presentation.profile_edit_details.model.ProfileEditRequestModel
 import com.hipaasafe.presentation.profile_edit_details.model.ProfileEditResponseModel
 import okhttp3.MultipartBody
@@ -65,8 +67,11 @@ interface ApiService {
         @Part user_reports:MultipartBody.Part
     ):UploadReportFileResponseModel
 
+    @POST(ApiNames.UploadAndShareDocumentApi)
+    suspend fun callUploadAndShareDocumentApi(@Body request:UploadAndShareDocumentRequestModel):UploadAndShareDocumentResponseModel
 
-
+    @GET(ApiNames.GetStaticDetailsApi)
+    suspend fun callStaticDetailsApi():GetStaticDetailsResponseModel
 
 
 

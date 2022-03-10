@@ -14,8 +14,10 @@ import com.hipaasafe.domain.usecase.appointment.ModifyAppointmentUseCase
 import com.hipaasafe.domain.usecase.doctors.GetDoctorsUseCase
 import com.hipaasafe.domain.usecase.login.*
 import com.hipaasafe.domain.usecase.profile.PatientUpdateProfileUseCase
-import com.hipaasafe.domain.usecase.reports.GetReportsUseCase
-import com.hipaasafe.domain.usecase.reports.UploadReportsFileUseCase
+import com.hipaasafe.domain.usecase.documents.GetReportsUseCase
+import com.hipaasafe.domain.usecase.documents.UploadAndShareDocumentUseCase
+import com.hipaasafe.domain.usecase.documents.UploadReportsFileUseCase
+import com.hipaasafe.domain.usecase.static_details.StaticDetailsUseCase
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -164,14 +166,26 @@ fun createGetDoctorsUseCase(doctorsRepository: DoctorsRepository): GetDoctorsUse
     return GetDoctorsUseCase(doctorsRepository)
 }
 
-fun createReportsRepository(apiService: ApiService): ReportsRepository {
-    return ReportsRepositoryImp(apiService)
+fun createReportsRepository(apiService: ApiService): DocumentsRepository {
+    return DocumentsRepositoryImp(apiService)
 }
 
-fun createGetReportsUseCase(reportsRepository: ReportsRepository): GetReportsUseCase {
-    return GetReportsUseCase(reportsRepository)
+fun createGetReportsUseCase(documentsRepository: DocumentsRepository): GetReportsUseCase {
+    return GetReportsUseCase(documentsRepository)
 }
 
-fun createUploadReportFileUseCase(reportsRepository: ReportsRepository): UploadReportsFileUseCase {
-    return UploadReportsFileUseCase(reportsRepository)
+fun createUploadReportFileUseCase(documentsRepository: DocumentsRepository): UploadReportsFileUseCase {
+    return UploadReportsFileUseCase(documentsRepository)
+}
+
+fun createUploadAndShareDocumentUseCase(documentsRepository: DocumentsRepository): UploadAndShareDocumentUseCase {
+    return UploadAndShareDocumentUseCase(documentsRepository)
+}
+
+fun createStaticDetailsRepository(apiService: ApiService): StaticDetailsRepository {
+    return StaticDetailsRepositoryImp(apiService)
+}
+
+fun createStaticDetailsUseCase(staticDetailsRepository: StaticDetailsRepository): StaticDetailsUseCase {
+    return StaticDetailsUseCase(staticDetailsRepository)
 }
