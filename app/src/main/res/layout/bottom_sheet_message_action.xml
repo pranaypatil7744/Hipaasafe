@@ -37,8 +37,8 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/btnClose"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_marginEnd="15dp"
                 android:src="@drawable/ic_close"
                 app:layout_constraintBottom_toBottomOf="@id/tvAction"

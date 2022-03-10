@@ -1573,9 +1573,9 @@ class MainCometChatActivity : BaseActivity(),
 
     private fun setUpToolbar() {
         binding.toolbar.apply {
-            setSupportActionBar(toolbarChat)
-            toolbarChat.overflowIcon =
-                ContextCompat.getDrawable(this@MainCometChatActivity, R.drawable.ic_more)
+//            setSupportActionBar(toolbarChat)
+//            toolbarChat.overflowIcon =
+//                ContextCompat.getDrawable(this@MainCometChatActivity, R.drawable.ic_more)
             tvChatName.text = chatName
             toolbarIcon1.setImageResource(R.drawable.img_audio_call)
             toolbarIcon2.setImageResource(R.drawable.img_video_call)
@@ -1641,10 +1641,10 @@ class MainCometChatActivity : BaseActivity(),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.menu_group_info -> {
-
-                true
-            }
+//            R.id.menu_group_info -> {
+//
+//                true
+//            }
             R.id.menu_view_contact -> {
 
                 true
@@ -1821,7 +1821,7 @@ class MainCometChatActivity : BaseActivity(),
                     tvReplyMsg.visibility = VISIBLE
                     tvCopyMsg.visibility = VISIBLE
                     tvForwardMsg.visibility = VISIBLE
-                    tvShareOnEfax.visibility = VISIBLE
+//                    tvShareOnEfax.visibility = VISIBLE
                     tvShareMsg.visibility = VISIBLE
                     if (isGroup) {
                         // todo add send privately,reply privately
@@ -1831,7 +1831,7 @@ class MainCometChatActivity : BaseActivity(),
                     tvReplyMsg.visibility = VISIBLE
                     tvCopyMsg.visibility = VISIBLE
                     tvForwardMsg.visibility = VISIBLE
-                    tvShareOnEfax.visibility = VISIBLE
+//                    tvShareOnEfax.visibility = VISIBLE
                     tvShareMsg.visibility = VISIBLE
                     tvEditMsg.visibility = VISIBLE
                     tvDelete.visibility = VISIBLE
@@ -1844,7 +1844,7 @@ class MainCometChatActivity : BaseActivity(),
                     tvReplyMsg.visibility = VISIBLE
                     tvCopyMsg.visibility = VISIBLE
                     tvForwardMsg.visibility = VISIBLE
-                    tvShareOnEfax.visibility = VISIBLE
+//                    tvShareOnEfax.visibility = VISIBLE
                     tvShareMsg.visibility = VISIBLE
                     if (isGroup) {
                         // todo add send privately,reply privately
@@ -1855,7 +1855,7 @@ class MainCometChatActivity : BaseActivity(),
                     tvReplyMsg.visibility = VISIBLE
                     tvCopyMsg.visibility = VISIBLE
                     tvForwardMsg.visibility = VISIBLE
-                    tvShareOnEfax.visibility = VISIBLE
+//                    tvShareOnEfax.visibility = VISIBLE
                     tvShareMsg.visibility = VISIBLE
                     tvDelete.visibility = VISIBLE
                     if (isGroup) {
@@ -1867,7 +1867,7 @@ class MainCometChatActivity : BaseActivity(),
                 LEFT_IMAGE_MESSAGE -> {
                     tvReplyMsg.visibility = VISIBLE
                     tvForwardMsg.visibility = VISIBLE
-                    tvShareOnEfax.visibility = VISIBLE
+//                    tvShareOnEfax.visibility = VISIBLE
                     tvShareMsg.visibility = VISIBLE
                     if (isGroup) {
                         // todo add send privately,reply privately
@@ -1876,7 +1876,7 @@ class MainCometChatActivity : BaseActivity(),
                 RIGHT_IMAGE_MESSAGE -> {
                     tvReplyMsg.visibility = VISIBLE
                     tvForwardMsg.visibility = VISIBLE
-                    tvShareOnEfax.visibility = VISIBLE
+//                    tvShareOnEfax.visibility = VISIBLE
                     tvShareMsg.visibility = VISIBLE
                     tvDelete.visibility = VISIBLE
                     if (isGroup) {
@@ -1905,7 +1905,7 @@ class MainCometChatActivity : BaseActivity(),
                 LEFT_FILE_MESSAGE -> {
                     tvReplyMsg.visibility = VISIBLE
                     tvForwardMsg.visibility = VISIBLE
-                    tvShareOnEfax.visibility = VISIBLE
+//                    tvShareOnEfax.visibility = VISIBLE
                     tvShareMsg.visibility = VISIBLE
                     if (isGroup) {
                         // todo add send privately,reply privately
@@ -1914,7 +1914,7 @@ class MainCometChatActivity : BaseActivity(),
                 RIGHT_FILE_MESSAGE -> {
                     tvReplyMsg.visibility = VISIBLE
                     tvForwardMsg.visibility = VISIBLE
-                    tvShareOnEfax.visibility = VISIBLE
+//                    tvShareOnEfax.visibility = VISIBLE
                     tvShareMsg.visibility = VISIBLE
                     tvDelete.visibility = VISIBLE
                     if (isGroup) {

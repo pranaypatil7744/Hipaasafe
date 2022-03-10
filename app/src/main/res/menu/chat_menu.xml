@@ -7,10 +7,10 @@
 <!--        android:title="@string/export_chats"-->
 <!--        app:showAsAction="never" />-->
 
-    <item
-        android:id="@+id/menu_group_info"
-        android:title="@string/menu_group_info"
-        app:showAsAction="never" />
+<!--    <item-->
+<!--        android:id="@+id/menu_group_info"-->
+<!--        android:title="@string/menu_group_info"-->
+<!--        app:showAsAction="never" />-->
 
     <item
         android:id="@+id/menu_delete_group"

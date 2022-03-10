@@ -472,6 +472,7 @@ class ForwardMessageActivity : BaseActivity(), GroupChatListAdapter.ChatListClic
     private fun setUpToolbar() {
         binding.toolbar.apply {
             tvTitle.text = getString(R.string.forward_message)
+            tvDate.visibility = GONE
             btnBack.visibility = VISIBLE
             btnBack.setOnClickListener {
                 finish()

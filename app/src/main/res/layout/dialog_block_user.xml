@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:cardCornerRadius="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="302dp"
         android:layout_height="wrap_content">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/btnClose"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             app:srcCompat="@drawable/ic_close"
             app:tint="@color/heather"
             android:layout_margin="10dp"
@@ -46,7 +46,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTitleSub"
-            style="@style/metropolis_regular_small"
+            style="@style/metropolis_regular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -61,7 +61,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnBlock"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:textColor="@color/monza"
             android:text="@string/block"
             style="@style/MaterialButtonBaseStyle"
@@ -70,7 +70,8 @@
             app:strokeWidth="0.5dp"
             android:layout_marginHorizontal="50dp"
             app:strokeColor="@color/heather"
-            android:layout_marginVertical="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="25dp"
             app:backgroundTint="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -17,8 +17,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgProfile"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -48,11 +48,11 @@
             style="@style/metropolis_regular_x_small"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:layout_marginEnd="5dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="@color/heather"
+            android:textColor="@color/gray"
             app:layout_constraintEnd_toStartOf="@+id/btnChat"
             app:layout_constraintStart_toStartOf="@+id/tvName"
             app:layout_constraintTop_toBottomOf="@+id/tvName"
@@ -64,6 +64,8 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:text="@string/chat"
+            android:fontFamily="@font/metropolis_regular"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
