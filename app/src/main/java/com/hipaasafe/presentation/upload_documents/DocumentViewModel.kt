@@ -6,24 +6,39 @@ import androidx.lifecycle.viewModelScope
 import com.hipaasafe.domain.exception.ApiError
 import com.hipaasafe.domain.model.documents.*
 import com.hipaasafe.domain.usecase.base.UseCaseResponse
-import com.hipaasafe.domain.usecase.documents.FetchReportsUseCase
-import com.hipaasafe.domain.usecase.documents.GetReportsUseCase
-import com.hipaasafe.domain.usecase.documents.UploadAndShareDocumentUseCase
-import com.hipaasafe.domain.usecase.documents.UploadReportsFileUseCase
+import com.hipaasafe.domain.usecase.documents.*
 
 class DocumentViewModel constructor(
     private val getReportsUseCase: GetReportsUseCase,
     private val uploadReportsFileUseCase: UploadReportsFileUseCase,
     private val uploadAndShareDocumentUseCase: UploadAndShareDocumentUseCase,
-    private val fetchReportsUseCase: FetchReportsUseCase
+    private val fetchReportsUseCase: FetchReportsUseCase,
+    private val shareDocumentUseCase: ShareDocumentUseCase
 ) :
     ViewModel() {
     val getReportsListResponseData = MutableLiveData<GetReportsListResponseModel>()
     val uploadReportFileResponseData = MutableLiveData<UploadReportFileResponseModel>()
     val uploadAndShareDocumentResponseData = MutableLiveData<UploadAndShareDocumentResponseModel>()
     val fetchReportsResponseData = MutableLiveData<FetchReportsResponseModel>()
+    val shareReportsResponseData = MutableLiveData<ShareDocumentResponseModel>()
     val messageData = MutableLiveData<String>()
 
+
+    fun callShareReportsApi(request: ShareDocumentRequestModel) {
+        shareDocumentUseCase.invoke(
+            viewModelScope,
+            request,
+            object : UseCaseResponse<ShareDocumentResponseModel> {
+                override fun onSuccess(result: ShareDocumentResponseModel) {
+                    shareReportsResponseData.value = result
+                }
+
+                override fun onError(apiError: ApiError?) {
+                    messageData.value = apiError?.message
+                }
+
+            })
+    }
 
     fun callFetchReportsApi() {
         fetchReportsUseCase.invoke(

@@ -16,7 +16,7 @@ val AppModule = module {
     viewModel { ProfileViewModel(get(),get()) }
     viewModel { MyNetworkViewModel(get()) }
     viewModel { HelpViewModel(get()) }
-    viewModel { DocumentViewModel(get(),get(),get(),get()) }
+    viewModel { DocumentViewModel(get(),get(),get(),get(),get()) }
     viewModel { AppointmentViewModel(get(), get()) }
 
     single { createLoginRepository(get(named("normalService"))) }

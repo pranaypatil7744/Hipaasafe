@@ -13,6 +13,7 @@ import com.hipaasafe.R
 import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.BottomsheetForwardDocBinding
 import com.hipaasafe.databinding.FragmentDocumentBinding
+import com.hipaasafe.domain.model.documents.ShareDocumentRequestModel
 import com.hipaasafe.domain.model.get_doctors.GetDoctorsRequestModel
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.DocumentAdapter
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.ForwardDocAdapter
@@ -36,7 +37,8 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     private var doctorList: ArrayList<ForwardDocumentModel> = ArrayList()
     lateinit var bottomSheetForwardDocBinding: BottomsheetForwardDocBinding
     private val myNetworkViewModel: MyNetworkViewModel by viewModel()
-    private val documentViewModel:DocumentViewModel by viewModel()
+    private val documentViewModel: DocumentViewModel by viewModel()
+    var selectedItemPosition: Int = 0
 
     companion object {
         fun newInstance(): DocumentFragment {
@@ -63,10 +65,10 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
 
     private fun callFetchReportsApi() {
         binding.apply {
-            if (requireContext().isNetworkAvailable()){
+            if (requireContext().isNetworkAvailable()) {
                 toggleLoader(true)
                 documentViewModel.callFetchReportsApi()
-            }else{
+            } else {
                 showToast(getString(R.string.please_check_your_internet_connection))
             }
         }
@@ -127,10 +129,10 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                 }
             }
 
-            with(documentViewModel){
-                fetchReportsResponseData.observe(requireActivity()){
+            with(documentViewModel) {
+                fetchReportsResponseData.observe(requireActivity()) {
                     toggleLoader(false)
-                    if (it.success == true){
+                    if (it.success == true) {
                         documentsList.clear()
                         documentsList.add(
                             DocumentsModel(
@@ -140,12 +142,13 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                             )
                         )
                         val data = it.data
-                        if (data?.documents?.size != 0){
-                            for (i in it.data?.documents?: arrayListOf()){
+                        if (data?.documents?.size != 0) {
+                            for (i in it.data?.documents ?: arrayListOf()) {
                                 documentsList.add(
                                     DocumentsModel(
                                         documentItemType = DocumentItemType.ITEM_UPLOADED_DOC,
-                                        title = i.document_file
+                                        title = i.document_file,
+                                        uploadDocumentId = i.report_name_id ?: 0
                                     )
                                 )
                             }
@@ -162,14 +165,14 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                             )
                         )
 
-                        if (data?.documents_request?.size != 0){
-                            for (i in data?.documents_request?: arrayListOf()){
+                        if (data?.documents_request?.size != 0) {
+                            for (i in data?.documents_request ?: arrayListOf()) {
                                 documentsList.add(
                                     DocumentsModel(
                                         documentItemType = DocumentItemType.ITEM_PENDING_DOC,
                                         title = i.hospital_tests.title,
                                         subTitle = "Dr Puroshottam Jangid",
-                                        uploadDocumentId = i.hospital_tests.id?:0,
+                                        uploadDocumentId = i.hospital_tests.id ?: 0,
                                         guid = i.assignee_id
                                     )
                                 )
@@ -178,9 +181,22 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                         if (::documentAdapter.isInitialized) {
                             documentAdapter.notifyDataSetChanged()
                         }
-                    }else{
+                    } else {
                         showToast(it.message.toString())
                     }
+                }
+
+                shareReportsResponseData.observe(requireActivity()) {
+                    if (it.success == true) {
+
+                    } else {
+                        showToast(it.message.toString())
+                    }
+                }
+
+                messageData.observe(requireActivity()) {
+                    toggleLoader(false)
+                    showToast(it.toString())
                 }
             }
         }
@@ -206,7 +222,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
             recyclerAttendanceHistory.adapter = forwardDocAdapter
             imgClose.setOnClickListener {
                 bottomSheetDialog.dismiss()
-                for (i in doctorList){
+                for (i in doctorList) {
                     i.isSelected = false
                 }
                 forwardDocAdapter.notifyDataSetChanged()
@@ -217,7 +233,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                 }
                 if (checkSelected != null) {
                     bottomSheetDialog.dismiss()
-
+                    callShareReportApi()
                 } else {
                     showToast(getString(R.string.please_select_at_least_1_doctor))
                 }
@@ -226,13 +242,42 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         bottomSheetDialog.show()
     }
 
-    private val uploadReportResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        if(it.resultCode == Activity.RESULT_OK){
-            callFetchReportsApi()
+    private fun getShareReportRequestModel(): ShareDocumentRequestModel {
+        val selectedDoctorsIds: ArrayList<String> = ArrayList()
+        val list = doctorList.filter {
+            it.isSelected
+        }
+        if (list.isNotEmpty()) {
+            for (i in list) {
+                selectedDoctorsIds.add(i.guid.toString())
+            }
+        }
+        val request = ShareDocumentRequestModel()
+        request.document_id = documentsList[selectedItemPosition].uploadDocumentId
+        request.doctor_uids = selectedDoctorsIds
+        return request
+    }
+
+    private fun callShareReportApi() {
+        binding.apply {
+            if (requireContext().isNetworkAvailable()) {
+                toggleLoader(true)
+                documentViewModel.callShareReportsApi(getShareReportRequestModel())
+            } else {
+                showToast(getString(R.string.please_check_your_internet_connection))
+            }
         }
     }
 
+    private val uploadReportResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                callFetchReportsApi()
+            }
+        }
+
     override fun clickOnAddDocument(position: Int) {
+        selectedItemPosition = position
         val i = Intent(requireContext(), UploadDocumentsActivity::class.java)
         val bundle = Bundle()
         bundle.putBoolean(Constants.IsFromAdd, true)
@@ -241,10 +286,12 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     }
 
     override fun clickOnForwardDoc(position: Int) {
+        selectedItemPosition = position
         openForwardListBottomSheet()
     }
 
     override fun clickOnPendingDoc(position: Int) {
+        selectedItemPosition = position
         val i = Intent(requireContext(), UploadDocumentsActivity::class.java)
         val bundle = Bundle()
         bundle.putBoolean(Constants.IsFromAdd, false)
