@@ -19,7 +19,8 @@ data class UploadedDocuments(
     var is_active: Boolean? = null,
     var createdAt: String? = "",
     var updatedAt: String? = "",
-)
+    var hospital_tests: ReportDataModel = ReportDataModel(),
+    )
 
 data class RequestedDocuments(
     var id: Int? = 0,
@@ -30,7 +31,12 @@ data class RequestedDocuments(
     var createdAt: String? = "",
     var updatedAt: String? = "",
     var hospital_tests: ReportDataModel = ReportDataModel(),
-    var assignee: String? = "",
+    var assignee: AssigneeDataModel = AssigneeDataModel()
+)
+
+data class AssigneeDataModel(
+    var uid:String? = "",
+    var name:String? =""
 )
 
 data class ReportDataModel(

@@ -147,7 +147,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                                 documentsList.add(
                                     DocumentsModel(
                                         documentItemType = DocumentItemType.ITEM_UPLOADED_DOC,
-                                        title = i.document_file,
+                                        title = i.hospital_tests.title,
                                         uploadDocumentId = i.report_name_id ?: 0
                                     )
                                 )
@@ -171,7 +171,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                                     DocumentsModel(
                                         documentItemType = DocumentItemType.ITEM_PENDING_DOC,
                                         title = i.hospital_tests.title,
-                                        subTitle = "Dr Puroshottam Jangid",
+                                        subTitle = i.assignee.name,
                                         uploadDocumentId = i.hospital_tests.id ?: 0,
                                         guid = i.assignee_id
                                     )
