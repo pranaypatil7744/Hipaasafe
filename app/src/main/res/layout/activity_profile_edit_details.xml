@@ -104,6 +104,7 @@
                     android:imeOptions="actionDone"
                     android:inputType="textEmailAddress"
                     android:padding="18dp"
+                    android:enabled="false"
                     android:singleLine="true"
                     android:textColor="@color/codGray"
                     tools:text="shohebchouhan12_gmail_com" />
@@ -150,6 +151,7 @@
                     android:inputType="number"
                     android:maxLength="15"
                     android:padding="18dp"
+                    android:enabled="false"
                     android:singleLine="true"
                     android:textColor="@color/codGray"
                     android:textColorHint="@color/heather"

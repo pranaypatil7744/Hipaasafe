@@ -67,34 +67,34 @@ class ProfileViewModel constructor(
             )
             return
         }
-        if (request.email.isNullOrEmpty()) {
-            validationListener?.onValidationFailure(
-                Constants.ErrorMsg.EMAIL_ERROR,
-                R.string.please_enter_email_id
-            )
-            return
-        }
-        if (AppUtils.INSTANCE?.isValidEmail(request.email) == false) {
-            validationListener?.onValidationFailure(
-                Constants.ErrorMsg.EMAIL_ERROR,
-                R.string.please_enter_valid_email_id
-            )
-            return
-        }
-        if (request.number.isNullOrEmpty()) {
-            validationListener?.onValidationFailure(
-                Constants.ErrorMsg.MOBILE_ERROR,
-                R.string.please_enter_mobile_number
-            )
-            return
-        }
-        if (request.number.toString().length < 6) {
-            validationListener?.onValidationFailure(
-                Constants.ErrorMsg.MOBILE_ERROR,
-                R.string.please_enter_valid_mobile_number
-            )
-            return
-        }
+//        if (request.email.isNullOrEmpty()) {
+//            validationListener?.onValidationFailure(
+//                Constants.ErrorMsg.EMAIL_ERROR,
+//                R.string.please_enter_email_id
+//            )
+//            return
+//        }
+//        if (AppUtils.INSTANCE?.isValidEmail(request.email) == false) {
+//            validationListener?.onValidationFailure(
+//                Constants.ErrorMsg.EMAIL_ERROR,
+//                R.string.please_enter_valid_email_id
+//            )
+//            return
+//        }
+//        if (request.number.isNullOrEmpty()) {
+//            validationListener?.onValidationFailure(
+//                Constants.ErrorMsg.MOBILE_ERROR,
+//                R.string.please_enter_mobile_number
+//            )
+//            return
+//        }
+//        if (request.number.toString().length < 6) {
+//            validationListener?.onValidationFailure(
+//                Constants.ErrorMsg.MOBILE_ERROR,
+//                R.string.please_enter_valid_mobile_number
+//            )
+//            return
+//        }
         if (request.age.isNullOrEmpty()) {
             validationListener?.onValidationFailure(
                 Constants.ErrorMsg.AGE_ERROR,

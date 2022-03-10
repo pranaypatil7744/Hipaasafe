@@ -31,7 +31,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvReplyMsgTitle"
-                style="@style/metropolis_regular_xx_small"
+                style="@style/metropolis_regular_x_small"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"

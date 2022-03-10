@@ -57,9 +57,9 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                         val data = getProfileEditDetailsModel()
                         preferenceUtils.apply {
                             setValue(Constants.PreferenceKeys.name, data.name)
-                            setValue(Constants.PreferenceKeys.email, data.email)
-                            setValue(Constants.PreferenceKeys.country_code, data.country_code)
-                            setValue(Constants.PreferenceKeys.number, data.number)
+//                            setValue(Constants.PreferenceKeys.email, data.email)
+//                            setValue(Constants.PreferenceKeys.country_code, data.country_code)
+//                            setValue(Constants.PreferenceKeys.number, data.number)
                             setValue(Constants.PreferenceKeys.age, data.age)
                             finish()
                         }
@@ -87,23 +87,27 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
     private fun setUpCountryCodes() {
         selectedCountryCode = preferenceUtils.getValue(Constants.PreferenceKeys.country_code)
         binding.apply {
-            countryList.addAll(
-                AppUtils.INSTANCE?.getCountriesList(this@ProfileEditDetailsActivity) ?: ArrayList()
-            )
-            val adapterCodes =
-                ArrayAdapter<String>(
-                    this@ProfileEditDetailsActivity,
-                    android.R.layout.simple_list_item_1,
-                    countryList.map { it ->
-                        it.dial_code
-                    })
+//            countryList.addAll(
+//                AppUtils.INSTANCE?.getCountriesList(this@ProfileEditDetailsActivity) ?: ArrayList()
+//            )
+//            val adapterCodes =
+//                ArrayAdapter<String>(
+//                    this@ProfileEditDetailsActivity,
+//                    android.R.layout.simple_list_item_1,
+//                    countryList.map { it ->
+//                        it.dial_code
+//                    })
+            val clist:ArrayList<String> = ArrayList()
+            clist.clear()
+            clist.add(selectedCountryCode)
+            val ad = ArrayAdapter<String>(this@ProfileEditDetailsActivity,android.R.layout.simple_list_item_1,clist)
 
-            spinnerCountryCode.adapter = adapterCodes
-            val usIndex = AppUtils.INSTANCE?.getCountryIndex(selectedCountryCode, countryList) ?: 0
-
-            if (usIndex > 0) {
-                spinnerCountryCode.setSelection(usIndex)
-            }
+            spinnerCountryCode.adapter = ad
+//            val usIndex = AppUtils.INSTANCE?.getCountryIndex(selectedCountryCode, countryList) ?: 0
+//
+//            if (usIndex > 0) {
+//                spinnerCountryCode.setSelection(usIndex)
+//            }
         }
     }
 
@@ -373,10 +377,10 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
         binding.apply {
             val request = ProfileEditRequestModel()
             request.name = edtName.text.toString().trim()
-            request.email = edtEmail.text.toString().trim()
-            request.number = etMobile.text.toString().trim()
+//            request.email = edtEmail.text.toString().trim()
+//            request.number = etMobile.text.toString().trim()
             request.age = etAge.text.toString().trim()
-            request.country_code = selectedCountryCode
+//            request.country_code = selectedCountryCode
             return request
         }
     }
