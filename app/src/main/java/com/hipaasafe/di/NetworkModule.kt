@@ -12,12 +12,10 @@ import com.hipaasafe.domain.repository.*
 import com.hipaasafe.domain.usecase.appointment.GetAppointmentsUseCase
 import com.hipaasafe.domain.usecase.appointment.ModifyAppointmentUseCase
 import com.hipaasafe.domain.usecase.doctors.GetDoctorsUseCase
-import com.hipaasafe.domain.usecase.documents.FetchReportsUseCase
+import com.hipaasafe.domain.usecase.documents.*
 import com.hipaasafe.domain.usecase.login.*
 import com.hipaasafe.domain.usecase.profile.PatientUpdateProfileUseCase
-import com.hipaasafe.domain.usecase.documents.GetReportsUseCase
-import com.hipaasafe.domain.usecase.documents.UploadAndShareDocumentUseCase
-import com.hipaasafe.domain.usecase.documents.UploadReportsFileUseCase
+import com.hipaasafe.domain.usecase.profile.UpdateProfilePicUseCase
 import com.hipaasafe.domain.usecase.static_details.StaticDetailsUseCase
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -143,6 +141,10 @@ fun createProfileRepository(apiService: ApiService): ProfileRepository {
     return ProfileRepositoryImp(apiService)
 }
 
+fun createUpdateProfilePicUseCase(profileRepository: ProfileRepository): UpdateProfilePicUseCase {
+    return UpdateProfilePicUseCase(profileRepository)
+}
+
 fun createPatientUpdateProfileUseCase(profileRepository: ProfileRepository): PatientUpdateProfileUseCase {
     return PatientUpdateProfileUseCase(profileRepository)
 }
@@ -173,6 +175,10 @@ fun createReportsRepository(apiService: ApiService): DocumentsRepository {
 
 fun createFetchReportsUseCase(documentsRepository: DocumentsRepository): FetchReportsUseCase {
     return FetchReportsUseCase(documentsRepository)
+}
+
+fun createShareReportsUseCase(documentsRepository: DocumentsRepository): ShareDocumentUseCase {
+    return ShareDocumentUseCase(documentsRepository)
 }
 
 fun createGetReportsUseCase(documentsRepository: DocumentsRepository): GetReportsUseCase {

@@ -9,18 +9,39 @@ import com.hipaasafe.domain.exception.ApiError
 import com.hipaasafe.domain.usecase.base.UseCase
 import com.hipaasafe.domain.usecase.base.UseCaseResponse
 import com.hipaasafe.domain.usecase.profile.PatientUpdateProfileUseCase
+import com.hipaasafe.domain.usecase.profile.UpdateProfilePicUseCase
 import com.hipaasafe.listener.ValidationListener
 import com.hipaasafe.presentation.profile_edit_details.model.ProfileEditRequestModel
 import com.hipaasafe.presentation.profile_edit_details.model.ProfileEditResponseModel
+import com.hipaasafe.presentation.profile_edit_details.model.ProfilePicUploadRequestModel
+import com.hipaasafe.presentation.profile_edit_details.model.ProfilePicUploadResponseModel
 import com.hipaasafe.utils.AppUtils
 
 class ProfileViewModel constructor(
-    private val patientUpdateProfileUseCase: PatientUpdateProfileUseCase
+    private val patientUpdateProfileUseCase: PatientUpdateProfileUseCase,
+    private val updateProfileUseCase: UpdateProfilePicUseCase
 ) : ViewModel() {
 
     var validationListener: ValidationListener? = null
     val patientUpdateProfileResponseData = MutableLiveData<ProfileEditResponseModel>()
+    val updateProfilePicResponseData = MutableLiveData<ProfilePicUploadResponseModel>()
     val messageData = MutableLiveData<String>()
+
+    fun callUpdateProfilePicApi(request: ProfilePicUploadRequestModel) {
+        updateProfileUseCase.invoke(
+            viewModelScope,
+            request,
+            object : UseCaseResponse<ProfilePicUploadResponseModel> {
+                override fun onSuccess(result: ProfilePicUploadResponseModel) {
+                    updateProfilePicResponseData.value = result
+                }
+
+                override fun onError(apiError: ApiError?) {
+                    messageData.value = apiError?.message
+                }
+
+            })
+    }
 
     fun callPatientUpdateProfileApi(request: ProfileEditRequestModel) {
         patientUpdateProfileUseCase.invoke(

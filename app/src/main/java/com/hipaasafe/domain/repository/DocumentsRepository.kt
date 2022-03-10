@@ -11,4 +11,6 @@ interface DocumentsRepository {
     suspend fun callUploadAndShareDocumentApi(request: UploadAndShareDocumentRequestModel): UploadAndShareDocumentResponseModel
 
     suspend fun callFetchReportsApi():FetchReportsResponseModel
+
+    suspend fun callShareDocumentApi(request:ShareDocumentRequestModel):ShareDocumentResponseModel
 }

@@ -5,7 +5,7 @@ import com.cometchat.pro.constants.CometChatConstants
 class Constants {
     companion object {
         const val AUTHORITY = "com.hipaasafe.fileprovider"
-        const val BASE_URL_PROFILE_PIC = "https://akbh.s3.ap-south-1.amazonaws.com/hs/avatar"
+        const val BASE_URL_PROFILE_PIC = "https://akbh.s3.ap-south-1.amazonaws.com/hs/avatar/"
         const val VIEW_ANIMATE_DURATION = 400L
         const val IS_LOGIN = "IS_LOGIN"
         const val MOBILE = "MOBILE"

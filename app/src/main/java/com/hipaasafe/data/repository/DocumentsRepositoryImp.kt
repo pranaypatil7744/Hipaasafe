@@ -37,4 +37,8 @@ class DocumentsRepositoryImp constructor(private val apiService: ApiService) : D
     override suspend fun callFetchReportsApi(): FetchReportsResponseModel {
         return apiService.callFetchReportsApi()
     }
+
+    override suspend fun callShareDocumentApi(request: ShareDocumentRequestModel): ShareDocumentResponseModel {
+        return apiService.callShareDocumentApi(request)
+    }
 }

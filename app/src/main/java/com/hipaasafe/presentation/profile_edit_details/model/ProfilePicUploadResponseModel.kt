@@ -13,5 +13,6 @@ data class DataProfileUpload(
 )
 
 data class ProfilePicUploadRequestModel(
-    var profile_pic: File
+    var profile_pic: File,
+    var fileName:String
 )

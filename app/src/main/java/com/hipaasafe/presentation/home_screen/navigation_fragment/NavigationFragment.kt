@@ -56,7 +56,6 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
     override fun onResume() {
         super.onResume()
         getPreferenceData()
-        setUpNavMenuList()
     }
 
     private fun getPreferenceData() {
@@ -64,6 +63,7 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
             name = preferenceUtils.getValue(Constants.PreferenceKeys.name)
             profile = preferenceUtils.getValue(Constants.PreferenceKeys.avatar)
             loginUserId = preferenceUtils.getValue(Constants.PreferenceKeys.role_id).toIntOrNull()?:0
+            setUpNavMenuList()
         }
     }
 
@@ -114,6 +114,9 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
                     title = getString(R.string.sign_out)
                 )
             )
+            if (::navAdapter.isInitialized){
+                navAdapter.notifyDataSetChanged()
+            }
         }
     }
 

@@ -13,6 +13,7 @@ import com.hipaasafe.domain.model.patient_login.*
 import com.hipaasafe.domain.model.static_details.GetStaticDetailsResponseModel
 import com.hipaasafe.presentation.profile_edit_details.model.ProfileEditRequestModel
 import com.hipaasafe.presentation.profile_edit_details.model.ProfileEditResponseModel
+import com.hipaasafe.presentation.profile_edit_details.model.ProfilePicUploadResponseModel
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
@@ -73,7 +74,14 @@ interface ApiService {
     @GET(ApiNames.FetchReportsDocumentListApi)
     suspend fun callFetchReportsApi():FetchReportsResponseModel
 
+    @POST(ApiNames.ShareDocumentApi)
+    suspend fun callShareDocumentApi(@Body request:ShareDocumentRequestModel):ShareDocumentResponseModel
 
+    @Multipart
+    @POST(ApiNames.UpdateProfilePic)
+    suspend fun callUpdateProfilePicApi(
+        @Part profile_pic:MultipartBody.Part
+    ):ProfilePicUploadResponseModel
 
 
 

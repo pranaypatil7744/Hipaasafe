@@ -46,7 +46,6 @@ class ProfileViewDetailsActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         getPreferenceData()
-        setUpViewProfileList()
     }
 
     private fun getPreferenceData() {
@@ -57,6 +56,7 @@ class ProfileViewDetailsActivity : BaseActivity() {
             age = preferenceUtils.getValue(Constants.PreferenceKeys.age)
             profile = preferenceUtils.getValue(Constants.PreferenceKeys.avatar)
             loginUserId = preferenceUtils.getValue(Constants.PreferenceKeys.role_id).toIntOrNull()?:0
+            setUpViewProfileList()
         }
     }
 

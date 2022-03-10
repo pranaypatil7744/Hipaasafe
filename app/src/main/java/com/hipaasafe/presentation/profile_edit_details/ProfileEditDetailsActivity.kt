@@ -3,12 +3,8 @@ package com.hipaasafe.presentation.profile_edit_details
 import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Base64
 import android.view.View
 import android.view.View.*
 import android.widget.AdapterView
@@ -25,6 +21,7 @@ import com.hipaasafe.databinding.BottomSheetAddPhotoBinding
 import com.hipaasafe.listener.ValidationListener
 import com.hipaasafe.presentation.login.model.CountryModel
 import com.hipaasafe.presentation.profile_edit_details.model.ProfileEditRequestModel
+import com.hipaasafe.presentation.profile_edit_details.model.ProfilePicUploadRequestModel
 import com.hipaasafe.utils.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.File
@@ -36,6 +33,7 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
     private lateinit var addPhotoBottomSheetDialogBinding: BottomSheetAddPhotoBinding
 
     var profileFile: File? = null
+    var fileName:String = ""
     var countryList: ArrayList<CountryModel> = ArrayList()
     var selectedCountryCode: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +51,7 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
     private fun setUpObserver() {
         binding.apply {
             with(profileViewModel) {
-                patientUpdateProfileResponseData.observe(this@ProfileEditDetailsActivity, {
+                patientUpdateProfileResponseData.observe(this@ProfileEditDetailsActivity) {
                     toggleLoader(false)
                     if (it.success) {
                         val data = getProfileEditDetailsModel()
@@ -68,11 +66,20 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                     } else {
                         showToast(it.message)
                     }
-                })
-                messageData.observe(this@ProfileEditDetailsActivity, {
+                }
+                updateProfilePicResponseData.observe(this@ProfileEditDetailsActivity){
+                    toggleLoader(false)
+                    if (it.success == true){
+                        preferenceUtils.setValue(Constants.PreferenceKeys.avatar,it.data.avatar)
+                        ImageUtils.INSTANCE?.loadLocalImage(imgDoc, profileFile)
+                    }else{
+                        showToast(it.message.toString())
+                    }
+                }
+                messageData.observe(this@ProfileEditDetailsActivity) {
                     toggleLoader(false)
                     showToast(it.toString())
-                })
+                }
             }
         }
     }
@@ -153,18 +160,32 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 val data = it.data?.extras
-                val fileName = data?.get(Constants.IntentExtras.EXTRA_FILE_NAME)
-                val url = data?.get(Constants.IntentExtras.EXTRA_FILE_PATH)
-                val bitmapFile =
+                fileName = data?.get(Constants.IntentExtras.EXTRA_FILE_NAME) as String
+                val url = data.get(Constants.IntentExtras.EXTRA_FILE_PATH)
+                profileFile =
                     File(url.toString())
 //                val bitmap: Bitmap = BitmapFactory.decodeFile(bitmapFile.toString())
 //                val imageBitmap = ImageUtils.INSTANCE?.bitMapToString(bitmap).toString()
 //                val imageExtn = fileName.toString().split(".").last()
-                binding.apply {
-                    ImageUtils.INSTANCE?.loadLocalImage(imgDoc, bitmapFile)
+                if (profileFile?.exists() == true){
+                    callUpdateProfilePicApi()
                 }
             }
         }
+
+    private fun callUpdateProfilePicApi() {
+        binding.apply {
+            if (isNetworkAvailable()){
+                toggleLoader(true)
+                profileViewModel.callUpdateProfilePicApi(request = ProfilePicUploadRequestModel(
+                    profile_pic =profileFile!! ,
+                    fileName = fileName
+                ))
+            }else{
+                showToast(getString(R.string.please_check_your_internet_connection))
+            }
+        }
+    }
 
 
     private fun setListener() {
@@ -356,7 +377,6 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
             request.number = etMobile.text.toString().trim()
             request.age = etAge.text.toString().trim()
             request.country_code = selectedCountryCode
-            request.fileToUpload = profileFile
             return request
         }
     }

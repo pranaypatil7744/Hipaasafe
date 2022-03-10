@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.google.android.material.imageview.ShapeableImageView
+import com.hipaasafe.Constants
 import com.hipaasafe.R
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -37,6 +38,7 @@ class ImageUtils {
             ?.error(R.drawable.ic_defaulf_image)
             ?.into(imageView)
     }
+
     fun saveImage(myBitmap: Bitmap, context: Context): String {
         /**
          * Returns absolute Path of Image
@@ -80,10 +82,11 @@ class ImageUtils {
         } catch (e: Exception) {
         }
     }
+
     fun loadRemoteImageForProfile(imageView: ShapeableImageView, imageUrl: String?) {
 
         imageView.rootView?.let { Glide.with(it) }
-            ?.load(imageUrl)
+            ?.load(if (imageUrl?.contains("https:") == true) imageUrl else Constants.BASE_URL_PROFILE_PIC + imageUrl)
             ?.placeholder(R.drawable.ic_default_profile_picture)
             ?.error(R.drawable.ic_default_profile_picture)
             ?.into(imageView)
