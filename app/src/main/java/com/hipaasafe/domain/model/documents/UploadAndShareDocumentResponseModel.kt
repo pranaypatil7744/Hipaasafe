@@ -1,4 +1,4 @@
-package com.hipaasafe.domain.model.reports
+package com.hipaasafe.domain.model.documents
 
 data class UploadAndShareDocumentResponseModel(
     var success: Boolean? = false,

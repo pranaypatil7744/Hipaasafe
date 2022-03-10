@@ -16,7 +16,7 @@ val AppModule = module {
     viewModel { ProfileViewModel(get()) }
     viewModel { MyNetworkViewModel(get()) }
     viewModel { HelpViewModel(get()) }
-    viewModel { DocumentViewModel(get(),get(),get()) }
+    viewModel { DocumentViewModel(get(),get(),get(),get()) }
     viewModel { AppointmentViewModel(get(), get()) }
 
     single { createLoginRepository(get(named("normalService"))) }
@@ -37,6 +37,7 @@ val AppModule = module {
     single { createGetDoctorsUseCase(get()) }
 
     single { createReportsRepository(get(named("normalService"))) }
+    single { createFetchReportsUseCase(get()) }
     single { createGetReportsUseCase(get()) }
     single { createUploadReportFileUseCase(get()) }
     single { createUploadAndShareDocumentUseCase(get()) }

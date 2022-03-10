@@ -1,7 +1,7 @@
 package com.hipaasafe.domain.usecase.documents
 
-import com.hipaasafe.domain.model.reports.GetReportsListRequestModel
-import com.hipaasafe.domain.model.reports.GetReportsListResponseModel
+import com.hipaasafe.domain.model.documents.GetReportsListRequestModel
+import com.hipaasafe.domain.model.documents.GetReportsListResponseModel
 import com.hipaasafe.domain.repository.DocumentsRepository
 import com.hipaasafe.domain.usecase.base.UseCase
 

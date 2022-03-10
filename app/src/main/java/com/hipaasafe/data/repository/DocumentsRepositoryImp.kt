@@ -1,7 +1,7 @@
 package com.hipaasafe.data.repository
 
 import com.hipaasafe.data.source.remote.ApiService
-import com.hipaasafe.domain.model.reports.*
+import com.hipaasafe.domain.model.documents.*
 import com.hipaasafe.domain.repository.DocumentsRepository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -32,5 +32,9 @@ class DocumentsRepositoryImp constructor(private val apiService: ApiService) : D
 
     override suspend fun callUploadAndShareDocumentApi(request: UploadAndShareDocumentRequestModel): UploadAndShareDocumentResponseModel {
         return apiService.callUploadAndShareDocumentApi(request)
+    }
+
+    override suspend fun callFetchReportsApi(): FetchReportsResponseModel {
+        return apiService.callFetchReportsApi()
     }
 }

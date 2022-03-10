@@ -1,7 +1,7 @@
 package com.hipaasafe.domain.usecase.documents
 
-import com.hipaasafe.domain.model.reports.UploadReportFileRequestModel
-import com.hipaasafe.domain.model.reports.UploadReportFileResponseModel
+import com.hipaasafe.domain.model.documents.UploadReportFileRequestModel
+import com.hipaasafe.domain.model.documents.UploadReportFileResponseModel
 import com.hipaasafe.domain.repository.DocumentsRepository
 import com.hipaasafe.domain.usecase.base.UseCase
 

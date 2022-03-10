@@ -1,10 +1,12 @@
 package com.hipaasafe.presentation.home_screen.document_fragment
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hipaasafe.Constants
 import com.hipaasafe.R
@@ -19,6 +21,7 @@ import com.hipaasafe.presentation.home_screen.document_fragment.model.DocumentsM
 import com.hipaasafe.presentation.home_screen.document_fragment.model.ForwardDocumentModel
 import com.hipaasafe.presentation.home_screen.my_network.MyNetworkViewModel
 import com.hipaasafe.presentation.home_screen.my_network.model.DoctorModel
+import com.hipaasafe.presentation.upload_documents.DocumentViewModel
 import com.hipaasafe.presentation.upload_documents.UploadDocumentsActivity
 import com.hipaasafe.utils.isNetworkAvailable
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -33,6 +36,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     private var doctorList: ArrayList<ForwardDocumentModel> = ArrayList()
     lateinit var bottomSheetForwardDocBinding: BottomsheetForwardDocBinding
     private val myNetworkViewModel: MyNetworkViewModel by viewModel()
+    private val documentViewModel:DocumentViewModel by viewModel()
 
     companion object {
         fun newInstance(): DocumentFragment {
@@ -54,6 +58,18 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         setUpAdapter()
         setUpObserver()
         callDoctorsApi()
+        callFetchReportsApi()
+    }
+
+    private fun callFetchReportsApi() {
+        binding.apply {
+            if (requireContext().isNetworkAvailable()){
+                toggleLoader(true)
+                documentViewModel.callFetchReportsApi()
+            }else{
+                showToast(getString(R.string.please_check_your_internet_connection))
+            }
+        }
     }
 
     private fun callDoctorsApi() {
@@ -110,6 +126,63 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                     showToast(it.toString())
                 }
             }
+
+            with(documentViewModel){
+                fetchReportsResponseData.observe(requireActivity()){
+                    toggleLoader(false)
+                    if (it.success == true){
+                        documentsList.clear()
+                        documentsList.add(
+                            DocumentsModel(
+                                documentItemType = DocumentItemType.ITEM_ADD_DOC,
+                                title = getString(R.string.upload_documents),
+                                subTitle = getString(R.string.click_here_to_upload_reports_documents)
+                            )
+                        )
+                        val data = it.data
+                        if (data?.documents?.size != 0){
+                            for (i in it.data?.documents?: arrayListOf()){
+                                documentsList.add(
+                                    DocumentsModel(
+                                        documentItemType = DocumentItemType.ITEM_UPLOADED_DOC,
+                                        title = i.document_file
+                                    )
+                                )
+                            }
+                        }
+//                        documentsList.add(
+//                            DocumentsModel(
+//                                documentItemType = DocumentItemType.ITEM_TITLE,
+//                                title = "03 Feb 2022"
+//                            )
+//                        )
+                        documentsList.add(
+                            DocumentsModel(
+                                documentItemType = DocumentItemType.ITEM_TITLE
+                            )
+                        )
+
+                        if (data?.documents_request?.size != 0){
+                            for (i in data?.documents_request?: arrayListOf()){
+                                documentsList.add(
+                                    DocumentsModel(
+                                        documentItemType = DocumentItemType.ITEM_PENDING_DOC,
+                                        title = i.hospital_tests.title,
+                                        subTitle = "Dr Puroshottam Jangid",
+                                        uploadDocumentId = i.hospital_tests.id?:0,
+                                        guid = i.assignee_id
+                                    )
+                                )
+                            }
+                        }
+                        if (::documentAdapter.isInitialized) {
+                            documentAdapter.notifyDataSetChanged()
+                        }
+                    }else{
+                        showToast(it.message.toString())
+                    }
+                }
+            }
         }
     }
 
@@ -118,87 +191,6 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
             documentAdapter =
                 DocumentAdapter(requireContext(), documentsList, this@DocumentFragment)
             recyclerDocuments.adapter = documentAdapter
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setUpDocumentList()
-    }
-
-    private fun setUpDocumentList() {
-        binding.apply {
-            documentsList.clear()
-            documentsList.add(
-                DocumentsModel(
-                    documentItemType = DocumentItemType.ITEM_ADD_DOC,
-                    title = getString(R.string.upload_documents),
-                    subTitle = getString(R.string.click_here_to_upload_reports_documents)
-                )
-            )
-            documentsList.add(
-                DocumentsModel(
-                    documentItemType = DocumentItemType.ITEM_TITLE,
-                    title = "03 Feb 2022"
-                )
-            )
-            documentsList.add(
-                DocumentsModel(
-                    documentItemType = DocumentItemType.ITEM_UPLOADED_DOC,
-                    title = "Blood tests report"
-                )
-            )
-            documentsList.add(
-                DocumentsModel(
-                    documentItemType = DocumentItemType.ITEM_TITLE,
-                    title = "04 Feb 2022"
-                )
-            )
-            documentsList.add(
-                DocumentsModel(
-                    documentItemType = DocumentItemType.ITEM_UPLOADED_DOC,
-                    title = "X-Ray Chest"
-                )
-            )
-            documentsList.add(
-                DocumentsModel(
-                    documentItemType = DocumentItemType.ITEM_UPLOADED_DOC,
-                    title = "Sonography Abdomen"
-                )
-            )
-            documentsList.add(
-                DocumentsModel(
-                    documentItemType = DocumentItemType.ITEM_UPLOADED_DOC,
-                    title = "Images.jpeg"
-                )
-            )
-            documentsList.add(
-                DocumentsModel(
-                    documentItemType = DocumentItemType.ITEM_TITLE
-                )
-            )
-
-            documentsList.add(
-                DocumentsModel(
-                    documentItemType = DocumentItemType.ITEM_PENDING_DOC,
-                    title = "Blood Count Report Required",
-                    subTitle = "Dr Puroshottam Jangid",
-                    uploadDocumentId = 7,
-                    guid = "1234"
-                )
-            )
-            documentsList.add(
-                DocumentsModel(
-                    documentItemType = DocumentItemType.ITEM_PENDING_DOC,
-                    title = "X-Ray Chest Report Required",
-                    subTitle = "Dr Puroshottam Jangid",
-                    uploadDocumentId = 8,
-                    guid = "1234"
-                )
-            )
-            if (::documentAdapter.isInitialized) {
-                documentAdapter.notifyDataSetChanged()
-            }
         }
     }
 
@@ -234,6 +226,12 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         bottomSheetDialog.show()
     }
 
+    private val uploadReportResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if(it.resultCode == Activity.RESULT_OK){
+            callFetchReportsApi()
+        }
+    }
+
     override fun clickOnAddDocument(position: Int) {
         val i = Intent(requireContext(), UploadDocumentsActivity::class.java)
         val bundle = Bundle()
@@ -255,7 +253,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         bundle.putString(Constants.PendingDocumentGuid, documentsList[position].guid)
         bundle.putInt(Constants.PendingDocumentId, documentsList[position].uploadDocumentId)
         i.putExtras(bundle)
-        startActivity(i)
+        uploadReportResult.launch(i)
     }
 
     override fun onItemClick(position: Int) {

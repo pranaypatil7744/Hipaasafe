@@ -12,6 +12,7 @@ import com.hipaasafe.domain.repository.*
 import com.hipaasafe.domain.usecase.appointment.GetAppointmentsUseCase
 import com.hipaasafe.domain.usecase.appointment.ModifyAppointmentUseCase
 import com.hipaasafe.domain.usecase.doctors.GetDoctorsUseCase
+import com.hipaasafe.domain.usecase.documents.FetchReportsUseCase
 import com.hipaasafe.domain.usecase.login.*
 import com.hipaasafe.domain.usecase.profile.PatientUpdateProfileUseCase
 import com.hipaasafe.domain.usecase.documents.GetReportsUseCase
@@ -168,6 +169,10 @@ fun createGetDoctorsUseCase(doctorsRepository: DoctorsRepository): GetDoctorsUse
 
 fun createReportsRepository(apiService: ApiService): DocumentsRepository {
     return DocumentsRepositoryImp(apiService)
+}
+
+fun createFetchReportsUseCase(documentsRepository: DocumentsRepository): FetchReportsUseCase {
+    return FetchReportsUseCase(documentsRepository)
 }
 
 fun createGetReportsUseCase(documentsRepository: DocumentsRepository): GetReportsUseCase {

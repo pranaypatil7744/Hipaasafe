@@ -1,4 +1,4 @@
-package com.hipaasafe.domain.model.reports
+package com.hipaasafe.domain.model.documents
 
 import java.io.File
 

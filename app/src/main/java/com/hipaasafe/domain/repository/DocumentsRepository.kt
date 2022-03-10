@@ -1,6 +1,6 @@
 package com.hipaasafe.domain.repository
 
-import com.hipaasafe.domain.model.reports.*
+import com.hipaasafe.domain.model.documents.*
 
 interface DocumentsRepository {
 
@@ -9,4 +9,6 @@ interface DocumentsRepository {
     suspend fun callUploadReportFileApi(request: UploadReportFileRequestModel): UploadReportFileResponseModel
 
     suspend fun callUploadAndShareDocumentApi(request: UploadAndShareDocumentRequestModel): UploadAndShareDocumentResponseModel
+
+    suspend fun callFetchReportsApi():FetchReportsResponseModel
 }

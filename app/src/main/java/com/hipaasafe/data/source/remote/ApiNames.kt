@@ -9,6 +9,7 @@ class ApiNames {
         const val DoctorLoginValidateOtp = "user/login/validate-otp"
         const val PatientValidateOtp = "user/patient/login/validate-otp"
         const val UserProfile = "user/profile"
+        const val UpdateProfilePic = "user/update-profile-pic"
         const val PatientRegister = "user/patient/register"
         const val PatientUpdateProfile = "user/patient/update-profile"
         const val GetAppointmentsApi = "query/appointments/fetch/upcoming-past"
@@ -18,5 +19,6 @@ class ApiNames {
         const val UploadReportFileApi = "user/test-reports/upload"
         const val UploadAndShareDocumentApi = "documents/user/test-reports/add-new"
         const val GetStaticDetailsApi = "static/common/get"
+        const val FetchReportsDocumentListApi = "documents/user/test-reports/fetch"
     }
 }

@@ -97,10 +97,10 @@ class DocumentAdapter(
                 DocumentItemType.ITEM_UPLOADED_DOC.value -> {
                     itemUploadedDocumentBinding?.apply {
                         tvTitle.text = data.title
-                        if (data.title?.contains(".jpeg") == true){
-                            imgDoc.setImageResource(R.drawable.ic_default_img)
-                        }else{
+                        if (data.title?.contains(".pdf") == true){
                             imgDoc.setImageResource(R.drawable.ic_default_pdf)
+                        }else{
+                            imgDoc.setImageResource(R.drawable.ic_default_img)
                         }
                         btnForward.setOnClickListener {
                             listener.clickOnForwardDoc(position)

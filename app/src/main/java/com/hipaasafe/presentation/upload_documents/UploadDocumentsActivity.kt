@@ -17,10 +17,10 @@ import com.hipaasafe.databinding.ActivityUploadDocumentsBinding
 import com.hipaasafe.databinding.BottomSheetAddPhotoBinding
 import com.hipaasafe.databinding.BottomsheetForwardDocBinding
 import com.hipaasafe.domain.model.get_doctors.GetDoctorsRequestModel
-import com.hipaasafe.domain.model.reports.GetReportsListRequestModel
-import com.hipaasafe.domain.model.reports.ReportsDataModel
-import com.hipaasafe.domain.model.reports.UploadAndShareDocumentRequestModel
-import com.hipaasafe.domain.model.reports.UploadReportFileRequestModel
+import com.hipaasafe.domain.model.documents.GetReportsListRequestModel
+import com.hipaasafe.domain.model.documents.ReportsDataModel
+import com.hipaasafe.domain.model.documents.UploadAndShareDocumentRequestModel
+import com.hipaasafe.domain.model.documents.UploadReportFileRequestModel
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.ForwardDocAdapter
 import com.hipaasafe.presentation.home_screen.document_fragment.model.ForwardDocumentModel
 import com.hipaasafe.presentation.home_screen.my_network.MyNetworkViewModel
@@ -125,7 +125,9 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                         if (isFromAddDocument) {
                             finish()
                         } else {
-
+                            val resultIntent = intent
+                            setResult(Activity.RESULT_OK, resultIntent)
+                            finish()
                         }
                     } else {
                         showToast(it.message.toString())

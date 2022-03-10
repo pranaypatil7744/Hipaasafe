@@ -4,8 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hipaasafe.domain.exception.ApiError
-import com.hipaasafe.domain.model.reports.*
+import com.hipaasafe.domain.model.documents.*
 import com.hipaasafe.domain.usecase.base.UseCaseResponse
+import com.hipaasafe.domain.usecase.documents.FetchReportsUseCase
 import com.hipaasafe.domain.usecase.documents.GetReportsUseCase
 import com.hipaasafe.domain.usecase.documents.UploadAndShareDocumentUseCase
 import com.hipaasafe.domain.usecase.documents.UploadReportsFileUseCase
@@ -13,13 +14,32 @@ import com.hipaasafe.domain.usecase.documents.UploadReportsFileUseCase
 class DocumentViewModel constructor(
     private val getReportsUseCase: GetReportsUseCase,
     private val uploadReportsFileUseCase: UploadReportsFileUseCase,
-    private val uploadAndShareDocumentUseCase: UploadAndShareDocumentUseCase
+    private val uploadAndShareDocumentUseCase: UploadAndShareDocumentUseCase,
+    private val fetchReportsUseCase: FetchReportsUseCase
 ) :
     ViewModel() {
     val getReportsListResponseData = MutableLiveData<GetReportsListResponseModel>()
     val uploadReportFileResponseData = MutableLiveData<UploadReportFileResponseModel>()
     val uploadAndShareDocumentResponseData = MutableLiveData<UploadAndShareDocumentResponseModel>()
+    val fetchReportsResponseData = MutableLiveData<FetchReportsResponseModel>()
     val messageData = MutableLiveData<String>()
+
+
+    fun callFetchReportsApi() {
+        fetchReportsUseCase.invoke(
+            viewModelScope,
+            null,
+            object : UseCaseResponse<FetchReportsResponseModel> {
+                override fun onSuccess(result: FetchReportsResponseModel) {
+                    fetchReportsResponseData.value = result
+                }
+
+                override fun onError(apiError: ApiError?) {
+                    messageData.value = apiError?.message
+                }
+
+            })
+    }
 
     fun callUploadAndShareDocumentApi(request: UploadAndShareDocumentRequestModel) {
         uploadAndShareDocumentUseCase.invoke(
