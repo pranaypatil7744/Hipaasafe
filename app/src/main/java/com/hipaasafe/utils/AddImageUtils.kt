@@ -145,10 +145,12 @@ class AddImageUtils : BaseActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 val filePath = it.data?.data as Uri
-                val fileName = filePath.toString().split("/").last()
                 val resultIntent = Intent()
+                val realPath = MediaUtilsCometChat.getRealPath(this, filePath)
+                val fileName = realPath.toString().split("/").last()
+
                 val bundle = Bundle()
-                bundle.putString(Constants.IntentExtras.EXTRA_FILE_PATH, filePath.toString())
+                bundle.putString(Constants.IntentExtras.EXTRA_FILE_PATH, realPath.toString())
                 bundle.putString(
                     Constants.IntentExtras.EXTRA_FILE_NAME,
                     if (fileName.contains(".pdf")) fileName else Date().time.toString() + ".pdf"
@@ -166,34 +168,29 @@ class AddImageUtils : BaseActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it?.resultCode == Activity.RESULT_OK) {
                 val imgUri = it.data?.data as Uri
-                val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imgUri)
-
-                val imageAbsolutePath: String? =
-                    ImageUtils.INSTANCE?.saveImage(bitmap, this)
-                imageAbsolutePath?.let {
-                    val bundle = Bundle()
-                    bundle.putString(
-                        Constants.IntentExtras.EXTRA_FILE_NAME,
-                        imageAbsolutePath.split("/").last()
-                    )
+//                val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imgUri)
+//
+//                val imageAbsolutePath: String? =
+//                    ImageUtils.INSTANCE?.saveImage(bitmap, this)
+                val realPath = MediaUtilsCometChat.getRealPath(this, imgUri)
+                val bundle = Bundle()
+                bundle.putString(
+                    Constants.IntentExtras.EXTRA_FILE_NAME,
+                    realPath.toString().split("/").last()
+                )
 //                    val imageZipperFile = ImageZipper(this)
 //                        .setQuality(30)
 //                        .setMaxWidth(300)
 //                        .setMaxHeight(700)
 //                        .compressToFile(File(imageAbsolutePath))
-                    bundle.putString(
-                        Constants.IntentExtras.EXTRA_FILE_PATH,
-                        imageAbsolutePath
-                    )
-                    val resultIntent = Intent()
-                    resultIntent.putExtras(bundle)
-                    setResult(Activity.RESULT_OK, resultIntent)
-                    finish()
-
-                } ?: run {
-                    setResult(Activity.RESULT_CANCELED, intent)
-                    finish()
-                }
+                bundle.putString(
+                    Constants.IntentExtras.EXTRA_FILE_PATH,
+                    realPath.toString()
+                )
+                val resultIntent = Intent()
+                resultIntent.putExtras(bundle)
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
             } else {
                 setResult(Activity.RESULT_CANCELED, intent)
                 finish()

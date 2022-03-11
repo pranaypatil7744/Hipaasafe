@@ -155,7 +155,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                                 doctorListAdapter.notifyDataSetChanged()
                             }
                         } else {
-                            showToast("no data")
+
                         }
                     } else {
                         showToast(it.message.toString())
