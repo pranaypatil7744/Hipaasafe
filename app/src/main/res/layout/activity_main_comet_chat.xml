@@ -188,6 +188,7 @@
             android:layout_height="20dp"
             android:layout_marginEnd="5dp"
             android:scaleType="fitCenter"
+            android:visibility="gone"
             android:src="@drawable/img_is_important_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnAttachMedia"

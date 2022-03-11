@@ -40,6 +40,11 @@
             android:textColor="@color/heather" />
     </LinearLayout>
 
+    <include
+        android:id="@+id/layoutNoInternet"
+        layout="@layout/layout_no_internet"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerChatsList"
         android:layout_width="match_parent"

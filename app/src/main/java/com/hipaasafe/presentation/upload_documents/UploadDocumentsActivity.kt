@@ -122,13 +122,9 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                 uploadAndShareDocumentResponseData.observe(this@UploadDocumentsActivity) {
                     toggleLoader(false)
                     if (it.success == true) {
-                        if (isFromAddDocument) {
-                            finish()
-                        } else {
-                            val resultIntent = intent
-                            setResult(Activity.RESULT_OK, resultIntent)
-                            finish()
-                        }
+                        val resultIntent = intent
+                        setResult(Activity.RESULT_OK, resultIntent)
+                        finish()
                     } else {
                         showToast(it.message.toString())
                     }
@@ -227,9 +223,9 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                     selectedDocumentId == 0 -> {
                         showToast("Please select document name")
                     }
-                    selectedDoctorUids.isEmpty() -> {
-                        showToast(getString(R.string.please_select_at_least_1_doctor))
-                    }
+//                    selectedDoctorUids.isEmpty() -> {
+//                        showToast(getString(R.string.please_select_at_least_1_doctor))
+//                    }
                     else -> {
 //                        showToast("Success")
                         callUploadReportFileApi()

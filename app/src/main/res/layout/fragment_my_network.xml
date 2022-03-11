@@ -18,5 +18,13 @@
         layout="@layout/content_loading"
         android:visibility="gone"
         tools:visibility="visible" />
+    <include
+        layout="@layout/layout_no_internet"
+        android:id="@+id/layoutNoInternet"
+        android:visibility="gone"/>
+    <include
+        layout="@layout/layout_no_data"
+        android:id="@+id/layoutNoData"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

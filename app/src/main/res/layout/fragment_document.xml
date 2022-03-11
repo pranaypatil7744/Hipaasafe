@@ -12,8 +12,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingVertical="10dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <include
+        android:id="@+id/layoutNoData"
+        layout="@layout/layout_no_data"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/layoutNoInternet"
+        layout="@layout/layout_no_internet"
+        android:visibility="gone" />
+
     <include
         android:id="@+id/content_loading"
         layout="@layout/content_loading"

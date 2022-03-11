@@ -66,9 +66,10 @@ class HelpActivity : BaseActivity(), HelpAdapter.HelpManager {
         binding.apply {
             if (isNetworkAvailable()) {
                 toggleLoader(true)
+                layoutNoInternet.root.visibility = GONE
                 helpViewModel.callGetStaticDetailsApi()
             } else {
-                showToast(getString(R.string.please_check_your_internet_connection))
+                layoutNoInternet.root.visibility = VISIBLE
             }
         }
     }

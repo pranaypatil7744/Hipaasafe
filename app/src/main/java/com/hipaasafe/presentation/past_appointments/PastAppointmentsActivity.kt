@@ -39,6 +39,10 @@ class PastAppointmentsActivity : BaseActivity() {
     private fun setUpListener() {
         binding.apply {
 
+            layoutNoInternet.btnRetry.setOnClickListener {
+                callPastAppointmentsApi()
+            }
+
             recyclerPastAppointments.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
 //                    if (!recyclerView.canScrollVertically(1)){
@@ -60,11 +64,12 @@ class PastAppointmentsActivity : BaseActivity() {
                     toggleLoader(false)
                     if (it.success) {
                         if (it.data != null && it.data.count != 0) {
+                            layoutNoData.root.visibility = GONE
                             isLoading = true
                             setUpAdapter(it.data.rows)
                         } else {
                             isLoading = false
-                            showToast("no data ")
+                            layoutNoData.root.visibility = VISIBLE
                         }
                     } else {
                         showToast(it.message.toString())
@@ -103,9 +108,12 @@ class PastAppointmentsActivity : BaseActivity() {
         binding.apply {
             if (isNetworkAvailable()) {
                 toggleLoader(true)
+                layoutNoInternet.root.visibility = GONE
+                recyclerPastAppointments.visibility = VISIBLE
                 appointmentViewModel.callGetAppointmentsListApi(request = getAppointmentsListRequestModel())
             } else {
-                showToast(getString(R.string.please_check_your_internet_connection))
+                layoutNoInternet.root.visibility = VISIBLE
+                recyclerPastAppointments.visibility = GONE
             }
         }
     }

@@ -4,6 +4,8 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import com.cometchat.pro.constants.CometChatConstants
 import com.cometchat.pro.core.CometChat
@@ -46,6 +48,15 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
         setUpObserver()
         callMyNetworksApi()
         setUpAdapter()
+        setUpListener()
+    }
+
+    private fun setUpListener() {
+        binding.apply {
+            layoutNoInternet.btnRetry.setOnClickListener {
+                callMyNetworksApi()
+            }
+        }
     }
 
     private fun toggleLoader(showLoader: Boolean) {
@@ -64,6 +75,7 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
                     toggleLoader(false)
                     if (it.success == true) {
                         if (it.data.count != 0) {
+                            layoutNoData.root.visibility = GONE
                             myNetworkList.clear()
                             for (i in it.data.rows ?: arrayListOf()) {
                                 myNetworkList.add(
@@ -81,7 +93,7 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
                                 myNetworkAdapter.notifyDataSetChanged()
                             }
                         } else {
-                            showToast("no data")
+                            layoutNoData.root.visibility = VISIBLE
                         }
                     } else {
                         showToast(it.message.toString())
@@ -99,11 +111,14 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
         binding.apply {
             if (requireContext().isNetworkAvailable()) {
                 toggleLoader(true)
+                layoutNoInternet.root.visibility = GONE
+                recyclerMyNetwork.visibility = VISIBLE
                 myNetworkViewModel.callPatientUpdateProfileApi(
                     GetDoctorsRequestModel(page = 1, limit = 30)
                 )
             } else {
-                showToast(getString(R.string.please_check_your_internet_connection))
+                layoutNoInternet.root.visibility = VISIBLE
+                recyclerMyNetwork.visibility = GONE
             }
         }
     }

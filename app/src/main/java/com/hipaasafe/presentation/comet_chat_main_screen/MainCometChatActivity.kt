@@ -234,13 +234,13 @@ class MainCometChatActivity : BaseActivity(),
                     hideReplyMsgLayout()
                 }
                 btnIsImpMsg.setOnClickListener {
-                    if (isImpMsg) {
-                        isImpMsg = false
-                        btnIsImpMsg.setImageResource(R.drawable.img_is_important_gray)
-                    } else {
-                        isImpMsg = true
-                        btnIsImpMsg.setImageResource(R.drawable.img_is_important)
-                    }
+//                    if (isImpMsg) {
+//                        isImpMsg = false
+//                        btnIsImpMsg.setImageResource(R.drawable.img_is_important_gray)
+//                    } else {
+//                        isImpMsg = true
+//                        btnIsImpMsg.setImageResource(R.drawable.img_is_important)
+//                    }
                 }
                 etEnterMsg.doOnTextChanged { text, start, before, count ->
                     if (text.toString().trim().isNotEmpty()) {
@@ -284,11 +284,11 @@ class MainCometChatActivity : BaseActivity(),
                     }
                 }
                 btnAttachMedia.setOnClickListener {
-                    if (isNetworkAvailable()) {
-                        openAttachmentBottomSheet()
-                    } else {
-                        showToast(getString(R.string.no_internet_connection_please_try_again_later))
-                    }
+//                    if (isNetworkAvailable()) {
+//                        openAttachmentBottomSheet()
+//                    } else {
+//                        showToast(getString(R.string.no_internet_connection_please_try_again_later))
+//                    }
                 }
                 recyclerChatMessages.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -2321,7 +2321,8 @@ class MainCometChatActivity : BaseActivity(),
             layoutEditMsg.visibility = GONE
             etEnterMsg.setText("")
             etEnterMsg.hint = getString(R.string.write_a_message)
-            btnAttachMedia.visibility = VISIBLE
+            btnAttachMedia.visibility = GONE
+//            btnAttachMedia.visibility = VISIBLE
         }
     }
 
@@ -2402,7 +2403,8 @@ class MainCometChatActivity : BaseActivity(),
             layoutReplyMsg.visibility = GONE
             etEnterMsg.setText("")
             etEnterMsg.hint = getString(R.string.write_a_message)
-            btnAttachMedia.visibility = VISIBLE
+            btnAttachMedia.visibility = GONE
+//            btnAttachMedia.visibility = VISIBLE
         }
     }
 

@@ -11,6 +11,15 @@
         layout="@layout/toolbar_main"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <include
+        layout="@layout/layout_no_internet"
+        android:id="@+id/layoutNoInternet"
+        android:visibility="gone"/>
+    <include
+        layout="@layout/layout_no_data"
+        android:id="@+id/layoutNoData"
+        android:visibility="gone"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_help"
         android:layout_width="match_parent"

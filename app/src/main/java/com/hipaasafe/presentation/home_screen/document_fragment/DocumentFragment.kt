@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -61,15 +63,28 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         setUpObserver()
         callDoctorsApi()
         callFetchReportsApi()
+        setUpListener()
+    }
+
+    private fun setUpListener() {
+        binding.apply {
+            layoutNoInternet.btnRetry.setOnClickListener {
+                callFetchReportsApi()
+                callDoctorsApi()
+            }
+        }
     }
 
     private fun callFetchReportsApi() {
         binding.apply {
             if (requireContext().isNetworkAvailable()) {
                 toggleLoader(true)
+                layoutNoInternet.root.visibility = GONE
+                recyclerDocuments.visibility = VISIBLE
                 documentViewModel.callFetchReportsApi()
             } else {
-                showToast(getString(R.string.please_check_your_internet_connection))
+                layoutNoInternet.root.visibility = VISIBLE
+                recyclerDocuments.visibility = GONE
             }
         }
     }
@@ -78,11 +93,12 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         binding.apply {
             if (requireContext().isNetworkAvailable()) {
                 toggleLoader(true)
+                layoutNoInternet.root.visibility = GONE
                 myNetworkViewModel.callPatientUpdateProfileApi(
                     GetDoctorsRequestModel(page = 1, limit = 30)
                 )
             } else {
-                showToast(getString(R.string.please_check_your_internet_connection))
+                layoutNoInternet.root.visibility = VISIBLE
             }
         }
     }
@@ -117,7 +133,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                                 forwardDocAdapter.notifyDataSetChanged()
                             }
                         } else {
-                            showToast("no data")
+
                         }
                     } else {
                         showToast(it.message.toString())
@@ -148,7 +164,8 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                                     DocumentsModel(
                                         documentItemType = DocumentItemType.ITEM_UPLOADED_DOC,
                                         title = i.hospital_tests.title,
-                                        uploadDocumentId = i.report_name_id ?: 0
+                                        uploadDocumentId = i.report_name_id ?: 0,
+                                        uploadedFileName = i.document_file
                                     )
                                 )
                             }
@@ -181,14 +198,20 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                         if (::documentAdapter.isInitialized) {
                             documentAdapter.notifyDataSetChanged()
                         }
+                        if (documentsList.isEmpty()){
+                            layoutNoData.root.visibility = VISIBLE
+                        }else{
+                            layoutNoData.root.visibility = GONE
+                        }
                     } else {
                         showToast(it.message.toString())
                     }
                 }
 
                 shareReportsResponseData.observe(requireActivity()) {
+                    toggleLoader(false)
                     if (it.success == true) {
-
+                        showToast(it.message.toString())
                     } else {
                         showToast(it.message.toString())
                     }
@@ -253,7 +276,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
             }
         }
         val request = ShareDocumentRequestModel()
-        request.document_id = documentsList[selectedItemPosition].uploadDocumentId
+        request.document_file = documentsList[selectedItemPosition].uploadedFileName.toString()
         request.doctor_uids = selectedDoctorsIds
         return request
     }
@@ -282,7 +305,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         val bundle = Bundle()
         bundle.putBoolean(Constants.IsFromAdd, true)
         i.putExtras(bundle)
-        startActivity(i)
+        uploadReportResult.launch(i)
     }
 
     override fun clickOnForwardDoc(position: Int) {

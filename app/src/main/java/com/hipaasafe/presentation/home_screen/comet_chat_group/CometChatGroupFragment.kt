@@ -87,6 +87,7 @@ class CometChatGroupFragment : BaseFragment(), GroupChatListAdapter.ChatListClic
                 .build()
             requestBuilder.fetchNext(object : CometChat.CallbackListener<List<Conversation>>() {
                 override fun onSuccess(list: List<Conversation>?) {
+                    layoutNoInternet.root.visibility = GONE
                     toggleLoader(false)
                     if (list?.size != 0) {
                         isMore = true
@@ -113,8 +114,13 @@ class CometChatGroupFragment : BaseFragment(), GroupChatListAdapter.ChatListClic
                     }else if (e?.code == "ERROR_USER_NOT_LOGGED_IN"){
                         showToast(getString(R.string.not_a_register_user_please_register_again))
                         logOutUser(false)
+                    }else if (e?.code == "ERROR_INTERNET_UNAVAILABLE"){
+                        layoutNoInternet.root.visibility = VISIBLE
+                        layoutNoChat.visibility = GONE
                     }
                     else{
+                        layoutNoInternet.root.visibility = GONE
+                        layoutNoChat.visibility = VISIBLE
                         showToast(e?.message.toString())
                     }
                 }

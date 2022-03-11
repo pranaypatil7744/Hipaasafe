@@ -63,6 +63,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
                     toggleLoader(false)
                     if (it.success) {
                         if (it.data != null && it.data.count != 0) {
+                            layoutNoData.root.visibility = GONE
                             upcomingAppointmentList.clear()
                             upcomingAppointmentList.add(
                                 UpcomingAppointmentModel(
@@ -90,7 +91,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
                             }
                             upcomingAppointmentAdapter.notifyDataSetChanged()
                         } else {
-                            showToast("no data ")
+                            layoutNoData.root.visibility = VISIBLE
                         }
                     } else {
                         showToast(it.message.toString())
@@ -162,6 +163,9 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
             btnGotIt.setOnClickListener {
                 layoutYourTurn.visibility = GONE
             }
+            layoutNoInternet.btnRetry.setOnClickListener {
+                callUpcomingAppointmentApi()
+            }
         }
     }
 
@@ -218,9 +222,12 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
         binding.apply {
             if (requireContext().isNetworkAvailable()) {
                 toggleLoader(true)
+                layoutNoInternet.root.visibility = GONE
+                recyclerUpcomingAppointment.visibility = VISIBLE
                 appointmentViewModel.callGetAppointmentsListApi(request = getAppointmentsListRequestModel())
             } else {
-                showToast(getString(R.string.please_check_your_internet_connection))
+                layoutNoInternet.root.visibility = VISIBLE
+                recyclerUpcomingAppointment.visibility = GONE
             }
         }
     }

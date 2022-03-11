@@ -15,6 +15,16 @@
         layout="@layout/content_loading"
         android:visibility="gone" />
 
+    <include
+        android:id="@+id/layoutNoData"
+        layout="@layout/layout_no_data"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/layoutNoInternet"
+        layout="@layout/layout_no_internet"
+        android:visibility="gone" />
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
