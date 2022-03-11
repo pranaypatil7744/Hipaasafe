@@ -10,6 +10,8 @@ class Constants {
         const val IS_LOGIN = "IS_LOGIN"
         const val MOBILE = "MOBILE"
         const val SUCCESS = "SUCCESS"
+        const val DETECTED_TEXT = "DETECTED_TEXT"
+        const val QR_MODEL = "QR_MODEL"
         const val IS_DOCTOR_LOGIN = "IS_DOCTOR_LOGIN"
         const val LOGIN_WITH = "LOGIN_WITH"
         const val COUNTRY_CODE = "COUNTRY_CODE"

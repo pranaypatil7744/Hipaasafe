@@ -73,6 +73,7 @@ import com.hipaasafe.presentation.forward_message_screen.ForwardMessageActivity
 import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.utils.*
 import com.hipaasafe.utils.CometChatUtils.Companion.initiateCall
+import com.hipaasafe.utils.enum.LoginUserType
 import com.hipaasafe.utils.sticker_header.StickyHeaderDecoration
 import org.json.JSONException
 import org.json.JSONObject
@@ -1408,7 +1409,12 @@ class MainCometChatActivity : BaseActivity(),
             CometChat.getGroup(id, object : CometChat.CallbackListener<Group>() {
                 override fun onSuccess(group: Group) {
                     binding.toolbar.apply {
-                        chatName = group.name
+                        val loginUser = PreferenceUtils(this@MainCometChatActivity).getValue(Constants.PreferenceKeys.role_id).toIntOrNull()
+                        chatName = if (loginUser == LoginUserType.PATIENT.value){
+                            group.name.toString().split("|").first()
+                        }else{
+                            group.name.toString().split("|").last()
+                        }
                         profilePicUrl = group.icon
                         this@MainCometChatActivity.let {
                             ImageUtils.INSTANCE?.loadRemoteImageForGroupProfile(
@@ -1553,7 +1559,13 @@ class MainCometChatActivity : BaseActivity(),
     private fun getIntentData() {
         binding.apply {
             intent.extras?.run {
-                chatName = getString(Constants.CometChatConstant.NAME)
+                val name = getString(Constants.CometChatConstant.NAME)
+                val loginUser = PreferenceUtils(this@MainCometChatActivity).getValue(Constants.PreferenceKeys.role_id).toIntOrNull()
+                chatName = if (loginUser == LoginUserType.PATIENT.value){
+                    name.toString().split("|").first()
+                }else{
+                    name.toString().split("|").last()
+                }
                 profilePicUrl = getString(Constants.CometChatConstant.AVATAR)
                 type = getString(Constants.CometChatConstant.TYPE).toString()
                 if (type == CometChatConstants.RECEIVER_TYPE_USER) {

@@ -1,8 +1,6 @@
 package com.hipaasafe.data.source.remote
 
-import com.hipaasafe.domain.model.appointment.GetAppointmentResponseModel
-import com.hipaasafe.domain.model.appointment.ModifyAppointmentRequestModel
-import com.hipaasafe.domain.model.appointment.ModifyAppointmentResponseModel
+import com.hipaasafe.domain.model.appointment.*
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpRequestModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpResponseModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpRequestModel
@@ -83,7 +81,8 @@ interface ApiService {
         @Part profile_pic:MultipartBody.Part
     ):ProfilePicUploadResponseModel
 
-
+    @POST(ApiNames.BookAppointmentApi)
+    suspend fun callBookAppointmentApi(@Body request:AddAppointmentRequestModel):AddAppointmentResponseModel
 
 
 

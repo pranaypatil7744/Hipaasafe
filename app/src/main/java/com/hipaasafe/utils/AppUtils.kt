@@ -34,6 +34,7 @@ import java.io.IOException
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class AppUtils {
@@ -49,6 +50,198 @@ class AppUtils {
             }
         }
     }
+
+    fun extracCompany(str: ArrayList<String>, website: String, email: String): String {
+//        logMe(TagName.OCR_TAG, "Extracting Company Paramaters")
+//        logMe(TagName.OCR_TAG, "Str : ${str}")
+//        logMe(TagName.OCR_TAG, "Website : ${website}")
+//        logMe(TagName.OCR_TAG, "Email : ${email}")
+        var company = ""
+        var companyArray = ArrayList<String>()
+        val emailArray = email.replace("-", " ").split("@")
+        var domain = ""
+        if (emailArray.size > 1) {
+            domain = emailArray[1].replace("([A-Za-z0-9]+[^\\.])".toRegex(), "$1")
+        }
+        logMe(TagName.API_TAG, "Getting the email")
+
+        val len = getLength(website, 4, 5)
+        var swl = len[0]
+        var ewl = len[1]
+
+        /**
+         * Regex Helper
+         * (?i) makes the regex case insensitive.
+         * \s Ingores whitespace.
+         */
+
+//        val REGEX1: String = "[$" + website + "]{" + swl + "," + ewl + "}"
+        val REGEX1: String = "(?i)[\\s$" + website + "]{" + swl + ",}"
+        val p1: Pattern = Pattern.compile(REGEX1, Pattern.CASE_INSENSITIVE)
+
+        val len2 = getLength(domain, 4, 5)
+        var sdl = len2[0]
+        var edl = len2[1]
+//        val REGEX2: String = "[$" + domain + "]{" + sdl + "," + edl + "}"
+        val REGEX2: String = "(?i)[\\s$" + domain + "]{" + sdl + ",}"
+        val p2: Pattern = Pattern.compile(REGEX2, Pattern.CASE_INSENSITIVE)
+
+        /*
+            Added system as OCR was Detecting Staubli Tec Systems/ India Pvt Ltd Both in Seperate Lines
+         */
+//        val REGEX3 = "ltd|pvt|llp|associate|ventures|llc|private|limited|enterprise"
+//        "\\b(accountant|actuary|adjuster|administrator|adviser|advisor|agent|aide|ambassador|analyst|appraiser|architect|assistant|associate|asst|attache|auditor|author|banker|board\\\\s+member|bookkeeper|brewer|broker|buyer|ceo|cfo|chairman|chairperson|charge|chef|chief|clerk|coach|coder|collector|consultant|contractor|controller|coordinator|counsel|counselor|cto|delegate|deputy|designer|developer|dgm|director|editor|energy|engineer|estimator|evaluator|evangelist|examiner|exec|executive|expert|founder|h.o.d|head|hod|incharge|interpreter|investigator|lawyer|lead|leader|lender|liaison|lobbyist|logistics|manager|mgr|minister|monitor|officer|partner|personnel|physiotherapist|planner|president|principal|processor|professional|procurer|proprietor|publicist|purchaser|receptionist|recruiter|representative|sales|salesperson|scientist|secretary|specialist|strategist|superintendent|supervisor|support|svp|technician|technologist|teller|tester|trader|trainee|translator|treasurer|typist|underwriter|vice|webmaster|writer|cpo|corporate|business)\\b"
+
+
+        val REGEX3 =
+            "\\b(limited|llc|lnc|llp|ltd|corporation|govtcompany|gmbh|srl|academy|advertising|advisors|agency|architects|arts|" +
+                    "associates|association|auction|authority|bakery|biz|boutique|builder|business|center|chemicals|" +
+                    "clinic|co|commerce|company|construction|consultancy|consultants|contractors|controls|dealer|dental|" +
+                    "designers|designs|distributors|engineering|engineers|enterprise|entertainment|events|excellence|exporters|" +
+                    "factory|firm|food & beverage|foundation|gifts|group|hardware|hotel|hub|hydraulics|importers|" +
+                    "industries|insurance|international|irrigation|labels|law|lighting|machine|management|marketing|" +
+                    "merchants|moulds & die|network|park|partners|pet|plastics|polymers|product|professionals|pub|" +
+                    "publishers|real estate|resources|security|services|shop|software|solutions|store|stores|studio|" +
+                    "suppliers|syndicate|technologies|tools|tours|trade|traders|travel|trust|tutorials|udhyog|ventures|warehouse|" +
+                    "wholesalers|works|world|worldwide)\\b"
+
+
+        //Without co
+//        val REGEX3 = "limited|llc|lnc|llp|ltd|corporation|govtcompany|gmbh|srl|academy|advertising|advisors|agency|architects|arts|" +
+//                "associates|association|auction|authority|bakery|biz|boutique|builder|business|center|chemicals|" +
+//                "clinic|commerce|company|construction|consultancy|consultants|contractors|controls|dealer|dental|" +
+//                "designers|designs|distributors|engineering|engineers|enterprise|entertainment|events|excellence|exporters|" +
+//                "factory|firm|food & beverage|foundation|gifts|group|hardware|hotel|hub|hydraulics|importers|" +
+//                "industries|insurance|international|irrigation|labels|law|lighting|machine|management|marketing|" +
+//                "merchants|moulds & die|network|park|partners|pet|plastics|polymers|product|professionals|pub|" +
+//                "publishers|real estate|resources|security|services|shop|software|solutions|store|stores|studio|" +
+//                "suppliers|syndicate|technologies|tools|tours|trade|traders|travel|trust|tutorials|udhyog|ventures|warehouse|" +
+//                "wholesalers|works|world|worldwide"
+        val p3: Pattern = Pattern.compile(REGEX3, Pattern.CASE_INSENSITIVE)
+//        if(website.length > 0) {
+        for (i in 0 until str.size) {
+            var m: Matcher = p1.matcher(str[i])
+            var c = ""
+            if (m.find()) {
+                logMe(TagName.API_TAG, "Email is Detected : ${m.group()}")
+                c = str[i]
+            }
+            m = p2.matcher(str[i])
+            if (m.find()) {
+                logMe(TagName.API_TAG, "Email is Detected : ${m.group()}")
+                c = str[i]
+            }
+            m = p3.matcher(str[i])
+            if (m.find()) {
+                logMe(TagName.API_TAG, "Email is Detected : ${m.group()}")
+                company = str[i]
+                str.remove(str[i])
+                break
+            }
+            companyArray.add(c)
+        }
+//        }
+
+        if (company.isEmpty()) {
+            for (i in 0 until companyArray.size) {
+                if (company.length < companyArray[i].length) {
+                    company = companyArray[i]
+                    str.remove(company)
+                }
+            }
+        }
+        if (company.isEmpty() && domain.isNotEmpty()) {
+            val domainArray = domain.split(".")
+            company = domainArray[0]
+        }
+        return company
+    }
+
+    fun getLength(str: String, min: Int, max: Int): ArrayList<Int> {
+        var v = ArrayList<Int>();
+        v.add(min)
+        v.add(max)
+
+        if (str.length > 20) {
+            v[0] = 14
+            v[1] = str.length
+        } else if (str.length > 15) {
+            v[0] = 12
+            v[1] = str.length
+        } else if (str.length > 10) {
+            v[0] = 8
+            v[1] = str.length
+        } else if (str.length > 7) {
+            v[0] = 6
+            v[1] = str.length
+        }
+        return v
+    }
+
+    fun extractTitle(str: ArrayList<String>): ArrayList<String> {
+        var title = ""
+        var name = ""
+        logMe(TagName.API_TAG, "Getting the email")
+        val EMAIL_REGEX: String =
+            "\\b(accountant|actuary|adjuster|administrator|adviser|advisor|agent|aide|ambassador|analyst|appraiser|architect|assistant|associate|asst|attache|auditor|author|banker|board\\\\s+member|bookkeeper|brewer|broker|buyer|ceo|cfo|chairman|chairperson|charge|chef|chief|clerk|coach|coder|collector|consultant|contractor|controller|coordinator|counsel|counselor|cto|delegate|deputy|designer|developer|dgm|director|editor|energy|engineer|estimator|evaluator|evangelist|examiner|exec|executive|expert|founder|h.o.d|head|hod|incharge|interpreter|investigator|lawyer|lead|leader|lender|liaison|lobbyist|logistics|manager|mgr|minister|monitor|officer|partner|personnel|physiotherapist|planner|president|principal|processor|professional|procurer|proprietor|publicist|purchaser|receptionist|recruiter|representative|sales|salesperson|scientist|secretary|specialist|strategist|superintendent|supervisor|support|svp|technician|technologist|teller|tester|trader|trainee|translator|treasurer|typist|underwriter|vice|webmaster|writer|cpo|corporate|business)\\b"
+        val p: Pattern = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE)
+        for (i in 0 until str.size) {
+            val m: Matcher = p.matcher(str[i])
+            if (m.find()) {
+                logMe(TagName.API_TAG, "Email is Detected : ${m.group()}")
+                title = str[i]
+                if (i > 0) {
+                    name = str[i - 1]
+                }
+                str.remove(str[i])
+                break
+            } else {
+                logMe(TagName.API_TAG, "Email is Not Detected")
+            }
+        }
+        val list = ArrayList<String>()
+        list.add(title)
+        list.add(name)
+        return list
+    }
+
+    fun extractWebsite(str: ArrayList<String>): String {
+        var website = ""
+        logMe(TagName.API_TAG, "Getting the email")
+        val EMAIL_REGEX: String =
+            "((https?|ftp|smtp):\\/\\/)?(www.)?[a-z0-9]+(\\.[a-z]{2,}){1,3}(#?\\/?[a-zA-Z0-9#]+)*\\/?(\\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?"
+        val p: Pattern = Pattern.compile(EMAIL_REGEX, Pattern.MULTILINE)
+        for (i in 0 until str.size) {
+            val m: Matcher = p.matcher(str[i])
+            if (m.find()) {
+//                logMe(TagName.OCR_TAG, "Email is Detected : ${m.group()}")
+                website = m.group()
+                str.remove(str[i])
+                break
+            } else {
+//                logMe(TagName.OCR_TAG, "Email is Not Detected")
+            }
+        }
+        return website
+    }
+
+    fun isPersonalEmail(email: String): Boolean {
+        return try {
+            val domain = email?.split("@")?.get(1)
+//            if (domain.equals("gmail.com", true)) {
+//                validationListener?.onValidationFailure(
+//                    Constants.OFFICE_EMAIL_VALID_ERROR,
+//                    R.string.office_email_valid_error
+//                )
+//                return
+//            }
+            domain.equals("gmail.com")
+        } catch (e: Exception) {
+            false
+        }
+
+    }
+
 
     fun getBookingStatus(string: String):AppointmentStatus{
 
@@ -274,6 +467,47 @@ class AppUtils {
         return checkDate.before(appointmentDate)
     }
 
+    fun getCurrentTime(): String {
+        val sdf = SimpleDateFormat("hh:mm")
+        return sdf.format(Date())
+    }
+
+    fun convertDateFormat(
+        dateFormatToRead: String,
+        dateToRead: String,
+        dateFormatToConvert: String,
+        timeZone: TimeZone = TimeZone.getTimeZone("UTC"),
+        localTimeZone: TimeZone = TimeZone.getDefault(),
+        exceptionDateFormatToRead: String? = ""
+    ): String {
+        /**
+         * To Convert Date From One Format To Another
+         * dateFormatToRead - Indicates Format in which date is Present
+         * dateToRead - Has Value of Date To Read
+         * dateFormatToConvert - Indicates Format in which date is expected
+         */
+        try {
+            var sdf = SimpleDateFormat(dateFormatToRead)
+            sdf.timeZone = timeZone
+            val date = sdf.parse(dateToRead)
+            sdf = SimpleDateFormat(dateFormatToConvert)
+            sdf.timeZone = localTimeZone
+            return sdf.format(date)
+        } catch (e: java.lang.Exception) {
+            try {
+                var sdf = SimpleDateFormat(exceptionDateFormatToRead)
+                sdf.timeZone = timeZone
+                val date = sdf.parse(dateToRead)
+                sdf = SimpleDateFormat(dateFormatToConvert)
+                sdf.timeZone = localTimeZone
+                return sdf.format(date)
+            } catch (e: Exception) {
+                return dateToRead
+
+            }
+        }
+    }
+
 
     fun getAfter24hrTime():Date{
         val calendar = Calendar.getInstance()
@@ -281,7 +515,7 @@ class AppUtils {
         return calendar.time
     }
 
-    private fun convertStringToDate(
+     fun convertStringToDate(
         dateFormatToRead: String,
         dateToRead: String
     ): Date {

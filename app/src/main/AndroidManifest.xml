@@ -20,6 +20,9 @@
         android:theme="@style/Theme.Hipaasafe"
         android:usesCleartextTraffic="true">
 
+        <activity android:name=".presentation.qr_scan.QRDetectionActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".call_manager.CometChatCallActivity"
             android:exported="false"

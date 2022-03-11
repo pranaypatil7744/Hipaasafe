@@ -77,7 +77,7 @@ class LoginViewModel constructor(
                 }
 
                 override fun onError(apiError: ApiError?) {
-                    messageData.value = apiError?.getErrorMessage()
+                    messageData.value = apiError?.message
                     showProgressbar.value = false
                 }
             })
@@ -95,7 +95,7 @@ class LoginViewModel constructor(
                 }
 
                 override fun onError(apiError: ApiError?) {
-                    messageData.value = apiError?.getErrorMessage()
+                    messageData.value = apiError?.message
                     showProgressbar.value = false
                 }
             })
@@ -113,7 +113,7 @@ class LoginViewModel constructor(
                 }
 
                 override fun onError(apiError: ApiError?) {
-                    messageData.value = apiError?.getErrorMessage()
+                    messageData.value = apiError?.message
                     showProgressbar.value = false
                 }
             })
@@ -131,7 +131,7 @@ class LoginViewModel constructor(
                 }
 
                 override fun onError(apiError: ApiError?) {
-                    messageData.value = apiError?.getErrorMessage()
+                    messageData.value = apiError?.message
                     showProgressbar.value = false
                 }
             })
@@ -149,7 +149,7 @@ class LoginViewModel constructor(
                 }
 
                 override fun onError(apiError: ApiError?) {
-                    messageData.value = apiError?.getErrorMessage()
+                    messageData.value = apiError?.message
                     showProgressbar.value = false
                 }
             })

@@ -2,6 +2,7 @@ package com.hipaasafe.base
 
 import android.app.*
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
@@ -17,6 +18,7 @@ import com.hipaasafe.R
 import com.hipaasafe.di.AppModule
 import com.hipaasafe.di.NetworkModule
 import com.hipaasafe.listener.CometChatCallListener
+import com.hipaasafe.presentation.notification.NotificationActivity
 import com.hipaasafe.settings.CometChatSettings
 import com.hipaasafe.utils.AppUtils
 import com.hipaasafe.utils.ImageUtils
@@ -120,6 +122,12 @@ class BaseApplication : Application(), LifecycleObserver, Application.ActivityLi
 
             data?.let {
                 val redirectToType = it.optString("redirectToType")
+                val intent = Intent(
+                    applicationContext(),
+                    NotificationActivity::class.java
+                )
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                applicationContext().startActivity(intent)
 //                when (redirectToType.toLowerCase()) {
 //                    Constants.NotificationType.FRIEND_REQUEST.toLowerCase() -> {
 //                        val intent = Intent(

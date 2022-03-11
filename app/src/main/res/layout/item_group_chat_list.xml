@@ -109,12 +109,13 @@
         android:paddingHorizontal="6dp"
         android:paddingVertical="4dp"
         android:textColor="@color/white"
-        android:visibility="invisible"
+        android:visibility="visible"
+        android:minWidth="25dp"
         app:layout_constraintBottom_toBottomOf="@id/tvLastMessage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/imgImpMsg"
         app:layout_constraintTop_toTopOf="@id/tvLastMessage"
-        tools:text="19" />
+        tools:text="1" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvDate"

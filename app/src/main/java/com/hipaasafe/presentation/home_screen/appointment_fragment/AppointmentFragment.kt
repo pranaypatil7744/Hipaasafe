@@ -1,20 +1,28 @@
 package com.hipaasafe.presentation.home_screen.appointment_fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityOptionsCompat
+import com.exhibitor.helpie.ui.activity.qr_scan.QRContactResponseModel
+import com.google.gson.GsonBuilder
 import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.FragmentAppointmentBinding
+import com.hipaasafe.domain.model.appointment.AddAppointmentRequestModel
 import com.hipaasafe.domain.model.appointment.GetAppointmentsRequestModel
 import com.hipaasafe.domain.model.appointment.ModifyAppointmentRequestModel
 import com.hipaasafe.presentation.home_screen.appointment_fragment.adapter.UpcomingAppointmentAdapter
 import com.hipaasafe.presentation.home_screen.appointment_fragment.model.AppointmentItemType
 import com.hipaasafe.presentation.home_screen.appointment_fragment.model.AppointmentStatus
 import com.hipaasafe.presentation.home_screen.appointment_fragment.model.UpcomingAppointmentModel
+import com.hipaasafe.presentation.qr_scan.QRDetectionActivity
 import com.hipaasafe.utils.AppUtils
 import com.hipaasafe.utils.DialogUtils
 import com.hipaasafe.utils.isNetworkAvailable
@@ -98,6 +106,17 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
                     }
                 }
 
+                addAppointmentResponseData.observe(requireActivity()) {
+                    toggleLoader(false)
+                    if (it.success == true) {
+                        layoutYourTurn.visibility = VISIBLE
+                        setUpWaitingUI(3)
+                        callUpcomingAppointmentApi()
+                    } else {
+                        showToast(it.message.toString())
+                    }
+                }
+
                 modifyAppointmentResponseData.observe(requireActivity()) {
                     toggleLoader(false)
                     if (it.success == true) {
@@ -154,8 +173,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
     private fun setUpListener() {
         binding.apply {
             layoutScanQr.root.setOnClickListener {
-                layoutYourTurn.visibility = VISIBLE
-                setUpWaitingUI(3)
+                openQrScan(it)
             }
             layoutCount.setOnClickListener {
                 setUpWaitingUI(0)
@@ -168,6 +186,73 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
             }
         }
     }
+
+    private fun openQrScan(view: View) {
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            requireActivity(),
+            view,
+            "Container"
+        )
+        val i = Intent(requireContext(), QRDetectionActivity::class.java)
+        qrResult.launch(i, options)
+    }
+
+    private val qrResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val gson = GsonBuilder().create()
+
+                val data = it.data
+                val d = data?.extras
+                val text = d?.getString(Constants.DETECTED_TEXT)
+                val qrData: QRContactResponseModel? =
+                    data?.getSerializableExtra(Constants.QR_MODEL) as QRContactResponseModel?
+                var detectedText: ArrayList<String> = ArrayList()
+
+                detectedText =
+                    gson.fromJson(
+                        data?.getStringExtra(Constants.DETECTED_TEXT),
+                        Array<String>::class.java
+                    )
+                        .toCollection(ArrayList())
+//            ["{\"uid\":\"0b93a526-7977-4179-94be-991e88115ee5\",\"organization_id\":1}"]
+                val uid = detectedText.toString().split(",").first()
+                val uid2 = uid.split(":").last()
+                val extractUid = uid2.replace("","")
+
+
+                val organizationId = detectedText.toString().split(",").last()
+                val organizationId2 = organizationId.split(":").last()
+                val extractOrganizationId = organizationId2.replace("}]", "")
+                callAddAppointmentApi(extractUid, extractOrganizationId.toIntOrNull() ?: 0)
+            } else {
+                val e = ""
+            }
+        }
+
+    private fun callAddAppointmentApi(doctorId: String, organizationId: Int) {
+        binding.apply {
+            if (requireContext().isNetworkAvailable()) {
+                toggleLoader(true)
+                val date = AppUtils.INSTANCE?.getCurrentDate()
+                val currentDate =
+                    AppUtils.INSTANCE?.convertDateFormat("dd MMM yyyy",date.toString(),"yyyy-MM-dd")
+
+                val currentTime = AppUtils.INSTANCE?.getCurrentTime()
+                appointmentViewModel.callAddAppointmentApi(
+                    request = AddAppointmentRequestModel(
+                        doctor_id = doctorId,
+                        appointment_date = currentDate.toString(),
+                        appointment_time = currentTime,
+                        organization_id = organizationId
+                    )
+                )
+            } else {
+                showToast(getString(R.string.please_check_your_internet_connection))
+            }
+        }
+    }
+
 
     private fun setUpWaitingUI(queueNo: Int) {
         binding.apply {

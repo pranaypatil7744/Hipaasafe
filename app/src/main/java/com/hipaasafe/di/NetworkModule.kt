@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder
 import com.hipaasafe.Constants
 import com.hipaasafe.data.repository.*
 import com.hipaasafe.domain.repository.*
+import com.hipaasafe.domain.usecase.appointment.AddAppointmentUseCase
 import com.hipaasafe.domain.usecase.appointment.GetAppointmentsUseCase
 import com.hipaasafe.domain.usecase.appointment.ModifyAppointmentUseCase
 import com.hipaasafe.domain.usecase.doctors.GetDoctorsUseCase
@@ -155,6 +156,10 @@ fun createAppointmentRepository(apiService: ApiService): AppointmentRepository {
 
 fun createGetAppointmentsUseCase(appointmentRepository: AppointmentRepository): GetAppointmentsUseCase {
     return GetAppointmentsUseCase(appointmentRepository)
+}
+
+fun createAddAppointmentUseCase(appointmentRepository: AppointmentRepository): AddAppointmentUseCase {
+    return AddAppointmentUseCase(appointmentRepository)
 }
 
 fun createModifyAppointmentUseCase(appointmentRepository: AppointmentRepository): ModifyAppointmentUseCase {

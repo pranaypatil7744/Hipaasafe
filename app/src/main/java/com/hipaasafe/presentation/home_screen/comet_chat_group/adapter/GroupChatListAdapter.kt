@@ -18,6 +18,8 @@ import com.hipaasafe.R
 import com.hipaasafe.databinding.ItemGroupChatListBinding
 import com.hipaasafe.utils.AppUtils
 import com.hipaasafe.utils.ImageUtils
+import com.hipaasafe.utils.PreferenceUtils
+import com.hipaasafe.utils.enum.LoginUserType
 
 class GroupChatListAdapter(
     val context: Context,
@@ -62,16 +64,21 @@ class GroupChatListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = conversationList[position]
         val baseMsg = data.lastMessage
-        val name: String?
+        var name: String = ""
         val icon: String?
 
         if (data.conversationType == CometChatConstants.CONVERSATION_TYPE_USER) {
             val userDetails = data.conversationWith as User?
-            name = userDetails?.name
+            name = userDetails?.name.toString()
             icon = userDetails?.avatar
         } else {
             val groupDetails = data.conversationWith as Group?
-            name = groupDetails?.name
+            val loginUser = PreferenceUtils(context).getValue(Constants.PreferenceKeys.role_id).toIntOrNull()
+            name = if (loginUser == LoginUserType.PATIENT.value){
+                groupDetails?.name.toString().split("|").first()
+            }else{
+                groupDetails?.name.toString().split("|").last()
+            }
             icon = groupDetails?.icon
         }
         holder.binding.apply {

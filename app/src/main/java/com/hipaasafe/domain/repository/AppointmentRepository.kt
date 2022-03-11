@@ -1,12 +1,11 @@
 package com.hipaasafe.domain.repository
 
-import com.hipaasafe.domain.model.appointment.GetAppointmentResponseModel
-import com.hipaasafe.domain.model.appointment.GetAppointmentsRequestModel
-import com.hipaasafe.domain.model.appointment.ModifyAppointmentRequestModel
-import com.hipaasafe.domain.model.appointment.ModifyAppointmentResponseModel
+import com.hipaasafe.domain.model.appointment.*
 
 interface AppointmentRepository {
     suspend fun callGetAppointmentsApi(request: GetAppointmentsRequestModel): GetAppointmentResponseModel
 
     suspend fun callModifyAppointmentApi(request: ModifyAppointmentRequestModel): ModifyAppointmentResponseModel
+
+    suspend fun callBookAppointmentApi(request:AddAppointmentRequestModel):AddAppointmentResponseModel
 }

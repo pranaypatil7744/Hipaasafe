@@ -21,5 +21,6 @@ class ApiNames {
         const val GetStaticDetailsApi = "static/common/get"
         const val FetchReportsDocumentListApi = "documents/user/test-reports/fetch"
         const val ShareDocumentApi = "documents/user/test-reports/share"
+        const val BookAppointmentApi = "appointment/patient/book"
     }
 }

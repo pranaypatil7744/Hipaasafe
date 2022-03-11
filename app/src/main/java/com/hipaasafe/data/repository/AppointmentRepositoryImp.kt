@@ -1,10 +1,7 @@
 package com.hipaasafe.data.repository
 
 import com.hipaasafe.data.source.remote.ApiService
-import com.hipaasafe.domain.model.appointment.GetAppointmentResponseModel
-import com.hipaasafe.domain.model.appointment.GetAppointmentsRequestModel
-import com.hipaasafe.domain.model.appointment.ModifyAppointmentRequestModel
-import com.hipaasafe.domain.model.appointment.ModifyAppointmentResponseModel
+import com.hipaasafe.domain.model.appointment.*
 import com.hipaasafe.domain.repository.AppointmentRepository
 
 class AppointmentRepositoryImp constructor(private val apiService: ApiService) :
@@ -19,6 +16,10 @@ class AppointmentRepositoryImp constructor(private val apiService: ApiService) :
 
     override suspend fun callModifyAppointmentApi(request: ModifyAppointmentRequestModel): ModifyAppointmentResponseModel {
         return apiService.callModifyAppointmentApi(request)
+    }
+
+    override suspend fun callBookAppointmentApi(request: AddAppointmentRequestModel): AddAppointmentResponseModel {
+        return apiService.callBookAppointmentApi(request)
     }
 
 
