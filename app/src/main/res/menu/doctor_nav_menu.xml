@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_doctor_appointments"
+        android:enabled="true"
+        android:icon="@drawable/ic_calendar"
+        android:title="@string/appointments" />
+
+    <item
+        android:id="@+id/navigation_chat"
+        android:enabled="true"
+        android:icon="@drawable/ic_chat"
+        android:title="@string/chat" />
+
+    <item
+        android:id="@+id/navigation_my_patients"
+        android:enabled="true"
+        android:icon="@drawable/ic_patients"
+        android:title="@string/my_patients" />
+
+    <item
+        android:id="@+id/navigation_my_team"
+        android:enabled="true"
+        android:icon="@drawable/ic_speciality"
+        android:title="@string/my_teams" />
+
+</menu>

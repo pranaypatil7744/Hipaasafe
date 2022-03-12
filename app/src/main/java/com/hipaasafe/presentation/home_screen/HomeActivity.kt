@@ -6,30 +6,44 @@ import android.view.View.VISIBLE
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.databinding.ActivityHomeBinding
 import com.hipaasafe.presentation.home_screen.appointment_fragment.AppointmentFragment
 import com.hipaasafe.presentation.home_screen.home_fragment.HomeFragment
+import com.hipaasafe.presentation.home_screen.home_fragment.HomeFragmentDoctor
 import com.hipaasafe.presentation.home_screen.navigation_fragment.NavigationFragment
 import com.hipaasafe.presentation.past_appointments.PastAppointmentsActivity
 import com.hipaasafe.utils.AppUtils
+import com.hipaasafe.utils.PreferenceUtils
+import com.hipaasafe.utils.enum.LoginUserType
 
 class HomeActivity : BaseActivity(),ToolbarActionListener {
     lateinit var binding: ActivityHomeBinding
     lateinit var toggle: ActionBarDrawerToggle
     var homeFragment = HomeFragment.newInstance()
+    var homeFragmentDoctor = HomeFragmentDoctor.newInstance()
     var navFragment = NavigationFragment.newInstance()
+    var loginUserId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        preferenceUtils = PreferenceUtils(this)
+        getPreferenceData()
         setUpToolbar()
         setUpView()
     }
 
-     fun setUpToolbar() {
+    private fun getPreferenceData() {
+        binding.apply {
+            loginUserId = preferenceUtils.getValue(Constants.PreferenceKeys.role_id).toIntOrNull()?:0
+        }
+    }
+
+    fun setUpToolbar() {
         binding.toolbar.apply {
             tvTitle.text = getString(R.string.my_appointments)
             tvDate.visibility = VISIBLE
@@ -62,7 +76,11 @@ class HomeActivity : BaseActivity(),ToolbarActionListener {
     }
 
     private fun setUpView() {
-        setFragment(homeFragment)
+        if (loginUserId == LoginUserType.PATIENT.value){
+            setFragment(homeFragment)
+        }else{
+            setFragment(homeFragmentDoctor)
+        }
         setNav(navFragment)
     }
 
