@@ -60,30 +60,36 @@ interface ApiService {
     @Multipart
     @POST(ApiNames.UploadReportFileApi)
     suspend fun callUploadReportFileApi(
-        @Part user_reports:MultipartBody.Part
-    ):UploadReportFileResponseModel
+        @Part user_reports: MultipartBody.Part
+    ): UploadReportFileResponseModel
 
     @POST(ApiNames.UploadAndShareDocumentApi)
-    suspend fun callUploadAndShareDocumentApi(@Body request:UploadAndShareDocumentRequestModel):UploadAndShareDocumentResponseModel
+    suspend fun callUploadAndShareDocumentApi(@Body request: UploadAndShareDocumentRequestModel): UploadAndShareDocumentResponseModel
 
     @GET(ApiNames.GetStaticDetailsApi)
-    suspend fun callStaticDetailsApi():GetStaticDetailsResponseModel
+    suspend fun callStaticDetailsApi(): GetStaticDetailsResponseModel
 
     @GET(ApiNames.FetchReportsDocumentListApi)
-    suspend fun callFetchReportsApi():FetchReportsResponseModel
+    suspend fun callFetchReportsApi(): FetchReportsResponseModel
 
     @POST(ApiNames.ShareDocumentApi)
-    suspend fun callShareDocumentApi(@Body request:ShareDocumentRequestModel):ShareDocumentResponseModel
+    suspend fun callShareDocumentApi(@Body request: ShareDocumentRequestModel): ShareDocumentResponseModel
 
     @Multipart
     @POST(ApiNames.UpdateProfilePic)
     suspend fun callUpdateProfilePicApi(
-        @Part profile_pic:MultipartBody.Part
-    ):ProfilePicUploadResponseModel
+        @Part profile_pic: MultipartBody.Part
+    ): ProfilePicUploadResponseModel
 
     @POST(ApiNames.BookAppointmentApi)
-    suspend fun callBookAppointmentApi(@Body request:AddAppointmentRequestModel):AddAppointmentResponseModel
+    suspend fun callBookAppointmentApi(@Body request: AddAppointmentRequestModel): AddAppointmentResponseModel
 
-
+    @GET(ApiNames.DoctorAppointmentsListApi)
+    suspend fun callDoctorAppointmentsListApi(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("date") date: String,
+        @Query("doctor_id") doctor_id: String,
+    ):DoctorAppointmentsResponseModel
 
 }

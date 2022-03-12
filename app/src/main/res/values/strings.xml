@@ -235,6 +235,9 @@
     <string name="years_of_experience">Years of Experience</string>
     <string name="specialty">Specialty</string>
     <string name="to_update_above_information_call_on">To update above information call \n on </string>
+    <string name="select_doctor">Select doctor</string>
+    <string name="no_appointments_for_today">No Appointments for Today</string>
+    <string name="no_appointments_for">"No Appointments for "</string>
 
 
 </resources>

@@ -28,6 +28,7 @@ import com.hipaasafe.BuildConfig
 import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.presentation.home_screen.appointment_fragment.model.AppointmentStatus
+import com.hipaasafe.presentation.home_screen.appointment_fragment_doctor.model.AppointmentTabModel
 import com.hipaasafe.presentation.login.model.CountryModel
 import com.onesignal.OneSignal
 import java.io.IOException
@@ -36,6 +37,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import kotlin.collections.ArrayList
 
 class AppUtils {
 
@@ -729,6 +731,24 @@ class AppUtils {
         val i = Intent(Intent.ACTION_DIAL)
         i.data = Uri.parse("tel:" + infoMobile)
         context.startActivity(i)
+    }
+
+    fun getNextSevenDays():ArrayList<AppointmentTabModel>{
+        val list :ArrayList<AppointmentTabModel> = ArrayList()
+        list.clear()
+        for (i in 0..6){
+            val calendar = Calendar.getInstance()
+            calendar.add(Calendar.DAY_OF_MONTH, i)
+            val time = calendar.time
+            val sdfLabel = SimpleDateFormat("dd MMM")
+            val sdf = SimpleDateFormat("yyyy-MM-dd")
+            list.add(AppointmentTabModel(date = sdf.format(time), label = sdfLabel.format(time)))
+        }
+        if (list.isNotEmpty()){
+            list[0].label = "Today"
+            list[1].label = "Tomorrow"
+        }
+        return list
     }
 
     fun openMailer(context: Context, mailTo: String) {

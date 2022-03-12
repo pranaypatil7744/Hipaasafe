@@ -1,20 +1,17 @@
 package com.hipaasafe.presentation.home_screen.home_fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.FragmentHomeDoctorBinding
 import com.hipaasafe.presentation.adapter.PagerAdapter
 import com.hipaasafe.presentation.home_screen.HomeActivity
-import com.hipaasafe.presentation.home_screen.appointment_fragment.AppointmentFragment
 import com.hipaasafe.presentation.home_screen.appointment_fragment_doctor.DoctorAppointmentFragment
 import com.hipaasafe.presentation.home_screen.comet_chat_group.CometChatGroupFragment
-import com.hipaasafe.presentation.home_screen.document_fragment.DocumentFragment
-import com.hipaasafe.presentation.home_screen.my_network.MyNetworkFragment
 import com.hipaasafe.presentation.home_screen.my_patients_fragment.MyPatientsFragment
 import com.hipaasafe.presentation.home_screen.my_teams_fragment.MyTeamsFragment
 

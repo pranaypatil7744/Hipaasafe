@@ -22,5 +22,6 @@ class ApiNames {
         const val FetchReportsDocumentListApi = "documents/user/test-reports/fetch"
         const val ShareDocumentApi = "documents/user/test-reports/share"
         const val BookAppointmentApi = "appointment/patient/book"
+        const val DoctorAppointmentsListApi = "query/appointments/fetch/by-date"
     }
 }

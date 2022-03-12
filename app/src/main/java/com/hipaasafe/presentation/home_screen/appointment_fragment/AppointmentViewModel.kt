@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.hipaasafe.domain.exception.ApiError
 import com.hipaasafe.domain.model.appointment.*
 import com.hipaasafe.domain.usecase.appointment.AddAppointmentUseCase
+import com.hipaasafe.domain.usecase.appointment.DoctorAppointmentsListUseCase
 import com.hipaasafe.domain.usecase.appointment.GetAppointmentsUseCase
 import com.hipaasafe.domain.usecase.appointment.ModifyAppointmentUseCase
 import com.hipaasafe.domain.usecase.base.UseCaseResponse
@@ -13,12 +14,30 @@ import com.hipaasafe.domain.usecase.base.UseCaseResponse
 class AppointmentViewModel constructor(
     var getAppointmentsUseCase: GetAppointmentsUseCase,
     var modifyAppointmentUseCase: ModifyAppointmentUseCase,
-    var addAppointmentUseCase: AddAppointmentUseCase
+    var addAppointmentUseCase: AddAppointmentUseCase,
+    var doctorAppointmentsListUseCase: DoctorAppointmentsListUseCase
 ) : ViewModel() {
     val getAppointmentsResponseData = MutableLiveData<GetAppointmentResponseModel>()
     val modifyAppointmentResponseData = MutableLiveData<ModifyAppointmentResponseModel>()
     val addAppointmentResponseData = MutableLiveData<AddAppointmentResponseModel>()
+    val doctorAppointmentsListResponseData = MutableLiveData<DoctorAppointmentsResponseModel>()
     val messageData = MutableLiveData<String>()
+
+    fun callDoctorAppointmentsListApi(request: DoctorAppointmentsRequestModel) {
+        doctorAppointmentsListUseCase.invoke(
+            viewModelScope,
+            request,
+            object : UseCaseResponse<DoctorAppointmentsResponseModel> {
+                override fun onSuccess(result: DoctorAppointmentsResponseModel) {
+                    doctorAppointmentsListResponseData.value = result
+                }
+
+                override fun onError(apiError: ApiError?) {
+                    messageData.value = apiError?.message
+                }
+
+            })
+    }
 
     fun callAddAppointmentApi(request: AddAppointmentRequestModel) {
         addAppointmentUseCase.invoke(

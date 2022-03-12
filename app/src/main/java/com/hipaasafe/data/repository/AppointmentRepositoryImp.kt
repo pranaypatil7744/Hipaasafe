@@ -22,5 +22,14 @@ class AppointmentRepositoryImp constructor(private val apiService: ApiService) :
         return apiService.callBookAppointmentApi(request)
     }
 
+    override suspend fun callDoctorAppointmentsListApi(request: DoctorAppointmentsRequestModel): DoctorAppointmentsResponseModel {
+        return apiService.callDoctorAppointmentsListApi(
+            page = request.page,
+            limit = request.limit,
+            date = request.date,
+            doctor_id = request.doctor_id
+        )
+    }
+
 
 }
