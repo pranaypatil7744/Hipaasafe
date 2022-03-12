@@ -6,6 +6,7 @@ import com.hipaasafe.domain.model.doctor_login.DoctorLoginSendOtpResponseModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpRequestModel
 import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpResponseModel
 import com.hipaasafe.domain.model.documents.*
+import com.hipaasafe.domain.model.get_doctors.DoctorMyTeamResponseModel
 import com.hipaasafe.domain.model.get_doctors.GetDoctorsResponseModel
 import com.hipaasafe.domain.model.patient_login.*
 import com.hipaasafe.domain.model.static_details.GetStaticDetailsResponseModel
@@ -92,4 +93,9 @@ interface ApiService {
         @Query("doctor_id") doctor_id: String,
     ):DoctorAppointmentsResponseModel
 
+    @GET(ApiNames.DoctorMyTeamListApi)
+    suspend fun callDoctorMyTeamsListApi(
+        @Query("page")page: Int,
+        @Query("limit")limit: Int,
+    ):DoctorMyTeamResponseModel
 }

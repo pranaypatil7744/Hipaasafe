@@ -13,6 +13,7 @@ import com.hipaasafe.domain.usecase.appointment.AddAppointmentUseCase
 import com.hipaasafe.domain.usecase.appointment.DoctorAppointmentsListUseCase
 import com.hipaasafe.domain.usecase.appointment.GetAppointmentsUseCase
 import com.hipaasafe.domain.usecase.appointment.ModifyAppointmentUseCase
+import com.hipaasafe.domain.usecase.doctors.DoctorMyTeamsListUseCase
 import com.hipaasafe.domain.usecase.doctors.GetDoctorsUseCase
 import com.hipaasafe.domain.usecase.documents.*
 import com.hipaasafe.domain.usecase.login.*
@@ -178,6 +179,11 @@ fun createDoctorsRepository(apiService: ApiService): DoctorsRepository {
 fun createGetDoctorsUseCase(doctorsRepository: DoctorsRepository): GetDoctorsUseCase {
     return GetDoctorsUseCase(doctorsRepository)
 }
+
+fun DoctorMyTeamsListUseCase(doctorsRepository: DoctorsRepository): DoctorMyTeamsListUseCase {
+    return DoctorMyTeamsListUseCase(doctorsRepository)
+}
+
 
 fun createReportsRepository(apiService: ApiService): DocumentsRepository {
     return DocumentsRepositoryImp(apiService)

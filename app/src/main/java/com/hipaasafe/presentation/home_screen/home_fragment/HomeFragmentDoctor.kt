@@ -12,6 +12,7 @@ import com.hipaasafe.presentation.adapter.PagerAdapter
 import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.home_screen.appointment_fragment_doctor.DoctorAppointmentFragment
 import com.hipaasafe.presentation.home_screen.comet_chat_group.CometChatGroupFragment
+import com.hipaasafe.presentation.home_screen.my_network.MyNetworkFragment
 import com.hipaasafe.presentation.home_screen.my_patients_fragment.MyPatientsFragment
 import com.hipaasafe.presentation.home_screen.my_teams_fragment.MyTeamsFragment
 
@@ -27,7 +28,8 @@ class HomeFragmentDoctor : BaseFragment() {
     val myPatientsFragment = MyPatientsFragment.newInstance()
     val doctorAppointmentFragment = DoctorAppointmentFragment.newInstance()
     val chatFragment = CometChatGroupFragment.newInstance()
-    val myTeamsFragment = MyTeamsFragment.newInstance()
+//    val myTeamsFragment = MyTeamsFragment.newInstance()
+    val myTeamsFragment = MyNetworkFragment.newInstance()
     lateinit var binding: FragmentHomeDoctorBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -94,7 +94,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
             if (requireContext().isNetworkAvailable()) {
                 toggleLoader(true)
                 layoutNoInternet.root.visibility = GONE
-                myNetworkViewModel.callPatientUpdateProfileApi(
+                myNetworkViewModel.callMyNetworkDoctorsListApi(
                     GetDoctorsRequestModel(page = 1, limit = 30)
                 )
             } else {

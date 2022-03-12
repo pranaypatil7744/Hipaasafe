@@ -14,7 +14,7 @@ import org.koin.dsl.module
 val AppModule = module {
     viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
     viewModel { ProfileViewModel(get(),get()) }
-    viewModel { MyNetworkViewModel(get()) }
+    viewModel { MyNetworkViewModel(get(),get()) }
     viewModel { HelpViewModel(get()) }
     viewModel { DocumentViewModel(get(),get(),get(),get(),get()) }
     viewModel { AppointmentViewModel(get(), get(),get(),get()) }
@@ -37,6 +37,7 @@ val AppModule = module {
     single { createDoctorAppointmentsListUseCase(get()) }
 
     single { createDoctorsRepository(get(named("normalService"))) }
+    single { DoctorMyTeamsListUseCase(get()) }
     single { createGetDoctorsUseCase(get()) }
 
     single { createReportsRepository(get(named("normalService"))) }

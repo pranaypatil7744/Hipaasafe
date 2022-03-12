@@ -67,7 +67,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
         binding.apply {
             if (isNetworkAvailable()) {
                 toggleLoader(true)
-                myNetworkViewModel.callPatientUpdateProfileApi(
+                myNetworkViewModel.callMyNetworkDoctorsListApi(
                     GetDoctorsRequestModel(page = 1, limit = 30)
                 )
             } else {

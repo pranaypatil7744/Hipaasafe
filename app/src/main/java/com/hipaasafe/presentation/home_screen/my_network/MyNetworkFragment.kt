@@ -1,6 +1,5 @@
 package com.hipaasafe.presentation.home_screen.my_network
 
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,14 +10,15 @@ import com.cometchat.pro.constants.CometChatConstants
 import com.cometchat.pro.core.CometChat
 import com.cometchat.pro.exceptions.CometChatException
 import com.cometchat.pro.models.Group
-import com.hipaasafe.R
 import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.FragmentMyNetworkBinding
+import com.hipaasafe.domain.model.get_doctors.DoctorMyTeamsRequestModel
 import com.hipaasafe.domain.model.get_doctors.GetDoctorsRequestModel
 import com.hipaasafe.presentation.home_screen.my_network.adapter.MyNetworkAdapter
 import com.hipaasafe.presentation.home_screen.my_network.model.DoctorModel
 import com.hipaasafe.utils.CometChatUtils.Companion.startGroupIntent
 import com.hipaasafe.utils.PreferenceUtils
+import com.hipaasafe.utils.enum.LoginUserType
 import com.hipaasafe.utils.isNetworkAvailable
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -32,6 +32,7 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
 
     private val myNetworkViewModel: MyNetworkViewModel by viewModel()
     lateinit var binding: FragmentMyNetworkBinding
+    var loginUserType:Int =0
     private val myNetworkList: ArrayList<DoctorModel> = ArrayList()
     lateinit var myNetworkAdapter: MyNetworkAdapter
     override fun onCreateView(
@@ -46,15 +47,37 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
         super.onViewCreated(view, savedInstanceState)
         preferenceUtils = PreferenceUtils(requireContext())
         setUpObserver()
-        callMyNetworksApi()
+        callDoctorsListApi()
         setUpAdapter()
         setUpListener()
+    }
+
+    private fun callDoctorsListApi() {
+        binding.apply {
+            if (requireContext().isNetworkAvailable()) {
+                toggleLoader(true)
+                if (loginUserType == LoginUserType.PATIENT.value){
+                    myNetworkViewModel.callMyNetworkDoctorsListApi(
+                        GetDoctorsRequestModel(page = 1, limit = 30)
+                    )
+                }else{
+                    myNetworkViewModel.callDoctorMyTeamsListApi(
+                        DoctorMyTeamsRequestModel(page = 1, limit = 30)
+                    )
+                }
+                layoutNoInternet.root.visibility = GONE
+                recyclerMyNetwork.visibility = VISIBLE
+            } else {
+                layoutNoInternet.root.visibility = VISIBLE
+                recyclerMyNetwork.visibility = GONE
+            }
+        }
     }
 
     private fun setUpListener() {
         binding.apply {
             layoutNoInternet.btnRetry.setOnClickListener {
-                callMyNetworksApi()
+                callDoctorsListApi()
             }
         }
     }
@@ -99,26 +122,38 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
                         showToast(it.message.toString())
                     }
                 }
+                doctorMyTeamsListResponseData.observe(requireActivity()){
+                    toggleLoader(false)
+                    if (it.success == true) {
+                        if (it.data.count != 0) {
+                            layoutNoData.root.visibility = GONE
+                            myNetworkList.clear()
+                            for (i in it.data.rows ?: arrayListOf()) {
+                                myNetworkList.add(
+                                    DoctorModel(
+                                        name = i.name,
+                                        location = i.doctor_details?.location,
+                                        speciality = i.doctor_details?.speciality?.title,
+                                        experience = i.doctor_details?.experience,
+                                        guid = i.guid,
+                                        avatar = i.avatar
+                                    )
+                                )
+                            }
+                            if (::myNetworkAdapter.isInitialized) {
+                                myNetworkAdapter.notifyDataSetChanged()
+                            }
+                        } else {
+                            layoutNoData.root.visibility = VISIBLE
+                        }
+                    } else {
+                        showToast(it.message.toString())
+                    }
+                }
                 messageData.observe(requireActivity()) {
                     toggleLoader(false)
                     showToast(it.toString())
                 }
-            }
-        }
-    }
-
-    private fun callMyNetworksApi() {
-        binding.apply {
-            if (requireContext().isNetworkAvailable()) {
-                toggleLoader(true)
-                layoutNoInternet.root.visibility = GONE
-                recyclerMyNetwork.visibility = VISIBLE
-                myNetworkViewModel.callPatientUpdateProfileApi(
-                    GetDoctorsRequestModel(page = 1, limit = 30)
-                )
-            } else {
-                layoutNoInternet.root.visibility = VISIBLE
-                recyclerMyNetwork.visibility = GONE
             }
         }
     }
@@ -163,6 +198,8 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
         group.name = myNetworkList[position].name
         group.icon = myNetworkList[position].avatar
         joinGroup(group)
+//        startGroupIntent(group, requireContext())
+
     }
 
 }
