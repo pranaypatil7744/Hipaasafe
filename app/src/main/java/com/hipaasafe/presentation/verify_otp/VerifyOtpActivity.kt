@@ -115,7 +115,7 @@ class VerifyOtpActivity : BaseActivity(), CometListener {
     private fun setUpObserver() {
         binding.apply {
             with(loginViewModel) {
-                doctorLoginSendOtpResponseData.observe(this@VerifyOtpActivity, {
+                doctorLoginSendOtpResponseData.observe(this@VerifyOtpActivity) {
                     toggleLoader(false)
                     if (it.success) {
                         startTimer()
@@ -123,8 +123,8 @@ class VerifyOtpActivity : BaseActivity(), CometListener {
                     } else {
                         showToast(it.message)
                     }
-                })
-                patientSendOtpResponseData.observe(this@VerifyOtpActivity, {
+                }
+                patientSendOtpResponseData.observe(this@VerifyOtpActivity) {
                     toggleLoader(false)
                     if (it.success) {
                         startTimer()
@@ -132,20 +132,25 @@ class VerifyOtpActivity : BaseActivity(), CometListener {
                     } else {
                         showToast(it.message)
                     }
-                })
-                doctorLoginValidateOtpResponseData.observe(this@VerifyOtpActivity, {
+                }
+                doctorLoginValidateOtpResponseData.observe(this@VerifyOtpActivity) {
                     stopTimer()
                     if (it.success) {
                         saveDoctorData(it.data)
                         OneSignal.disablePush(false)
                         val token = preferenceUtils.getValue(Constants.FIREBASE_TOKEN)
-                        CometChatUtils.loginToComet(it.data.uid, it.data.name, this@VerifyOtpActivity,token)
+                        CometChatUtils.loginToComet(
+                            it.data.uid,
+                            it.data.name,
+                            this@VerifyOtpActivity,
+                            token
+                        )
                     } else {
                         toggleLoader(false)
                         showToast(it.message)
                     }
-                })
-                patientValidateOtpResponseData.observe(this@VerifyOtpActivity, {
+                }
+                patientValidateOtpResponseData.observe(this@VerifyOtpActivity) {
                     stopTimer()
                     if (it.success) {
                         savePatientData(it.data)
@@ -161,16 +166,21 @@ class VerifyOtpActivity : BaseActivity(), CometListener {
                             preferenceUtils.setValue(Constants.IS_LOGIN, true)
                             OneSignal.disablePush(false)
                             val token = preferenceUtils.getValue(Constants.FIREBASE_TOKEN)
-                            CometChatUtils.loginToComet(it.data.uid, it.data.name, this@VerifyOtpActivity,token)
+                            CometChatUtils.loginToComet(
+                                it.data.uid,
+                                it.data.name,
+                                this@VerifyOtpActivity,
+                                token
+                            )
                         }
                     } else {
                         showToast(it.message)
                     }
-                })
-                messageData.observe(this@VerifyOtpActivity, {
+                }
+                messageData.observe(this@VerifyOtpActivity) {
                     toggleLoader(false)
                     showToast(it.toString())
-                })
+                }
             }
         }
     }
@@ -235,7 +245,8 @@ class VerifyOtpActivity : BaseActivity(), CometListener {
                 setValue(Constants.PreferenceKeys.experience, data.doctor_details?.experience)
                 setValue(Constants.PreferenceKeys.qr_code, data.doctor_details?.qr_code)
                 setValue(Constants.PreferenceKeys.mute_notifications, data.mute_notifications?:false)
-                setValue(Constants.PreferenceKeys.speciality, Gson().toJson(data.doctor_details?.speciality))
+                setValue(Constants.PreferenceKeys.specialityModel, Gson().toJson(data.doctor_details?.speciality))
+                setValue(Constants.PreferenceKeys.speciality, data.doctor_details?.speciality?.title)
                 setValue(Constants.PreferenceKeys.tags, Gson().toJson(data.doctor_details?.tags))
                 setValue(
                     Constants.PreferenceKeys.organization_id,
