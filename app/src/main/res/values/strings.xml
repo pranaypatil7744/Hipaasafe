@@ -245,6 +245,11 @@
     <string name="pending">Pending</string>
     <string name="from_date">From date</string>
     <string name="to_date">To date</string>
+    <string name="my_notes">My Notes</string>
+    <string name="request_documents">Request Documents</string>
+    <string name="choose_documents_to_request">Choose Documents to request</string>
+    <string name="send_request_to_patient">Send Request to patient</string>
+    <string name="please_select_at_least_one_document">Please select at least one document</string>
 
 
 </resources>

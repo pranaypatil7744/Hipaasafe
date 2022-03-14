@@ -13,16 +13,35 @@ class DocumentViewModel constructor(
     private val uploadReportsFileUseCase: UploadReportsFileUseCase,
     private val uploadAndShareDocumentUseCase: UploadAndShareDocumentUseCase,
     private val fetchReportsUseCase: FetchReportsUseCase,
-    private val shareDocumentUseCase: ShareDocumentUseCase
+    private val shareDocumentUseCase: ShareDocumentUseCase,
+    private val requestDocumentFromPatientUseCase: RequestDocumentFromPatientUseCase
 ) :
     ViewModel() {
     val getReportsListResponseData = MutableLiveData<GetReportsListResponseModel>()
     val uploadReportFileResponseData = MutableLiveData<UploadReportFileResponseModel>()
     val uploadAndShareDocumentResponseData = MutableLiveData<UploadAndShareDocumentResponseModel>()
     val fetchReportsResponseData = MutableLiveData<FetchReportsResponseModel>()
+    val requestDocumentFromPatientResponseData =
+        MutableLiveData<RequestDocumentFromPatientResponseModel>()
     val shareReportsResponseData = MutableLiveData<ShareDocumentResponseModel>()
     val messageData = MutableLiveData<String>()
 
+
+    fun callRequestDocumentFromPatientApi(request: RequestDocumentFromPatientRequestModel) {
+        requestDocumentFromPatientUseCase.invoke(
+            viewModelScope,
+            request,
+            object : UseCaseResponse<RequestDocumentFromPatientResponseModel> {
+                override fun onSuccess(result: RequestDocumentFromPatientResponseModel) {
+                    requestDocumentFromPatientResponseData.value = result
+                }
+
+                override fun onError(apiError: ApiError?) {
+                    messageData.value = apiError?.message
+                }
+
+            })
+    }
 
     fun callShareReportsApi(request: ShareDocumentRequestModel) {
         shareDocumentUseCase.invoke(

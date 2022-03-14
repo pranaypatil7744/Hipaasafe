@@ -41,6 +41,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     private val myNetworkViewModel: MyNetworkViewModel by viewModel()
     private val documentViewModel: DocumentViewModel by viewModel()
     var selectedItemPosition: Int = 0
+    var isForPatientDocuments:Boolean = false
 
     companion object {
         fun newInstance(): DocumentFragment {

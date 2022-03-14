@@ -7,7 +7,68 @@
     tools:context=".presentation.view_documents.ViewDocumentsActivity">
 
     <include
-        layout="@layout/toolbar_chat"
-        android:id="@+id/toolbarChat"/>
+        android:id="@+id/toolbarChat"
+        layout="@layout/toolbar_chat" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/heather"
+        app:layout_constraintTop_toBottomOf="@id/toolbarChat" />
+
+    <FrameLayout
+        android:id="@+id/containerViewDocuments"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/btnRequestedDocument"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRequestedDocument"
+        style="@style/MaterialButtonBaseStyle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/request_documents"
+        android:fontFamily="@font/metropolis_regular"
+        android:textSize="16sp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintBottom_toTopOf="@id/layoutMyNotes"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutMyNotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottomsheet_bg"
+        android:backgroundTint="@color/azure_radiance_10"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="20dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMyNotes"
+            style="@style/metropolis_medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_default_doc"
+            android:drawablePadding="10dp"
+            android:text="@string/my_notes"
+            android:textColor="@color/azure_radiance"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imgUpDown"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgUpDown"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@id/tvMyNotes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvMyNotes"
+            app:srcCompat="@drawable/ic_arrow_up" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

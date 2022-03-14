@@ -93,24 +93,28 @@ interface ApiService {
         @Query("limit") limit: Int,
         @Query("date") date: String,
         @Query("doctor_id") doctor_id: String,
-    ):DoctorAppointmentsResponseModel
+    ): DoctorAppointmentsResponseModel
 
     @GET(ApiNames.DoctorMyTeamListApi)
     suspend fun callDoctorMyTeamsListApi(
-        @Query("page")page: Int,
-        @Query("limit")limit: Int,
-    ):DoctorMyTeamResponseModel
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+    ): DoctorMyTeamResponseModel
 
     @GET(ApiNames.MyPatientsListApi)
     suspend fun callPatientsListApi(
-        @Query("page")page: Int,
-        @Query("limit")limit: Int,
-    ):GetPatientsListResponseModel
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+    ): GetPatientsListResponseModel
 
     @GET(ApiNames.DoctorPastAppointmentsListApi)
     suspend fun callDoctorPastAppointmentListApi(
-        @Query("from_date")from_date:String,
-        @Query("to_date")to_date:String,
-        @Query("doctor_id")doctor_id:String,
-    ):GetDoctorPastAppointmentsResponseModel
+        @Query("from_date") from_date: String,
+        @Query("to_date") to_date: String,
+        @Query("doctor_id") doctor_id: String,
+    ): GetDoctorPastAppointmentsResponseModel
+
+    @POST(ApiNames.RequestDocumentFromPatientApi)
+    suspend fun callRequestDocumentFromPatientsApi(@Body request: RequestDocumentFromPatientRequestModel
+    ): RequestDocumentFromPatientResponseModel
 }

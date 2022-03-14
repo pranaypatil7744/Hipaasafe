@@ -76,6 +76,9 @@ class MyPatientsFragment : BaseFragment(), MyPatientsAdapter.MyPatientsClickMana
                             layoutNoData.root.visibility = GONE
                             patientsList.clear()
                             patientsList.addAll(it.data.rows)
+                            if (::patientsAdapter.isInitialized){
+                                patientsAdapter.notifyDataSetChanged()
+                            }
                         } else {
                             layoutNoData.root.visibility = VISIBLE
                         }

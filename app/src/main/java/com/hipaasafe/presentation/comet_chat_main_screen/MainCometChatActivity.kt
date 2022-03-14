@@ -139,6 +139,7 @@ class MainCometChatActivity : BaseActivity(),
     private var locationListener: LocationListener? = null
     private val MIN_TIME: Long = 1000
     private val MIN_DIST: Long = 5
+    var loginUserType:Int =0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -210,10 +211,18 @@ class MainCometChatActivity : BaseActivity(),
                     }
                 }
                 tvChatName.setOnClickListener {
-                    startViewDocumentActivity()
+                    if (loginUserType != LoginUserType.PATIENT.value){
+                        if (type == CometChatConstants.RECEIVER_TYPE_GROUP){
+                            startViewDocumentActivity()
+                        }
+                    }
                 }
                 imgChatIcon.setOnClickListener {
-                    startViewDocumentActivity()
+                    if (loginUserType != LoginUserType.PATIENT.value){
+                        if (type == CometChatConstants.RECEIVER_TYPE_GROUP){
+                            startViewDocumentActivity()
+                        }
+                    }
                 }
                 // for audio call
                 toolbarIcon1.setOnClickListener {
@@ -323,6 +332,7 @@ class MainCometChatActivity : BaseActivity(),
         val i = Intent(this, ViewDocumentsActivity::class.java)
         val b = Bundle()
         b.putString(Constants.CometChatConstant.NAME, chatName)
+        b.putString(Constants.CometChatConstant.UID,id)
         i.putExtras(b)
         startActivity(i)
     }
@@ -1577,10 +1587,10 @@ class MainCometChatActivity : BaseActivity(),
         binding.apply {
             intent.extras?.run {
                 val name = getString(Constants.CometChatConstant.NAME)
-                val loginUser =
+                loginUserType =
                     PreferenceUtils(this@MainCometChatActivity).getValue(Constants.PreferenceKeys.role_id)
-                        .toIntOrNull()
-                chatName = if (loginUser == LoginUserType.PATIENT.value) {
+                        .toIntOrNull()?:0
+                chatName = if (loginUserType == LoginUserType.PATIENT.value) {
                     name.toString().split("|").first()
                 } else {
                     name.toString().split("|").last()

@@ -194,6 +194,10 @@ fun createFetchReportsUseCase(documentsRepository: DocumentsRepository): FetchRe
     return FetchReportsUseCase(documentsRepository)
 }
 
+fun createRequestDocumentFromPatientUseCase(documentsRepository: DocumentsRepository): RequestDocumentFromPatientUseCase {
+    return RequestDocumentFromPatientUseCase(documentsRepository)
+}
+
 fun createShareReportsUseCase(documentsRepository: DocumentsRepository): ShareDocumentUseCase {
     return ShareDocumentUseCase(documentsRepository)
 }

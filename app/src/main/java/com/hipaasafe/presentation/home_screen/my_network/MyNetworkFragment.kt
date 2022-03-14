@@ -48,21 +48,20 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         preferenceUtils = PreferenceUtils(requireContext())
+        setUpAdapter()
         setUpObserver()
         callDoctorsListApi()
-        setUpAdapter()
         setUpListener()
     }
 
     private fun callDoctorsListApi() {
         binding.apply {
             if (requireContext().isNetworkAvailable()) {
-                toggleLoader(true)
                 if (loginUserType == LoginUserType.PATIENT.value){
                     myNetworkViewModel.callMyNetworkDoctorsListApi(
                         GetDoctorsRequestModel(page = 1, limit = 30)
                     )
-                }else{
+                }else if (loginUserType == LoginUserType.DOCTOR.value || loginUserType == LoginUserType.NURSE.value){
                     myNetworkViewModel.callDoctorMyTeamsListApi(
                         DoctorMyTeamsRequestModel(page = 1, limit = 30)
                     )

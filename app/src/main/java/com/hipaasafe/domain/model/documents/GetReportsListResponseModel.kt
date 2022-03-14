@@ -7,7 +7,7 @@ data class GetReportsListResponseModel(
 )
 
 data class ReportsDataModel(
-    var id: Int? = 0,
+    var id: Int = 0,
     var title: String? = ""
 )
 
