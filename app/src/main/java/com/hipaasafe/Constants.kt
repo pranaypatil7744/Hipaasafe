@@ -12,6 +12,7 @@ class Constants {
         const val SUCCESS = "SUCCESS"
         const val DETECTED_TEXT = "DETECTED_TEXT"
         const val QR_MODEL = "QR_MODEL"
+        const val SCAN_MODEL = "SCAN_MODEL"
         const val IS_DOCTOR_LOGIN = "IS_DOCTOR_LOGIN"
         const val LOGIN_WITH = "LOGIN_WITH"
         const val COUNTRY_CODE = "COUNTRY_CODE"
@@ -36,6 +37,7 @@ class Constants {
         const val NEXT_IN_Q = "NEXT_IN_Q"
 
         const val IsFromAdd= "IsFromAdd"
+        const val IsForAttachDoc= "IsForAttachDoc"
         const val IS_PDF = "IS_PDF"
         const val IS_SELFIE_CAMERA = "IS_SELFIE_CAMERA"
         const val IS_CAMERA = "IS_CAMERA"

@@ -15,6 +15,7 @@ import com.hipaasafe.R
 import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.BottomsheetForwardDocBinding
 import com.hipaasafe.databinding.FragmentDocumentBinding
+import com.hipaasafe.domain.model.documents.FetchReportsRequestModel
 import com.hipaasafe.domain.model.documents.ShareDocumentRequestModel
 import com.hipaasafe.domain.model.get_doctors.GetDoctorsRequestModel
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.DocumentAdapter
@@ -26,6 +27,7 @@ import com.hipaasafe.presentation.home_screen.my_network.MyNetworkViewModel
 import com.hipaasafe.presentation.home_screen.my_network.model.DoctorModel
 import com.hipaasafe.presentation.upload_documents.DocumentViewModel
 import com.hipaasafe.presentation.upload_documents.UploadDocumentsActivity
+import com.hipaasafe.utils.PreferenceUtils
 import com.hipaasafe.utils.isNetworkAvailable
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -41,7 +43,9 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     private val myNetworkViewModel: MyNetworkViewModel by viewModel()
     private val documentViewModel: DocumentViewModel by viewModel()
     var selectedItemPosition: Int = 0
-    var isForPatientDocuments:Boolean = false
+    var isForPatientDocuments: Boolean = false
+    var patientUid: String = ""
+    var selectedDoctorUid: String = ""
 
     companion object {
         fun newInstance(): DocumentFragment {
@@ -60,11 +64,18 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        preferenceUtils = PreferenceUtils(requireContext())
+        getPreferenceData()
         setUpAdapter()
         setUpObserver()
         callDoctorsApi()
-        callFetchReportsApi()
         setUpListener()
+    }
+
+    private fun getPreferenceData() {
+        binding.apply {
+            patientUid = preferenceUtils.getValue(Constants.PreferenceKeys.uid)
+        }
     }
 
     private fun setUpListener() {
@@ -82,7 +93,12 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                 toggleLoader(true)
                 layoutNoInternet.root.visibility = GONE
                 recyclerDocuments.visibility = VISIBLE
-                documentViewModel.callFetchReportsApi()
+                documentViewModel.callFetchReportsApi(
+                    request = FetchReportsRequestModel(
+                        doctor_id = doctorList[0].guid.toString(),
+                        patient_id = patientUid
+                    )
+                )
             } else {
                 layoutNoInternet.root.visibility = VISIBLE
                 recyclerDocuments.visibility = GONE
@@ -133,6 +149,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                             if (::forwardDocAdapter.isInitialized) {
                                 forwardDocAdapter.notifyDataSetChanged()
                             }
+                            callFetchReportsApi()
                         } else {
 
                         }
@@ -151,13 +168,22 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                     toggleLoader(false)
                     if (it.success == true) {
                         documentsList.clear()
-                        documentsList.add(
-                            DocumentsModel(
-                                documentItemType = DocumentItemType.ITEM_ADD_DOC,
-                                title = getString(R.string.upload_documents),
-                                subTitle = getString(R.string.click_here_to_upload_reports_documents)
+                        if (isForPatientDocuments) {
+                            documentsList.add(
+                                DocumentsModel(
+                                    documentItemType = DocumentItemType.ITEM_TITLE,
+                                    title = getString(R.string.documents)
+                                )
                             )
-                        )
+                        } else {
+                            documentsList.add(
+                                DocumentsModel(
+                                    documentItemType = DocumentItemType.ITEM_ADD_DOC,
+                                    title = getString(R.string.upload_documents),
+                                    subTitle = getString(R.string.click_here_to_upload_reports_documents)
+                                )
+                            )
+                        }
                         val data = it.data
                         if (data?.documents?.size != 0) {
                             for (i in it.data?.documents ?: arrayListOf()) {
@@ -177,17 +203,27 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
 //                                title = "03 Feb 2022"
 //                            )
 //                        )
-                        documentsList.add(
-                            DocumentsModel(
-                                documentItemType = DocumentItemType.ITEM_TITLE
+                        if (isForPatientDocuments) {
+                            documentsList.add(
+                                DocumentsModel(
+                                    documentItemType = DocumentItemType.ITEM_TITLE,
+                                    title = getString(R.string.requested_documents)
+                                )
                             )
-                        )
+                        } else {
+                            documentsList.add(
+                                DocumentsModel(
+                                    documentItemType = DocumentItemType.ITEM_TITLE
+                                )
+                            )
+                        }
+
 
                         if (data?.documents_request?.size != 0) {
                             for (i in data?.documents_request ?: arrayListOf()) {
                                 documentsList.add(
                                     DocumentsModel(
-                                        documentItemType = DocumentItemType.ITEM_PENDING_DOC,
+                                        documentItemType = if (isForPatientDocuments) DocumentItemType.ITEM_REQUEST_DOC else DocumentItemType.ITEM_PENDING_DOC,
                                         title = i.hospital_tests.title,
                                         subTitle = i.assignee.name,
                                         uploadDocumentId = i.hospital_tests.id ?: 0,
@@ -199,9 +235,9 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                         if (::documentAdapter.isInitialized) {
                             documentAdapter.notifyDataSetChanged()
                         }
-                        if (documentsList.isEmpty()){
+                        if (documentsList.isEmpty()) {
                             layoutNoData.root.visibility = VISIBLE
-                        }else{
+                        } else {
                             layoutNoData.root.visibility = GONE
                         }
                     } else {

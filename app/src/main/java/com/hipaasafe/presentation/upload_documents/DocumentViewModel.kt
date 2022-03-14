@@ -59,10 +59,10 @@ class DocumentViewModel constructor(
             })
     }
 
-    fun callFetchReportsApi() {
+    fun callFetchReportsApi(request:FetchReportsRequestModel) {
         fetchReportsUseCase.invoke(
             viewModelScope,
-            null,
+            request,
             object : UseCaseResponse<FetchReportsResponseModel> {
                 override fun onSuccess(result: FetchReportsResponseModel) {
                     fetchReportsResponseData.value = result

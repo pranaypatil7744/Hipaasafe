@@ -5,10 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hipaasafe.R
-import com.hipaasafe.databinding.ItemAddDocumentBinding
-import com.hipaasafe.databinding.ItemDocumentTitleBinding
-import com.hipaasafe.databinding.ItemPendingDocumentBinding
-import com.hipaasafe.databinding.ItemUploadedDocumentBinding
+import com.hipaasafe.databinding.*
 import com.hipaasafe.presentation.home_screen.document_fragment.model.DocumentItemType
 import com.hipaasafe.presentation.home_screen.document_fragment.model.DocumentsModel
 
@@ -23,6 +20,11 @@ class DocumentAdapter(
         var itemUploadedDocumentBinding: ItemUploadedDocumentBinding? = null
         var itemPendingDocumentBinding: ItemPendingDocumentBinding? = null
         var itemDocumentTitleBinding: ItemDocumentTitleBinding? = null
+        var itemRequestDocumentBinding: ItemRequestDocumentBinding? = null
+
+        constructor(binding: ItemRequestDocumentBinding) : super(binding.root) {
+            itemRequestDocumentBinding = binding
+        }
 
         constructor(binding: ItemDocumentTitleBinding) : super(binding.root) {
             itemDocumentTitleBinding = binding
@@ -53,6 +55,12 @@ class DocumentAdapter(
                 val v = LayoutInflater.from(context)
                     .inflate(R.layout.item_pending_document, parent, false)
                 val binding = ItemPendingDocumentBinding.bind(v)
+                ViewHolder(binding)
+            }
+            DocumentItemType.ITEM_REQUEST_DOC.value -> {
+                val v = LayoutInflater.from(context)
+                    .inflate(R.layout.item_request_document, parent, false)
+                val binding = ItemRequestDocumentBinding.bind(v)
                 ViewHolder(binding)
             }
             DocumentItemType.ITEM_UPLOADED_DOC.value -> {
@@ -114,6 +122,11 @@ class DocumentAdapter(
                     }
                     itemView.setOnClickListener {
                         listener.clickOnPendingDoc(position)
+                    }
+                }
+                DocumentItemType.ITEM_REQUEST_DOC.value ->{
+                    itemRequestDocumentBinding?.apply {
+                        tvTitle.text = data.title
                     }
                 }
             }

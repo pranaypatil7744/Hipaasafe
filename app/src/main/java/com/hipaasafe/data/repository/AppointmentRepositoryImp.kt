@@ -39,5 +39,9 @@ class AppointmentRepositoryImp constructor(private val apiService: ApiService) :
         )
     }
 
+    override suspend fun callGetMyQueueApi(): GetMyQueueResponseModel {
+        return apiService.callGetMyQueueApi()
+    }
+
 
 }

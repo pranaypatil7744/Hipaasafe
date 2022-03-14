@@ -32,9 +32,16 @@ class HomeActivity : BaseActivity(),ToolbarActionListener {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         preferenceUtils = PreferenceUtils(this)
+        getIntentData()
         getPreferenceData()
         setUpToolbar()
         setUpView()
+    }
+
+    private fun getIntentData() {
+        binding.apply {
+
+        }
     }
 
     private fun getPreferenceData() {

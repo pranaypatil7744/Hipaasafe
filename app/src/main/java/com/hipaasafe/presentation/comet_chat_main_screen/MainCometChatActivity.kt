@@ -306,6 +306,11 @@ class MainCometChatActivity : BaseActivity(),
 //                    } else {
 //                        showToast(getString(R.string.no_internet_connection_please_try_again_later))
 //                    }
+                    val i = Intent(this@MainCometChatActivity,HomeActivity::class.java)
+                    val b = Bundle()
+                    b.putBoolean(Constants.IsForAttachDoc,true)
+                    i.putExtras(b)
+                    startActivity(i)
                 }
                 recyclerChatMessages.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -2362,8 +2367,8 @@ class MainCometChatActivity : BaseActivity(),
             layoutEditMsg.visibility = GONE
             etEnterMsg.setText("")
             etEnterMsg.hint = getString(R.string.write_a_message)
-            btnAttachMedia.visibility = GONE
-//            btnAttachMedia.visibility = VISIBLE
+//            btnAttachMedia.visibility = GONE
+            btnAttachMedia.visibility = VISIBLE
         }
     }
 
@@ -2444,8 +2449,8 @@ class MainCometChatActivity : BaseActivity(),
             layoutReplyMsg.visibility = GONE
             etEnterMsg.setText("")
             etEnterMsg.hint = getString(R.string.write_a_message)
-            btnAttachMedia.visibility = GONE
-//            btnAttachMedia.visibility = VISIBLE
+//            btnAttachMedia.visibility = GONE
+            btnAttachMedia.visibility = VISIBLE
         }
     }
 

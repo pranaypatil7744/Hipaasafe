@@ -250,6 +250,9 @@
     <string name="choose_documents_to_request">Choose Documents to request</string>
     <string name="send_request_to_patient">Send Request to patient</string>
     <string name="please_select_at_least_one_document">Please select at least one document</string>
+    <string name="add_a_note">Add a note...</string>
+    <string name="save">Save</string>
+    <string name="requested_documents">Requested Documents</string>
 
 
 </resources>

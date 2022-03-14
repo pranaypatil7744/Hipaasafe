@@ -57,15 +57,20 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
     private fun callDoctorsListApi() {
         binding.apply {
             if (requireContext().isNetworkAvailable()) {
-                if (loginUserType == LoginUserType.PATIENT.value){
-                    myNetworkViewModel.callMyNetworkDoctorsListApi(
-                        GetDoctorsRequestModel(page = 1, limit = 30)
-                    )
-                }else if (loginUserType == LoginUserType.DOCTOR.value || loginUserType == LoginUserType.NURSE.value){
-                    myNetworkViewModel.callDoctorMyTeamsListApi(
-                        DoctorMyTeamsRequestModel(page = 1, limit = 30)
-                    )
-                }
+//                if (loginUserType == LoginUserType.PATIENT.value){
+//                    myNetworkViewModel.callMyNetworkDoctorsListApi(
+//                        GetDoctorsRequestModel(page = 1, limit = 30)
+//                    )
+//                }else if (loginUserType == LoginUserType.DOCTOR.value || loginUserType == LoginUserType.NURSE.value){
+//                    myNetworkViewModel.callDoctorMyTeamsListApi(
+//                        DoctorMyTeamsRequestModel(page = 1, limit = 30)
+//                    )
+//                }
+
+                toggleLoader(true)
+                myNetworkViewModel.callMyNetworkDoctorsListApi(
+                    GetDoctorsRequestModel(page = 1, limit = 30)
+                )
                 layoutNoInternet.root.visibility = GONE
                 recyclerMyNetwork.visibility = VISIBLE
             } else {

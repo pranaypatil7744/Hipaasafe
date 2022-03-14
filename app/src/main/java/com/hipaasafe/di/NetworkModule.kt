@@ -158,6 +158,10 @@ fun createGetAppointmentsUseCase(appointmentRepository: AppointmentRepository): 
     return GetAppointmentsUseCase(appointmentRepository)
 }
 
+fun createGetMyQueueUseCase(appointmentRepository: AppointmentRepository): GetMyQueueUseCase {
+    return GetMyQueueUseCase(appointmentRepository)
+}
+
 fun createGetDoctorPastAppointmentsUseCase(appointmentRepository: AppointmentRepository): GetDoctorPastAppointmentsUseCase {
     return GetDoctorPastAppointmentsUseCase(appointmentRepository)
 }

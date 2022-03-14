@@ -1,4 +1,4 @@
-package com.exhibitor.helpie.ui.activity.qr_scan
+package com.hipaasafe.presentation.qr_scan
 
 import java.io.Serializable
 

@@ -9,7 +9,6 @@ import android.util.SparseArray
 import android.view.SurfaceHolder
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.exhibitor.helpie.ui.activity.qr_scan.QRContactResponseModel
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode

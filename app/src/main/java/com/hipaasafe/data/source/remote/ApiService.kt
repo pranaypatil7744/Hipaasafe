@@ -73,7 +73,10 @@ interface ApiService {
     suspend fun callStaticDetailsApi(): GetStaticDetailsResponseModel
 
     @GET(ApiNames.FetchReportsDocumentListApi)
-    suspend fun callFetchReportsApi(): FetchReportsResponseModel
+    suspend fun callFetchReportsApi(
+        @Query("doctor_id")doctor_id:String,
+        @Query("patient_id")patient_id:String,
+    ): FetchReportsResponseModel
 
     @POST(ApiNames.ShareDocumentApi)
     suspend fun callShareDocumentApi(@Body request: ShareDocumentRequestModel): ShareDocumentResponseModel
@@ -117,4 +120,7 @@ interface ApiService {
     @POST(ApiNames.RequestDocumentFromPatientApi)
     suspend fun callRequestDocumentFromPatientsApi(@Body request: RequestDocumentFromPatientRequestModel
     ): RequestDocumentFromPatientResponseModel
+
+    @GET(ApiNames.GetMyQueueApi)
+    suspend fun callGetMyQueueApi():GetMyQueueResponseModel
 }

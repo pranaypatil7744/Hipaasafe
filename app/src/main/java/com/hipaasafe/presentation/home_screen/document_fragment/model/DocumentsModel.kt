@@ -15,4 +15,5 @@ enum class DocumentItemType(val value:Int){
     ITEM_TITLE(2),
     ITEM_UPLOADED_DOC(3),
     ITEM_PENDING_DOC(4),
+    ITEM_REQUEST_DOC(5)
 }

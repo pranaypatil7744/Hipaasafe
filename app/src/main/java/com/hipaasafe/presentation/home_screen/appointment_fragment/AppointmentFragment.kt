@@ -3,13 +3,15 @@ package com.hipaasafe.presentation.home_screen.appointment_fragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityOptionsCompat
-import com.exhibitor.helpie.ui.activity.qr_scan.QRContactResponseModel
+import com.hipaasafe.presentation.qr_scan.QRContactResponseModel
 import com.google.gson.GsonBuilder
 import com.hipaasafe.Constants
 import com.hipaasafe.R
@@ -28,6 +30,7 @@ import com.hipaasafe.utils.DialogUtils
 import com.hipaasafe.utils.isNetworkAvailable
 import org.koin.android.viewmodel.ext.android.viewModel
 
+
 class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.AppointmentClickManager,
     DialogUtils.DialogManager {
 
@@ -37,6 +40,9 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
         }
     }
 
+    var handler: Handler = Handler(Looper.getMainLooper())
+    var runnable: Runnable? = null
+    var delay = 20000
     private val appointmentViewModel: AppointmentViewModel by viewModel()
     var pageNo: Int = 1
     var isLoading: Boolean = true
@@ -64,9 +70,27 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
         callUpcomingAppointmentApi()
     }
 
+    fun callMyQueueApi(){
+        if (requireContext().isNetworkAvailable()){
+            appointmentViewModel.callGetMyQueueApi()
+        }else{
+
+        }
+    }
+
     private fun setUpObserver() {
         binding.apply {
             with(appointmentViewModel) {
+
+                getMyQueueResponseData.observe(requireActivity()){
+                    if (it.success == true){
+                        layoutYourTurn.visibility = VISIBLE
+                        setUpWaitingUI(it.data.queue_no?:0)
+                    }else{
+
+                    }
+                }
+
                 getAppointmentsResponseData.observe(requireActivity()) {
                     toggleLoader(false)
                     if (it.success) {
@@ -109,9 +133,8 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
                 addAppointmentResponseData.observe(requireActivity()) {
                     toggleLoader(false)
                     if (it.success == true) {
-                        layoutYourTurn.visibility = VISIBLE
-                        setUpWaitingUI(3)
                         callUpcomingAppointmentApi()
+                        callGetMyQueueApi()
                     } else {
                         showToast(it.message.toString())
                     }
@@ -161,6 +184,22 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
         }
     }
 
+//    override fun onResume() {
+//        handler.postDelayed(Runnable {
+//            runnable?.let { handler.postDelayed(it, delay.toLong()) }
+//            Toast.makeText(
+//                requireContext(), "This method is run every 10 seconds",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        }.also { runnable = it }, delay.toLong())
+//        super.onResume()
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        runnable?.let { handler.removeCallbacks(it) }
+//    }
+
     private fun getAppointmentsListRequestModel(): GetAppointmentsRequestModel {
         val request = GetAppointmentsRequestModel()
         request.page = pageNo
@@ -208,6 +247,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
                 val qrData: QRContactResponseModel? =
                     data?.getSerializableExtra(Constants.QR_MODEL) as QRContactResponseModel?
                 var detectedText: ArrayList<String> = ArrayList()
+                val scanData = data?.getSerializableExtra(Constants.SCAN_MODEL)
 
                 detectedText =
                     gson.fromJson(
@@ -218,7 +258,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
 //            ["{\"uid\":\"0b93a526-7977-4179-94be-991e88115ee5\",\"organization_id\":1}"]
                 val uid = detectedText.toString().split(",").first()
                 val uid2 = uid.split(":").last()
-                val extractUid = uid2.replace("","")
+                val extractUid = uid2.substring(1,37)
 
 
                 val organizationId = detectedText.toString().split(",").last()

@@ -43,3 +43,8 @@ data class ReportDataModel(
     var id: Int? = 0,
     var title: String? = ""
 )
+
+data class FetchReportsRequestModel(
+    var doctor_id:String ="",
+    var patient_id:String =""
+)

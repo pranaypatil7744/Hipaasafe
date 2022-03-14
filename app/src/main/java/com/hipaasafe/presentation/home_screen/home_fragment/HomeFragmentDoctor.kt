@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.FragmentHomeDoctorBinding
@@ -12,7 +13,6 @@ import com.hipaasafe.presentation.adapter.PagerAdapter
 import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.home_screen.appointment_fragment_doctor.DoctorAppointmentFragment
 import com.hipaasafe.presentation.home_screen.comet_chat_group.CometChatGroupFragment
-import com.hipaasafe.presentation.home_screen.my_network.MyNetworkFragment
 import com.hipaasafe.presentation.home_screen.my_patients_fragment.MyPatientsFragment
 import com.hipaasafe.presentation.home_screen.my_teams_fragment.MyTeamsFragment
 
@@ -28,8 +28,9 @@ class HomeFragmentDoctor : BaseFragment() {
     val myPatientsFragment = MyPatientsFragment.newInstance()
     val doctorAppointmentFragment = DoctorAppointmentFragment.newInstance()
     val chatFragment = CometChatGroupFragment.newInstance()
-//    val myTeamsFragment = MyTeamsFragment.newInstance()
-    val myTeamsFragment = MyNetworkFragment.newInstance()
+    val myTeamsFragment = MyTeamsFragment.newInstance()
+    var isForAttachDoc:Boolean = false
+//    val myTeamsFragment = MyNetworkFragment.newInstance()
     lateinit var binding: FragmentHomeDoctorBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +42,14 @@ class HomeFragmentDoctor : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getIntentData()
         setUpView()
+    }
+
+    private fun getIntentData() {
+        binding.apply {
+            isForAttachDoc = (requireActivity() as HomeActivity).intent.getBooleanExtra(Constants.IsForAttachDoc,false)
+        }
     }
 
     private fun setUpView() {
