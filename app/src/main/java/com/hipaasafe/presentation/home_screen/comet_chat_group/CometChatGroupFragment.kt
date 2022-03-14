@@ -82,7 +82,7 @@ class CometChatGroupFragment : BaseFragment(), GroupChatListAdapter.ChatListClic
         binding.apply {
             toggleLoader(true)
             val requestBuilder = ConversationsRequest.ConversationsRequestBuilder()
-                .setConversationType(ConversationMode.GROUP.toString())
+                .setConversationType(ConversationMode.ALL_CHATS.name)
                 .setLimit(50)
                 .build()
             requestBuilder.fetchNext(object : CometChat.CallbackListener<List<Conversation>>() {
@@ -323,6 +323,10 @@ class CometChatGroupFragment : BaseFragment(), GroupChatListAdapter.ChatListClic
 
     override fun clickOnChatGroup(position: Int, group: Group) {
         CometChatUtils.startGroupIntent(group,requireContext())
+    }
+
+    override fun clickOnPersonalChat(position: Int, user: User) {
+        CometChatUtils.userIntent(user,requireContext())
     }
 
 }

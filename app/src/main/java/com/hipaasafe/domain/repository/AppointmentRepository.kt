@@ -7,7 +7,9 @@ interface AppointmentRepository {
 
     suspend fun callModifyAppointmentApi(request: ModifyAppointmentRequestModel): ModifyAppointmentResponseModel
 
-    suspend fun callBookAppointmentApi(request:AddAppointmentRequestModel):AddAppointmentResponseModel
+    suspend fun callBookAppointmentApi(request: AddAppointmentRequestModel): AddAppointmentResponseModel
 
-    suspend fun callDoctorAppointmentsListApi(request:DoctorAppointmentsRequestModel):DoctorAppointmentsResponseModel
+    suspend fun callDoctorAppointmentsListApi(request: DoctorAppointmentsRequestModel): DoctorAppointmentsResponseModel
+
+    suspend fun callDoctorPastAppointmentsListApi(request: GetDoctorPastAppointmentsRequestModel): GetDoctorPastAppointmentsResponseModel
 }

@@ -106,4 +106,11 @@ interface ApiService {
         @Query("page")page: Int,
         @Query("limit")limit: Int,
     ):GetPatientsListResponseModel
+
+    @GET(ApiNames.DoctorPastAppointmentsListApi)
+    suspend fun callDoctorPastAppointmentListApi(
+        @Query("from_date")from_date:String,
+        @Query("to_date")to_date:String,
+        @Query("doctor_id")doctor_id:String,
+    ):GetDoctorPastAppointmentsResponseModel
 }

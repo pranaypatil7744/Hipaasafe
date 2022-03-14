@@ -71,6 +71,7 @@ import com.hipaasafe.presentation.comet_chat_main_screen.model.AttachmentMenuMod
 import com.hipaasafe.presentation.comet_chat_main_screen.model.MembersWithColor
 import com.hipaasafe.presentation.forward_message_screen.ForwardMessageActivity
 import com.hipaasafe.presentation.home_screen.HomeActivity
+import com.hipaasafe.presentation.view_documents.ViewDocumentsActivity
 import com.hipaasafe.utils.*
 import com.hipaasafe.utils.CometChatUtils.Companion.initiateCall
 import com.hipaasafe.utils.enum.LoginUserType
@@ -208,6 +209,12 @@ class MainCometChatActivity : BaseActivity(),
                         finish()
                     }
                 }
+                tvChatName.setOnClickListener {
+                    startViewDocumentActivity()
+                }
+                imgChatIcon.setOnClickListener {
+                    startViewDocumentActivity()
+                }
                 // for audio call
                 toolbarIcon1.setOnClickListener {
                     if (!isOngoingCall && !isBlockedByMe && !isHasBlockedByMe) {
@@ -310,6 +317,14 @@ class MainCometChatActivity : BaseActivity(),
                 })
             }
         }
+    }
+
+    private fun startViewDocumentActivity() {
+        val i = Intent(this, ViewDocumentsActivity::class.java)
+        val b = Bundle()
+        b.putString(Constants.CometChatConstant.NAME, chatName)
+        i.putExtras(b)
+        startActivity(i)
     }
 
     private fun initiateVideoCall() {
@@ -1409,10 +1424,12 @@ class MainCometChatActivity : BaseActivity(),
             CometChat.getGroup(id, object : CometChat.CallbackListener<Group>() {
                 override fun onSuccess(group: Group) {
                     binding.toolbar.apply {
-                        val loginUser = PreferenceUtils(this@MainCometChatActivity).getValue(Constants.PreferenceKeys.role_id).toIntOrNull()
-                        chatName = if (loginUser == LoginUserType.PATIENT.value){
+                        val loginUser =
+                            PreferenceUtils(this@MainCometChatActivity).getValue(Constants.PreferenceKeys.role_id)
+                                .toIntOrNull()
+                        chatName = if (loginUser == LoginUserType.PATIENT.value) {
                             group.name.toString().split("|").first()
-                        }else{
+                        } else {
                             group.name.toString().split("|").last()
                         }
                         profilePicUrl = group.icon
@@ -1560,10 +1577,12 @@ class MainCometChatActivity : BaseActivity(),
         binding.apply {
             intent.extras?.run {
                 val name = getString(Constants.CometChatConstant.NAME)
-                val loginUser = PreferenceUtils(this@MainCometChatActivity).getValue(Constants.PreferenceKeys.role_id).toIntOrNull()
-                chatName = if (loginUser == LoginUserType.PATIENT.value){
+                val loginUser =
+                    PreferenceUtils(this@MainCometChatActivity).getValue(Constants.PreferenceKeys.role_id)
+                        .toIntOrNull()
+                chatName = if (loginUser == LoginUserType.PATIENT.value) {
                     name.toString().split("|").first()
-                }else{
+                } else {
                     name.toString().split("|").last()
                 }
                 profilePicUrl = getString(Constants.CometChatConstant.AVATAR)

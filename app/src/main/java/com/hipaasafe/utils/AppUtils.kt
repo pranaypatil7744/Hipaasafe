@@ -689,6 +689,16 @@ class AppUtils {
         return sdf.format(time)
     }
 
+    fun convertDateToString(
+        date: Date,
+        formatToConvert: String
+    ): String {
+//        val df = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
+        val df = SimpleDateFormat(formatToConvert, Locale.getDefault())
+        val formattedDate = df.format(date.time)
+        return formattedDate
+    }
+
     fun convertSecondToTime(millis: Long): String {
         val secs: Long = millis / 1000
         return String.format("%02d:%02d", (secs % 3600) / 60, secs % 60);

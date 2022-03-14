@@ -83,8 +83,8 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
                                 upcomingAppointmentList.add(
                                     UpcomingAppointmentModel(
                                         appointmentItemType = AppointmentItemType.ITEM_APPOINTMENT,
-                                        name = i.appointment_doctor_details.name,
-                                        speciality = i.appointment_doctor_details.doctor_details.speciality.title,
+                                        name = i.appointment_doctor_details?.name,
+                                        speciality = i.appointment_doctor_details?.doctor_details?.speciality?.title,
                                         date = i.appointment_date,
                                         time = i.appointment_time,
                                         appointment_id = i.appointment_id.toString(),

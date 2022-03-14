@@ -29,6 +29,12 @@ class PastAppointmentHistoryAdapter(
         holder.binding.apply {
             tvTitle.text = data.title
             tvSubTitle.text = data.date + "  |  " + data.time
+            if (data.age.isNullOrEmpty()){
+                tvAge.visibility = GONE
+            }else{
+                tvAge.visibility = VISIBLE
+                tvAge.text = data.age+" Yrs"
+            }
             if (historyList.size - 1 == position){
                 divider.visibility = GONE
             }else{

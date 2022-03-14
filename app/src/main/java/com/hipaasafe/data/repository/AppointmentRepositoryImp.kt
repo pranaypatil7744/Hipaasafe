@@ -31,5 +31,13 @@ class AppointmentRepositoryImp constructor(private val apiService: ApiService) :
         )
     }
 
+    override suspend fun callDoctorPastAppointmentsListApi(request: GetDoctorPastAppointmentsRequestModel): GetDoctorPastAppointmentsResponseModel {
+        return apiService.callDoctorPastAppointmentListApi(
+            from_date = request.from_date,
+            to_date = request.to_date,
+            doctor_id = request.doctor_id
+        )
+    }
+
 
 }

@@ -243,6 +243,8 @@
     <string name="rescheduled">Rescheduled</string>
     <string name="completed">Completed</string>
     <string name="pending">Pending</string>
+    <string name="from_date">From date</string>
+    <string name="to_date">To date</string>
 
 
 </resources>
