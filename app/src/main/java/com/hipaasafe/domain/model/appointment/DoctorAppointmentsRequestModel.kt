@@ -22,7 +22,8 @@ data class DoctorAppointmentListModel(
     var appointment_date:String? ="",
     var appointment_time:String? ="",
     var appointment_status:String? ="",
-    var patient_details:PatientDetailsModel = PatientDetailsModel()
+    var patient_details:PatientDetailsModel = PatientDetailsModel(),
+    var queue_no:Int? =0
 )
 
 data class PatientDetailsModel(

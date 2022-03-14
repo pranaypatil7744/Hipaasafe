@@ -8,6 +8,8 @@ import com.hipaasafe.domain.model.doctor_login.DoctorLoginValidateOtpResponseMod
 import com.hipaasafe.domain.model.documents.*
 import com.hipaasafe.domain.model.get_doctors.DoctorMyTeamResponseModel
 import com.hipaasafe.domain.model.get_doctors.GetDoctorsResponseModel
+import com.hipaasafe.domain.model.get_patients.GetPatientsListResponseModel
+import com.hipaasafe.domain.model.get_patients.PatientsDataModel
 import com.hipaasafe.domain.model.patient_login.*
 import com.hipaasafe.domain.model.static_details.GetStaticDetailsResponseModel
 import com.hipaasafe.presentation.profile_edit_details.model.ProfileEditRequestModel
@@ -98,4 +100,10 @@ interface ApiService {
         @Query("page")page: Int,
         @Query("limit")limit: Int,
     ):DoctorMyTeamResponseModel
+
+    @GET(ApiNames.MyPatientsListApi)
+    suspend fun callPatientsListApi(
+        @Query("page")page: Int,
+        @Query("limit")limit: Int,
+    ):GetPatientsListResponseModel
 }

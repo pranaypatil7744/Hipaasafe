@@ -32,6 +32,8 @@ class Constants {
         const val PENDING = "PENDING"
         const val RESCHEDULED = "RESCHEDULED"
         const val COMPLETED = "COMPLETED"
+        const val REMINDER = "REMINDER"
+        const val NEXT_IN_Q = "NEXT_IN_Q"
 
         const val IsFromAdd= "IsFromAdd"
         const val IS_PDF = "IS_PDF"

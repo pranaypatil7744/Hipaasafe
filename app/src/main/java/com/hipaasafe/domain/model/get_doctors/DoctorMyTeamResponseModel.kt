@@ -12,7 +12,7 @@ data class DoctorMyTeamsData(
 )
 
 data class DoctorMyTeamsListModel(
-    var guid:String? = "",
+    var uid:String? = "",
     var name:String? = "",
     var country_code:String? = "",
     var number:String? = "",

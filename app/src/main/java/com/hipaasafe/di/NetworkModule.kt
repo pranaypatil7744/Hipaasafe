@@ -17,6 +17,7 @@ import com.hipaasafe.domain.usecase.doctors.DoctorMyTeamsListUseCase
 import com.hipaasafe.domain.usecase.doctors.GetDoctorsUseCase
 import com.hipaasafe.domain.usecase.documents.*
 import com.hipaasafe.domain.usecase.login.*
+import com.hipaasafe.domain.usecase.patients.GetPatientsListUseCase
 import com.hipaasafe.domain.usecase.profile.PatientUpdateProfileUseCase
 import com.hipaasafe.domain.usecase.profile.UpdateProfilePicUseCase
 import com.hipaasafe.domain.usecase.static_details.StaticDetailsUseCase
@@ -184,7 +185,6 @@ fun DoctorMyTeamsListUseCase(doctorsRepository: DoctorsRepository): DoctorMyTeam
     return DoctorMyTeamsListUseCase(doctorsRepository)
 }
 
-
 fun createReportsRepository(apiService: ApiService): DocumentsRepository {
     return DocumentsRepositoryImp(apiService)
 }
@@ -215,4 +215,12 @@ fun createStaticDetailsRepository(apiService: ApiService): StaticDetailsReposito
 
 fun createStaticDetailsUseCase(staticDetailsRepository: StaticDetailsRepository): StaticDetailsUseCase {
     return StaticDetailsUseCase(staticDetailsRepository)
+}
+
+fun createPatientsRepository(apiService: ApiService): PatientsRepository {
+    return PatientsRepositoryImp(apiService)
+}
+
+fun createGetPatientsListUseCase(patientsRepository: PatientsRepository): GetPatientsListUseCase {
+    return GetPatientsListUseCase(patientsRepository)
 }

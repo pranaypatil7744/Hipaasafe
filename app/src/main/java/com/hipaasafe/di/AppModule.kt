@@ -3,6 +3,7 @@ package com.hipaasafe.di
 import com.hipaasafe.presentation.help.HelpViewModel
 import com.hipaasafe.presentation.home_screen.appointment_fragment.AppointmentViewModel
 import com.hipaasafe.presentation.home_screen.my_network.MyNetworkViewModel
+import com.hipaasafe.presentation.home_screen.my_patients_fragment.PatientsViewModel
 import com.hipaasafe.presentation.login.LoginViewModel
 import com.hipaasafe.presentation.profile_edit_details.ProfileViewModel
 import com.hipaasafe.presentation.upload_documents.DocumentViewModel
@@ -16,6 +17,7 @@ val AppModule = module {
     viewModel { ProfileViewModel(get(),get()) }
     viewModel { MyNetworkViewModel(get(),get()) }
     viewModel { HelpViewModel(get()) }
+    viewModel { PatientsViewModel(get()) }
     viewModel { DocumentViewModel(get(),get(),get(),get(),get()) }
     viewModel { AppointmentViewModel(get(), get(),get(),get()) }
 
@@ -49,5 +51,8 @@ val AppModule = module {
 
     single { createStaticDetailsRepository(get(named("normalService"))) }
     single { createStaticDetailsUseCase(get()) }
+
+    single { createPatientsRepository(get(named("normalService"))) }
+    single { createGetPatientsListUseCase(get()) }
 
 }

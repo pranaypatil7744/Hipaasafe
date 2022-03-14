@@ -64,6 +64,15 @@ class CometChatUtils {
             intent.putExtra(Constants.CometChatConstant.GROUP_PASSWORD, group.password)
             context.startActivity(intent)
         }
+        fun userIntent(user: User,context: Context) {
+            val intent = Intent(context, MainCometChatActivity::class.java)
+            intent.putExtra(Constants.CometChatConstant.UID, user.uid)
+            intent.putExtra(Constants.CometChatConstant.AVATAR, user.avatar)
+            intent.putExtra(Constants.CometChatConstant.STATUS, user.status)
+            intent.putExtra(Constants.CometChatConstant.NAME, user.name)
+            intent.putExtra(Constants.CometChatConstant.TYPE, CometChatConstants.RECEIVER_TYPE_USER)
+            context.startActivity(intent)
+        }
 
         fun getSenderName(data: JSONObject): String? {
             val entities = data.getJSONObject("entities")

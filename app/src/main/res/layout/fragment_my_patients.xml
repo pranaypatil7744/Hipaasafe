@@ -3,7 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.home_screen.my_patients_fragment.MyPatientsFragment">
 
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerMyPatients"
+        tools:listitem="@layout/item_my_patients"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"/>
+
+    <include
+        android:id="@+id/content_loading"
+        layout="@layout/content_loading"
+        android:visibility="gone"
+        tools:visibility="visible" />
+    <include
+        layout="@layout/layout_no_internet"
+        android:id="@+id/layoutNoInternet"
+        android:visibility="gone"/>
+    <include
+        layout="@layout/layout_no_data"
+        android:id="@+id/layoutNoData"
+        android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

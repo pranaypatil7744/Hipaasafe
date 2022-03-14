@@ -10,6 +10,7 @@ import com.cometchat.pro.constants.CometChatConstants
 import com.cometchat.pro.core.CometChat
 import com.cometchat.pro.exceptions.CometChatException
 import com.cometchat.pro.models.Group
+import com.cometchat.pro.models.User
 import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.FragmentMyNetworkBinding
 import com.hipaasafe.domain.model.get_doctors.DoctorMyTeamsRequestModel
@@ -17,6 +18,7 @@ import com.hipaasafe.domain.model.get_doctors.GetDoctorsRequestModel
 import com.hipaasafe.presentation.home_screen.my_network.adapter.MyNetworkAdapter
 import com.hipaasafe.presentation.home_screen.my_network.model.DoctorModel
 import com.hipaasafe.utils.CometChatUtils.Companion.startGroupIntent
+import com.hipaasafe.utils.CometChatUtils.Companion.userIntent
 import com.hipaasafe.utils.PreferenceUtils
 import com.hipaasafe.utils.enum.LoginUserType
 import com.hipaasafe.utils.isNetworkAvailable
@@ -135,7 +137,7 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
                                         location = i.doctor_details?.location,
                                         speciality = i.doctor_details?.speciality?.title,
                                         experience = i.doctor_details?.experience,
-                                        guid = i.guid,
+                                        guid = i.uid,
                                         avatar = i.avatar
                                     )
                                 )
@@ -191,15 +193,22 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
     }
 
     override fun clickOnChat(position: Int) {
-        toggleLoader(true)
-        val group = Group()
-        group.guid = myNetworkList[position].guid
-        group.groupType = CometChatConstants.GROUP_TYPE_PRIVATE
-        group.name = myNetworkList[position].name
-        group.icon = myNetworkList[position].avatar
-        joinGroup(group)
+        if (loginUserType == LoginUserType.PATIENT.value){
+            toggleLoader(true)
+            val group = Group()
+            group.guid = myNetworkList[position].guid
+            group.groupType = CometChatConstants.GROUP_TYPE_PRIVATE
+            group.name = myNetworkList[position].name
+            group.icon = myNetworkList[position].avatar
+            joinGroup(group)
 //        startGroupIntent(group, requireContext())
-
+        }else{
+            val user= User()
+            user.name = myNetworkList[position].name
+            user.uid = myNetworkList[position].guid
+            user.avatar = myNetworkList[position].avatar
+            userIntent(user,requireContext())
+        }
     }
 
 }

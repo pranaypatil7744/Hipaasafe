@@ -238,6 +238,11 @@
     <string name="select_doctor">Select doctor</string>
     <string name="no_appointments_for_today">No Appointments for Today</string>
     <string name="no_appointments_for">"No Appointments for "</string>
+    <string name="reminder">Reminder</string>
+    <string name="next_in_q">Next in Queue</string>
+    <string name="rescheduled">Rescheduled</string>
+    <string name="completed">Completed</string>
+    <string name="pending">Pending</string>
 
 
 </resources>
