@@ -8,6 +8,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hipaasafe.Constants
@@ -46,6 +47,9 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     var isForPatientDocuments: Boolean = false
     var patientUid: String = ""
     var selectedDoctorUid: String = ""
+    var selectedDoctorUidForList: String = ""
+    var isAttachmentFlow:Boolean = false
+    var attachmentShareTo:String = ""
 
     companion object {
         fun newInstance(): DocumentFragment {
@@ -84,6 +88,10 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                 callFetchReportsApi()
                 callDoctorsApi()
             }
+            etDoctorName.setOnItemClickListener { parent, view, position, id ->
+                selectedDoctorUidForList = doctorList[position].doctorId.toString()
+                callFetchReportsApi()
+            }
         }
     }
 
@@ -95,7 +103,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                 recyclerDocuments.visibility = VISIBLE
                 documentViewModel.callFetchReportsApi(
                     request = FetchReportsRequestModel(
-                        doctor_id = doctorList[0].guid.toString(),
+                        doctor_id = selectedDoctorUidForList,
                         patient_id = patientUid
                     )
                 )
@@ -142,13 +150,28 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                                     ForwardDocumentModel(
                                         title = i.list_doctor_details.name,
                                         icon = i.list_doctor_details.avatar,
-                                        guid = i.guid
+                                        guid = i.guid,
+                                        doctorId = i.doctor_id
                                     )
                                 )
                             }
                             if (::forwardDocAdapter.isInitialized) {
                                 forwardDocAdapter.notifyDataSetChanged()
                             }
+                            val list: ArrayList<String> = ArrayList()
+                            list.clear()
+                            for (i in doctorList) {
+                                list.add(i.title.toString())
+                            }
+                            val adapterReports =
+                                ArrayAdapter<String>(
+                                    requireActivity(),
+                                    android.R.layout.simple_list_item_1,
+                                    list
+                                )
+                            etDoctorName.setAdapter(adapterReports)
+                            etDoctorName.setText(doctorList[0].title.toString())
+                            selectedDoctorUidForList = doctorList[0].doctorId.toString()
                             callFetchReportsApi()
                         } else {
 
@@ -227,7 +250,8 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                                         title = i.hospital_tests.title,
                                         subTitle = i.assignee.name,
                                         uploadDocumentId = i.hospital_tests.id ?: 0,
-                                        guid = i.assignee_id
+                                        guid = i.assignee.uid,
+                                        doctorId = i.assignee_id
                                     )
                                 )
                             }
@@ -248,7 +272,17 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                 shareReportsResponseData.observe(requireActivity()) {
                     toggleLoader(false)
                     if (it.success == true) {
-                        showToast(it.message.toString())
+                        if (isAttachmentFlow){
+                            val data = getShareReportRequestModel()
+                            val resultIntent = requireActivity().intent
+                            val b = Bundle()
+                            b.putString(Constants.DocumentLink,Constants.BASE_URL_REPORT+data.document_file)
+                            resultIntent.putExtras(b)
+                            requireActivity().setResult(Activity.RESULT_OK, resultIntent)
+                            requireActivity().finish()
+                        }else{
+                            showToast(it.message.toString())
+                        }
                     } else {
                         showToast(it.message.toString())
                     }
@@ -304,12 +338,17 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
 
     private fun getShareReportRequestModel(): ShareDocumentRequestModel {
         val selectedDoctorsIds: ArrayList<String> = ArrayList()
-        val list = doctorList.filter {
-            it.isSelected
-        }
-        if (list.isNotEmpty()) {
-            for (i in list) {
-                selectedDoctorsIds.add(i.guid.toString())
+        if (isAttachmentFlow){
+            selectedDoctorsIds.clear()
+            selectedDoctorsIds.add(attachmentShareTo)
+        }else{
+            val list = doctorList.filter {
+                it.isSelected
+            }
+            if (list.isNotEmpty()) {
+                for (i in list) {
+                    selectedDoctorsIds.add(i.guid.toString())
+                }
             }
         }
         val request = ShareDocumentRequestModel()
@@ -332,6 +371,11 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     private val uploadReportResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
+                if (isAttachmentFlow){
+
+                }else{
+
+                }
                 callFetchReportsApi()
             }
         }
@@ -347,7 +391,11 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
 
     override fun clickOnForwardDoc(position: Int) {
         selectedItemPosition = position
-        openForwardListBottomSheet()
+        if (isAttachmentFlow){
+            callShareReportApi()
+        }else{
+            openForwardListBottomSheet()
+        }
     }
 
     override fun clickOnPendingDoc(position: Int) {
@@ -358,6 +406,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         bundle.putString(Constants.PendingDocumentName, documentsList[position].title)
         bundle.putString(Constants.PendingDocumentBy, documentsList[position].subTitle)
         bundle.putString(Constants.PendingDocumentGuid, documentsList[position].guid)
+        bundle.putString(Constants.PendingDocumentDoctorId, documentsList[position].doctorId)
         bundle.putInt(Constants.PendingDocumentId, documentsList[position].uploadDocumentId)
         i.putExtras(bundle)
         uploadReportResult.launch(i)

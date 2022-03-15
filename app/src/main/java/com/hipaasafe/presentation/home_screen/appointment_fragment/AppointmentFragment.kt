@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityOptionsCompat
 import com.hipaasafe.presentation.qr_scan.QRContactResponseModel
@@ -40,7 +41,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
         }
     }
 
-    var handler: Handler = Handler(Looper.getMainLooper())
+    var handler: Handler = Handler()
     var runnable: Runnable? = null
     var delay = 20000
     private val appointmentViewModel: AppointmentViewModel by viewModel()
@@ -64,17 +65,29 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpView()
+        callMyQueueApi()
         setUpObserver()
         setUpAdapter()
         setUpListener()
         callUpcomingAppointmentApi()
     }
 
+    override fun onResume() {
+        handler.postDelayed(Runnable {
+            handler.postDelayed(runnable!!, delay.toLong())
+            callMyQueueApi()
+        }.also { runnable = it }, delay.toLong())
+        super.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        handler.removeCallbacks(runnable!!)
+    }
+
     fun callMyQueueApi(){
         if (requireContext().isNetworkAvailable()){
             appointmentViewModel.callGetMyQueueApi()
-        }else{
-
         }
     }
 
@@ -89,6 +102,9 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
                     }else{
 
                     }
+                }
+                queueMessageData.observe(requireActivity()){
+                    handler.removeCallbacks(runnable!!)
                 }
 
                 getAppointmentsResponseData.observe(requireActivity()) {
@@ -184,22 +200,6 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
         }
     }
 
-//    override fun onResume() {
-//        handler.postDelayed(Runnable {
-//            runnable?.let { handler.postDelayed(it, delay.toLong()) }
-//            Toast.makeText(
-//                requireContext(), "This method is run every 10 seconds",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//        }.also { runnable = it }, delay.toLong())
-//        super.onResume()
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        runnable?.let { handler.removeCallbacks(it) }
-//    }
-
     private fun getAppointmentsListRequestModel(): GetAppointmentsRequestModel {
         val request = GetAppointmentsRequestModel()
         request.page = pageNo
@@ -214,10 +214,11 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
             layoutScanQr.root.setOnClickListener {
                 openQrScan(it)
             }
-            layoutCount.setOnClickListener {
-                setUpWaitingUI(0)
-            }
+//            layoutCount.setOnClickListener {
+//                setUpWaitingUI(0)
+//            }
             btnGotIt.setOnClickListener {
+                handler.removeCallbacks(runnable!!)
                 layoutYourTurn.visibility = GONE
             }
             layoutNoInternet.btnRetry.setOnClickListener {
@@ -306,6 +307,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
                     tvMainSubTitle.text =
                         context.getString(R.string.saving_the_world_happens_one_person_at_a_time)
                 } else {
+                    handler.removeCallbacks(runnable!!)
                     imgHeart.visibility = VISIBLE
                     layoutCount.visibility = GONE
                     tvMainTitle.text = getString(R.string.now_it_s_your_turn)

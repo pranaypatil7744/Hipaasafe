@@ -10,7 +10,7 @@ import java.util.*
 
 class DocumentsRepositoryImp constructor(private val apiService: ApiService) : DocumentsRepository {
     override suspend fun callGetReportsList(request: GetReportsListRequestModel): GetReportsListResponseModel {
-        return apiService.callGetReportsList(request.page, request.limit)
+        return apiService.callGetReportsList(doctor_id = request.doctor_id)
     }
 
     override suspend fun callUploadReportFileApi(request: UploadReportFileRequestModel): UploadReportFileResponseModel {

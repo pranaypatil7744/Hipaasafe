@@ -56,8 +56,9 @@ interface ApiService {
 
     @GET(ApiNames.GetReportsList)
     suspend fun callGetReportsList(
-        @Query("page") page: Int,
-        @Query("limit") limit: Int
+//        @Query("page") page: Int,
+//        @Query("limit") limit: Int
+        @Query("doctor_id") doctor_id: String
     ): GetReportsListResponseModel
 
     @Multipart

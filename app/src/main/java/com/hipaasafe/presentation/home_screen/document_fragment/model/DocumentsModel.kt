@@ -7,6 +7,7 @@ data class DocumentsModel(
     var title:String? = "",
     var subTitle:String? = "",
     var guid:String? ="",
+    var doctorId:String? ="",
     var uploadDocumentId:Int =0,
     var uploadedFileName:String?= ""
 ):Serializable

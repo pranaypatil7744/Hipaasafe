@@ -15,4 +15,5 @@ data class UploadReportData(
 data class UploadReportFileRequestModel(
     var user_reports:File,
     var fileName:String= "",
+    var doctor_id:String
     )

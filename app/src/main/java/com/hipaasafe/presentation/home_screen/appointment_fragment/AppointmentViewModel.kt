@@ -24,6 +24,7 @@ class AppointmentViewModel constructor(
     val getDoctorPastAppointmentsListResponseData =
         MutableLiveData<GetDoctorPastAppointmentsResponseModel>()
     val messageData = MutableLiveData<String>()
+    val queueMessageData = MutableLiveData<String>()
 
     fun callGetMyQueueApi() {
         getMyQueueUseCase.invoke(
@@ -35,7 +36,7 @@ class AppointmentViewModel constructor(
                 }
 
                 override fun onError(apiError: ApiError?) {
-                    messageData.value = apiError?.message
+                    queueMessageData.value = apiError?.message
                 }
 
             })

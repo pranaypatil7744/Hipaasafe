@@ -2,6 +2,8 @@ package com.hipaasafe.presentation.home_screen.document_fragment.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hipaasafe.R
@@ -11,7 +13,8 @@ import com.hipaasafe.presentation.home_screen.document_fragment.model.ForwardDoc
 class ForwardDocAdapter(
     var context: Context,
     private val doctorList: ArrayList<ForwardDocumentModel>,
-    var listener:ForwardClickManager
+    var listener:ForwardClickManager,
+    var isHideCheck:Boolean = false
 ) : RecyclerView.Adapter<ForwardDocAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemForwardDoctorBinding) : RecyclerView.ViewHolder(binding.root)
@@ -30,6 +33,11 @@ class ForwardDocAdapter(
                 btnIsSelect.setImageResource(R.drawable.ic_item_selected)
             } else {
                 btnIsSelect.setImageResource(R.drawable.ic_item_not_selected)
+            }
+            if (isHideCheck){
+                btnIsSelect.visibility = GONE
+            }else{
+                btnIsSelect.visibility = VISIBLE
             }
             holder.itemView.setOnClickListener {
                 listener.onItemClick(position)

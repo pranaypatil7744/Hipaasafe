@@ -50,6 +50,7 @@ import com.hipaasafe.databinding.ActivityMainCometChatBinding
 import com.hipaasafe.databinding.BottomSheetAttachmentBinding
 import com.hipaasafe.databinding.BottomSheetMessageActionBinding
 import com.hipaasafe.extension.Extensions
+import com.hipaasafe.presentation.attach_document.AttachmentActivity
 import com.hipaasafe.settings.CometChatFeatureRestriction
 import com.hipaasafe.presentation.comet_chat_main_screen.adapter.AttachmentActionsAdapter
 import com.hipaasafe.presentation.comet_chat_main_screen.adapter.MainChatAdapter
@@ -306,11 +307,12 @@ class MainCometChatActivity : BaseActivity(),
 //                    } else {
 //                        showToast(getString(R.string.no_internet_connection_please_try_again_later))
 //                    }
-                    val i = Intent(this@MainCometChatActivity,HomeActivity::class.java)
+                    val i = Intent(this@MainCometChatActivity,AttachmentActivity::class.java)
                     val b = Bundle()
                     b.putBoolean(Constants.IsForAttachDoc,true)
+                    b.putString(Constants.AttachmentSendTo,id)
                     i.putExtras(b)
-                    startActivity(i)
+                    attachmentResult.launch(i)
                 }
                 recyclerChatMessages.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -332,6 +334,15 @@ class MainCometChatActivity : BaseActivity(),
             }
         }
     }
+    private val attachmentResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                binding.apply {
+                    val data = result.data?.getStringExtra(Constants.DocumentLink)
+                    etEnterMsg.setText(data)
+                }
+            }
+        }
 
     private fun startViewDocumentActivity() {
         val i = Intent(this, ViewDocumentsActivity::class.java)

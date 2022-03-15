@@ -6,5 +6,6 @@ data class ForwardDocumentModel(
     var title:String? = "",
     var icon:String? ="",
     var isSelected:Boolean = false,
-    var guid:String? = ""
+    var guid:String? = "",
+    var doctorId:String? =""
 ):Serializable

@@ -20,6 +20,9 @@
         android:theme="@style/Theme.Hipaasafe"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".presentation.attach_document.AttachmentActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.view_documents.ViewDocumentsActivity"
             android:exported="false" />
         <activity

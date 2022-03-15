@@ -6,6 +6,7 @@ class Constants {
     companion object {
         const val AUTHORITY = "com.hipaasafe.fileprovider"
         const val BASE_URL_PROFILE_PIC = "https://akbh.s3.ap-south-1.amazonaws.com/hs/avatar/"
+        const val BASE_URL_REPORT= "https://akbh.s3.ap-south-1.amazonaws.com/hs/user/reports/"
         const val VIEW_ANIMATE_DURATION = 400L
         const val IS_LOGIN = "IS_LOGIN"
         const val MOBILE = "MOBILE"
@@ -38,6 +39,7 @@ class Constants {
 
         const val IsFromAdd= "IsFromAdd"
         const val IsForAttachDoc= "IsForAttachDoc"
+        const val AttachmentSendTo= "AttachmentSendTo"
         const val IS_PDF = "IS_PDF"
         const val IS_SELFIE_CAMERA = "IS_SELFIE_CAMERA"
         const val IS_CAMERA = "IS_CAMERA"
@@ -47,7 +49,9 @@ class Constants {
         const val PendingDocumentId = "PendingDocumentId"
         const val PendingDocumentBy = "PendingDocumentBy"
         const val PendingDocumentGuid = "PendingDocumentGuid"
+        const val PendingDocumentDoctorId = "PendingDocumentDoctorId"
         const val DoctorsList = "DoctorsList"
+        const val DocumentLink = "DocumentLink"
 
 
     }

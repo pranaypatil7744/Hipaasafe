@@ -100,50 +100,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvDocumentName"
-                style="@style/metropolis_regular_small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/document_name"
-                android:textColor="@color/scorpion"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layoutAddDoc" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutDocumentName"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                app:boxCornerRadiusBottomEnd="10dp"
-                app:boxCornerRadiusBottomStart="10dp"
-                app:boxCornerRadiusTopEnd="10dp"
-                app:boxCornerRadiusTopStart="10dp"
-                app:boxStrokeColor="@color/alabaster"
-                app:boxBackgroundColor="@color/white"
-                app:errorEnabled="true"
-                app:hintEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDocumentName">
-
-                <AutoCompleteTextView
-                    android:id="@+id/etDocumentName"
-                    style="@style/metropolis_medium_small"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_box"
-                    android:hint="@string/enter_name_eg_chest_x_ray"
-                    android:inputType="none"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="18dp"
-                    android:textColor="@color/codGray"
-                    android:textColorHint="@color/heather" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvShare"
                 style="@style/metropolis_medium_small"
                 android:layout_width="wrap_content"
@@ -152,7 +108,7 @@
                 android:text="@string/share_to"
                 android:textColor="@color/scorpion"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layoutDocumentName" />
+                app:layout_constraintTop_toBottomOf="@id/layoutAddDoc" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -193,6 +149,51 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDocumentName"
+                style="@style/metropolis_regular_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/document_name"
+                android:textColor="@color/scorpion"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layoutShare" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutDocumentName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeColor="@color/alabaster"
+                app:boxBackgroundColor="@color/white"
+                app:errorEnabled="true"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDocumentName">
+
+                <AutoCompleteTextView
+                    android:id="@+id/etDocumentName"
+                    style="@style/metropolis_medium_small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_box"
+                    android:hint="@string/enter_name_eg_chest_x_ray"
+                    android:inputType="none"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="18dp"
+                    android:textColor="@color/codGray"
+                    android:textColorHint="@color/heather" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

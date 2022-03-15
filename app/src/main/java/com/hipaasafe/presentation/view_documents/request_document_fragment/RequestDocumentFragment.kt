@@ -153,8 +153,7 @@ class RequestDocumentFragment : BaseFragment(), RequestDocumentAdapter.RequestDo
                 recyclerRequestDocument.visibility = VISIBLE
                 documentViewModel.callGetReportListApi(
                     request = GetReportsListRequestModel(
-                        page = 1,
-                        limit = 30
+                        doctor_id = loginUserId
                     )
                 )
             } else {

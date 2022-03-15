@@ -11,6 +11,7 @@ import com.cometchat.pro.core.CometChat
 import com.cometchat.pro.exceptions.CometChatException
 import com.cometchat.pro.models.Group
 import com.cometchat.pro.models.User
+import com.hipaasafe.Constants
 import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.FragmentMyNetworkBinding
 import com.hipaasafe.domain.model.get_doctors.DoctorMyTeamsRequestModel
@@ -48,12 +49,22 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         preferenceUtils = PreferenceUtils(requireContext())
+        getPreferenceData()
         setUpAdapter()
         setUpObserver()
-        callDoctorsListApi()
         setUpListener()
     }
 
+    private fun getPreferenceData() {
+        binding.apply {
+            loginUserType = preferenceUtils.getValue(Constants.PreferenceKeys.role_id).toIntOrNull()?:0
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        callDoctorsListApi()
+    }
     private fun callDoctorsListApi() {
         binding.apply {
             if (requireContext().isNetworkAvailable()) {
@@ -204,8 +215,8 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
             group.groupType = CometChatConstants.GROUP_TYPE_PRIVATE
             group.name = myNetworkList[position].name
             group.icon = myNetworkList[position].avatar
-            joinGroup(group)
-//        startGroupIntent(group, requireContext())
+//            joinGroup(group)
+        startGroupIntent(group, requireContext())
         }else{
             val user= User()
             user.name = myNetworkList[position].name
