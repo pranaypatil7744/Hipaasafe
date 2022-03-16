@@ -14,7 +14,8 @@ class DocumentViewModel constructor(
     private val uploadAndShareDocumentUseCase: UploadAndShareDocumentUseCase,
     private val fetchReportsUseCase: FetchReportsUseCase,
     private val shareDocumentUseCase: ShareDocumentUseCase,
-    private val requestDocumentFromPatientUseCase: RequestDocumentFromPatientUseCase
+    private val requestDocumentFromPatientUseCase: RequestDocumentFromPatientUseCase,
+    private val removeRequestDocUseCase: RemoveRequestDocUseCase
 ) :
     ViewModel() {
     val getReportsListResponseData = MutableLiveData<GetReportsListResponseModel>()
@@ -24,8 +25,24 @@ class DocumentViewModel constructor(
     val requestDocumentFromPatientResponseData =
         MutableLiveData<RequestDocumentFromPatientResponseModel>()
     val shareReportsResponseData = MutableLiveData<ShareDocumentResponseModel>()
+    val removeRequestDocResponseData = MutableLiveData<RemoveRequestDocumentResponseModel>()
     val messageData = MutableLiveData<String>()
 
+    fun callRemoveRequestDocApi(request: RemoveRequestDocumentRequestModel) {
+        removeRequestDocUseCase.invoke(
+            viewModelScope,
+            request,
+            object : UseCaseResponse<RemoveRequestDocumentResponseModel> {
+                override fun onSuccess(result: RemoveRequestDocumentResponseModel) {
+                    removeRequestDocResponseData.value = result
+                }
+
+                override fun onError(apiError: ApiError?) {
+                    messageData.value = apiError?.message
+                }
+
+            })
+    }
 
     fun callRequestDocumentFromPatientApi(request: RequestDocumentFromPatientRequestModel) {
         requestDocumentFromPatientUseCase.invoke(
@@ -59,7 +76,7 @@ class DocumentViewModel constructor(
             })
     }
 
-    fun callFetchReportsApi(request:FetchReportsRequestModel) {
+    fun callFetchReportsApi(request: FetchReportsRequestModel) {
         fetchReportsUseCase.invoke(
             viewModelScope,
             request,

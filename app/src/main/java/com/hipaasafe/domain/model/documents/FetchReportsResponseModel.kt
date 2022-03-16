@@ -57,5 +57,6 @@ data class ReportDataModel(
 )
 
 data class FetchReportsRequestModel(
-    var patient_id:String =""
+    var patient_id:String?=null,
+    var guid:String? =null,
 )

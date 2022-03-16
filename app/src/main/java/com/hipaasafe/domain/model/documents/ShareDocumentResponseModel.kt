@@ -2,7 +2,8 @@ package com.hipaasafe.domain.model.documents
 
 data class ShareDocumentRequestModel(
     var document_file:String = "",
-    var doctor_uids:ArrayList<String> = ArrayList()
+    var uids:ArrayList<String> = ArrayList(),
+    var type:String=""
 )
 
 data class ShareDocumentResponseModel(

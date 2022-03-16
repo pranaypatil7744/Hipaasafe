@@ -198,6 +198,10 @@ fun createFetchReportsUseCase(documentsRepository: DocumentsRepository): FetchRe
     return FetchReportsUseCase(documentsRepository)
 }
 
+fun createRemoveRequestDocUseCase(documentsRepository: DocumentsRepository): RemoveRequestDocUseCase {
+    return RemoveRequestDocUseCase(documentsRepository)
+}
+
 fun createRequestDocumentFromPatientUseCase(documentsRepository: DocumentsRepository): RequestDocumentFromPatientUseCase {
     return RequestDocumentFromPatientUseCase(documentsRepository)
 }

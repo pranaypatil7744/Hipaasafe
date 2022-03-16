@@ -15,4 +15,6 @@ interface DocumentsRepository {
     suspend fun callShareDocumentApi(request:ShareDocumentRequestModel):ShareDocumentResponseModel
 
     suspend fun callRequestDocumentFromPatientApi(request:RequestDocumentFromPatientRequestModel):RequestDocumentFromPatientResponseModel
+
+    suspend fun callRemoveRequestDocApi(request:RemoveRequestDocumentRequestModel):RemoveRequestDocumentResponseModel
 }

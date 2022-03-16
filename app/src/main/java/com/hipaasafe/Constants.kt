@@ -167,6 +167,7 @@ class Constants {
             const val LOCATION_LATITUDE = "latitude"
             const val LOCATION_LONGITUDE = "longitude"
             const val PARENT_ID = "parent_id"
+            const val PATIENT_ID = "PATIENT_ID"
             const val REPLY_COUNT = "reply_count"
             const val CONVERSATION_NAME = "conversation_name"
             const val STICKERS = "extension_sticker"

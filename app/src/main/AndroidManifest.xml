@@ -20,6 +20,9 @@
         android:theme="@style/Theme.Hipaasafe"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".presentation.request_documents.RequestDocumentActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.attach_document.AttachmentActivity"
             android:exported="false" />
         <activity
@@ -89,9 +92,10 @@
             android:name=".presentation.verify_otp.VerifyOtpActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity android:name=".call_manager.CometChatStartCallActivity"
-            android:screenOrientation="portrait"
-            android:exported="false"/>
+        <activity
+            android:name=".call_manager.CometChatStartCallActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.splash.SplashActivity"
             android:exported="true"

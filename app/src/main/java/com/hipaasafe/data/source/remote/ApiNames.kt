@@ -28,5 +28,6 @@ class ApiNames {
         const val DoctorPastAppointmentsListApi = "query/appointments/fetch/by-date-range"
         const val RequestDocumentFromPatientApi = "documents/request-from-patient"
         const val GetMyQueueApi = "appointment/get/my-queue"
+        const val RemoveRequestDocApi = "documents/remove-request-from-patient"
     }
 }

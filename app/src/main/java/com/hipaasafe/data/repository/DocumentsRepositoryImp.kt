@@ -35,7 +35,7 @@ class DocumentsRepositoryImp constructor(private val apiService: ApiService) : D
     }
 
     override suspend fun callFetchReportsApi(request: FetchReportsRequestModel): FetchReportsResponseModel {
-        return apiService.callFetchReportsApi(patient_id = request.patient_id)
+        return apiService.callFetchReportsApi(patient_id = request.patient_id,guid = request.guid)
     }
 
 
@@ -45,5 +45,9 @@ class DocumentsRepositoryImp constructor(private val apiService: ApiService) : D
 
     override suspend fun callRequestDocumentFromPatientApi(request: RequestDocumentFromPatientRequestModel): RequestDocumentFromPatientResponseModel {
         return apiService.callRequestDocumentFromPatientsApi(request)
+    }
+
+    override suspend fun callRemoveRequestDocApi(request: RemoveRequestDocumentRequestModel): RemoveRequestDocumentResponseModel {
+        return apiService.callRemoveRequestDocApi(request)
     }
 }

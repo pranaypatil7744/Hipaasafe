@@ -127,6 +127,9 @@ class DocumentAdapter(
                 DocumentItemType.ITEM_REQUEST_DOC.value ->{
                     itemRequestDocumentBinding?.apply {
                         tvTitle.text = data.title
+                        imgClose.setOnClickListener {
+                            listener.clickOnCancelDoc(position)
+                        }
                     }
                 }
             }
@@ -145,5 +148,6 @@ class DocumentAdapter(
         fun clickOnAddDocument(position: Int)
         fun clickOnForwardDoc(position: Int)
         fun clickOnPendingDoc(position: Int)
+        fun clickOnCancelDoc(position: Int)
     }
 }

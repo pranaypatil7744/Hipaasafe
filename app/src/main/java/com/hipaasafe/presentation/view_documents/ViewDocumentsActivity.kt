@@ -1,8 +1,10 @@
 package com.hipaasafe.presentation.view_documents
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hipaasafe.Constants
@@ -13,6 +15,7 @@ import com.hipaasafe.databinding.BottomSheetMyNotesBinding
 import com.hipaasafe.databinding.BottomsheetForwardDocBinding
 import com.hipaasafe.presentation.home_screen.document_fragment.DocumentFragment
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.ForwardDocAdapter
+import com.hipaasafe.presentation.request_documents.RequestDocumentActivity
 import com.hipaasafe.presentation.view_documents.request_document_fragment.RequestDocumentFragment
 import com.hipaasafe.utils.PreferenceUtils
 
@@ -22,11 +25,10 @@ class ViewDocumentsActivity : BaseActivity() {
     var age: String = ""
     var patientUid: String = ""
     var doctorUid: String = ""
+    var groupId:String =""
     var documentFragment = DocumentFragment.newInstance()
-    var requestDocumentFragment = RequestDocumentFragment.newInstance()
     lateinit var bottomSheetMyNotesBinding: BottomSheetMyNotesBinding
 
-    var isRequestedListView: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityViewDocumentsBinding.inflate(layoutInflater)
@@ -35,8 +37,8 @@ class ViewDocumentsActivity : BaseActivity() {
         getPreferenceData()
         getIntentData()
         setUpView()
-        setUpToolbar()
         setFragment(documentFragment)
+        setUpToolbar()
         setUpListener()
     }
 
@@ -58,9 +60,12 @@ class ViewDocumentsActivity : BaseActivity() {
     private fun setUpListener() {
         binding.apply {
             btnRequestedDocument.setOnClickListener {
-                setFragment(requestDocumentFragment)
-                isRequestedListView = true
-                hideNotesView()
+                val i = Intent(this@ViewDocumentsActivity, RequestDocumentActivity::class.java)
+                val b = Bundle()
+                b.putString(Constants.CometChatConstant.NAME, chatName)
+                b.putString(Constants.CometChatConstant.PATIENT_ID,patientUid)
+                i.putExtras(b)
+                requestDocResult.launch(i)
             }
             layoutMyNotes.setOnClickListener {
                 openForwardListBottomSheet()
@@ -68,25 +73,21 @@ class ViewDocumentsActivity : BaseActivity() {
         }
     }
 
-    fun hideNotesView() {
-        binding.apply {
-            layoutMyNotes.visibility = GONE
-            btnRequestedDocument.visibility = GONE
+    private val requestDocResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                binding.apply {
+                    documentFragment.callFetchReportsApi()
+                }
+            }
         }
-    }
-
-    fun showNotesView() {
-        binding.apply {
-            layoutMyNotes.visibility = VISIBLE
-            btnRequestedDocument.visibility = VISIBLE
-        }
-    }
 
     private fun getIntentData() {
         binding.apply {
             intent?.extras?.run {
                 chatName = getString(Constants.CometChatConstant.NAME).toString()
-                patientUid = getString(Constants.CometChatConstant.UID).toString()
+                patientUid = getString(Constants.CometChatConstant.PATIENT_ID).toString()
+                groupId = getString(Constants.CometChatConstant.GUID).toString()
             }
         }
     }
@@ -124,13 +125,7 @@ class ViewDocumentsActivity : BaseActivity() {
             tvChatName.text = chatName
             tvLastActive.text = ""
             btnBack.setOnClickListener {
-                if (isRequestedListView) {
-                    setFragment(documentFragment)
-                    isRequestedListView = false
-                    showNotesView()
-                } else {
-                    finish()
-                }
+                finish()
             }
             toolbarIcon1.visibility = GONE
             toolbarIcon2.visibility = GONE

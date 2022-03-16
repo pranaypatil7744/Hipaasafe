@@ -1,5 +1,6 @@
 package com.hipaasafe.presentation.view_documents.request_document_fragment
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import com.hipaasafe.databinding.FragmentRequestDocumentBinding
 import com.hipaasafe.domain.model.documents.GetReportsListRequestModel
 import com.hipaasafe.domain.model.documents.RequestDocumentFromPatientRequestModel
 import com.hipaasafe.presentation.comet_chat_main_screen.MainCometChatActivity
+import com.hipaasafe.presentation.request_documents.RequestDocumentActivity
 import com.hipaasafe.presentation.upload_documents.DocumentViewModel
 import com.hipaasafe.presentation.view_documents.ViewDocumentsActivity
 import com.hipaasafe.presentation.view_documents.request_document_fragment.adapter.RequestDocumentAdapter
@@ -82,7 +84,7 @@ class RequestDocumentFragment : BaseFragment(), RequestDocumentAdapter.RequestDo
 
     private fun getRequestDocumentFromPatientRequestModel():RequestDocumentFromPatientRequestModel{
         val request = RequestDocumentFromPatientRequestModel()
-        request.patient_id = (requireActivity() as ViewDocumentsActivity).patientUid
+        request.patient_id = (requireActivity() as RequestDocumentActivity).patientUid
         request.hospital_reports_id = selectedDocList
         return request
     }
@@ -122,16 +124,12 @@ class RequestDocumentFragment : BaseFragment(), RequestDocumentAdapter.RequestDo
                         showToast(it.message.toString())
                     }
                 }
-
                 requestDocumentFromPatientResponseData.observe(requireActivity()){
                     toggleLoader(false)
                     if (it.success == true){
-                            val viewDocumentsActivity = (requireActivity() as ViewDocumentsActivity)
-                        viewDocumentsActivity.apply {
-                            setFragment(viewDocumentsActivity.documentFragment)
-                            isRequestedListView = false
-                            showNotesView()
-                        }
+                        val i = requireActivity().intent
+                        requireActivity().setResult(Activity.RESULT_OK,i)
+                        requireActivity().finish()
                     }else{
                         showToast(it.message.toString())
                     }

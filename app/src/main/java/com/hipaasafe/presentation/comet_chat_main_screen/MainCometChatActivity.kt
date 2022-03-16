@@ -120,6 +120,7 @@ class MainCometChatActivity : BaseActivity(),
     private var baseMessage: BaseMessage? = null
     var isSendBtnEnable: Boolean = false
     var id: String = ""
+    var patientId:String =""
     var chatName: String? = ""
     var groupType: String? = ""
     var groupPassword: String? = ""
@@ -358,7 +359,8 @@ class MainCometChatActivity : BaseActivity(),
         val i = Intent(this, ViewDocumentsActivity::class.java)
         val b = Bundle()
         b.putString(Constants.CometChatConstant.NAME, chatName)
-        b.putString(Constants.CometChatConstant.UID,id)
+        b.putString(Constants.CometChatConstant.PATIENT_ID,patientId)
+        b.putString(Constants.CometChatConstant.GUID,id)
         i.putExtras(b)
         startActivity(i)
     }
@@ -1475,6 +1477,7 @@ class MainCometChatActivity : BaseActivity(),
                                 profilePicUrl
                             )
                         }
+
                         tvChatName.text = chatName
                         if (!group.owner.isNullOrEmpty()) {
                             getGroupOwner(group.owner)
@@ -1613,6 +1616,7 @@ class MainCometChatActivity : BaseActivity(),
         binding.apply {
             intent.extras?.run {
                 val name = getString(Constants.CometChatConstant.NAME)
+                patientId = getString(Constants.CometChatConstant.PATIENT_ID).toString()
                 loginUserType =
                     PreferenceUtils(this@MainCometChatActivity).getValue(Constants.PreferenceKeys.role_id)
                         .toIntOrNull()?:0

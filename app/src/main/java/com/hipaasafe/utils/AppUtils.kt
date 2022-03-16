@@ -475,7 +475,7 @@ class AppUtils {
     }
 
     fun getCurrentTime(): String {
-        val sdf = SimpleDateFormat("hh:mm")
+        val sdf = SimpleDateFormat("HH:mm")
         return sdf.format(Date())
     }
 

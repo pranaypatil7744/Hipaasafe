@@ -17,7 +17,9 @@ import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.BottomsheetForwardDocBinding
 import com.hipaasafe.databinding.FragmentDocumentBinding
 import com.hipaasafe.domain.model.documents.FetchReportsRequestModel
+import com.hipaasafe.domain.model.documents.RemoveRequestDocumentRequestModel
 import com.hipaasafe.domain.model.documents.ShareDocumentRequestModel
+import com.hipaasafe.domain.model.get_doctors.DoctorMyTeamsRequestModel
 import com.hipaasafe.domain.model.get_doctors.GetDoctorsRequestModel
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.DocumentAdapter
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.ForwardDocAdapter
@@ -28,6 +30,7 @@ import com.hipaasafe.presentation.home_screen.my_network.MyNetworkViewModel
 import com.hipaasafe.presentation.home_screen.my_network.model.DoctorModel
 import com.hipaasafe.presentation.upload_documents.DocumentViewModel
 import com.hipaasafe.presentation.upload_documents.UploadDocumentsActivity
+import com.hipaasafe.presentation.view_documents.ViewDocumentsActivity
 import com.hipaasafe.utils.PreferenceUtils
 import com.hipaasafe.utils.isNetworkAvailable
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -51,6 +54,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     var isAttachmentFlow: Boolean = false
     var attachmentShareTo: String = ""
     var isShowUploadDoc: Boolean = true
+    var guid:String =""
 
     companion object {
         fun newInstance(): DocumentFragment {
@@ -73,9 +77,28 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         getPreferenceData()
         setUpAdapter()
         setUpObserver()
-        callFetchReportsApi()
         setUpListener()
-        callDoctorsApi()
+        if (isForPatientDocuments){
+            callMyTeamApi()
+            patientUid = (requireActivity() as ViewDocumentsActivity).patientUid
+        }else{
+            callDoctorsApi()
+        }
+        callFetchReportsApi()
+    }
+
+    private fun callMyTeamApi() {
+        binding.apply {
+            if (requireContext().isNetworkAvailable()) {
+                toggleLoader(true)
+                myNetworkViewModel.callDoctorMyTeamsListApi(
+                    DoctorMyTeamsRequestModel(page = 1, limit = 30)
+                )
+
+            } else {
+
+            }
+        }
     }
 
     private fun getPreferenceData() {
@@ -92,7 +115,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         }
     }
 
-    private fun callFetchReportsApi() {
+     fun callFetchReportsApi() {
         binding.apply {
             if (requireContext().isNetworkAvailable()) {
                 toggleLoader(true)
@@ -100,7 +123,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                 recyclerDocuments.visibility = VISIBLE
                 documentViewModel.callFetchReportsApi(
                     request = FetchReportsRequestModel(
-                        patient_id = patientUid
+                        patient_id = patientUid.ifEmpty { null },guid = guid.ifEmpty { null }
                     )
                 )
             } else {
@@ -161,6 +184,33 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                         showToast(it.message.toString())
                     }
                 }
+
+                doctorMyTeamsListResponseData.observe(requireActivity()) {
+                    toggleLoader(false)
+                    if (it.success == true) {
+                        if (it.data.count != 0) {
+                            doctorList.clear()
+                            for (i in it.data.rows ?: arrayListOf()) {
+                                doctorList.add(
+                                    ForwardDocumentModel(
+                                        title = i.name,
+                                        icon = i.avatar,
+                                        guid = i.uid,
+                                        doctorId = i.doctor_details?.id.toString()
+                                    )
+                                )
+                            }
+                            if (::forwardDocAdapter.isInitialized) {
+                                forwardDocAdapter.notifyDataSetChanged()
+                            }
+                        } else {
+
+                        }
+                    } else {
+                        showToast(it.message.toString())
+                    }
+                }
+
                 messageData.observe(requireActivity()) {
                     toggleLoader(false)
                     showToast(it.toString())
@@ -168,6 +218,16 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
             }
 
             with(documentViewModel) {
+
+                removeRequestDocResponseData.observe(requireActivity()){
+                    toggleLoader(false)
+                    if (it.success == true){
+                        callFetchReportsApi()
+                    }else{
+                        showToast(it.message.toString())
+                    }
+                }
+
                 fetchReportsResponseData.observe(requireActivity()) {
                     toggleLoader(false)
                     if (it.success == true) {
@@ -341,7 +401,8 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         }
         val request = ShareDocumentRequestModel()
         request.document_file = documentsList[selectedItemPosition].uploadedFileName.toString()
-        request.doctor_uids = selectedDoctorsIds
+        request.uids = selectedDoctorsIds
+        request.type = if (isForPatientDocuments) "GROUP" else "USER"
         return request
     }
 
@@ -359,11 +420,6 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     private val uploadReportResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                if (isAttachmentFlow) {
-
-                } else {
-
-                }
                 callFetchReportsApi()
             }
         }
@@ -399,6 +455,26 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         bundle.putInt(Constants.DocumentRequestId, documentsList[position].DocumentRequestId)
         i.putExtras(bundle)
         uploadReportResult.launch(i)
+    }
+
+    override fun clickOnCancelDoc(position: Int) {
+        callCancelDocApi(position)
+    }
+
+    private fun callCancelDocApi(position: Int) {
+        binding.apply {
+            if (requireActivity().isNetworkAvailable()){
+                toggleLoader(true)
+                val list:ArrayList<Int> = ArrayList()
+                list.clear()
+                list.add(documentsList[position].DocumentRequestId)
+                documentViewModel.callRemoveRequestDocApi(request = RemoveRequestDocumentRequestModel(
+                    request_ids = list
+                ))
+            }else{
+                showToast(getString(R.string.please_check_your_internet_connection))
+            }
+        }
     }
 
     override fun onItemClick(position: Int) {
