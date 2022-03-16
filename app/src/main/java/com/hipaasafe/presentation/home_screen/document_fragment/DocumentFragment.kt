@@ -72,8 +72,9 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         getPreferenceData()
         setUpAdapter()
         setUpObserver()
-        callDoctorsApi()
+        callFetchReportsApi()
         setUpListener()
+        callDoctorsApi()
     }
 
     private fun getPreferenceData() {
@@ -85,11 +86,6 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     private fun setUpListener() {
         binding.apply {
             layoutNoInternet.btnRetry.setOnClickListener {
-                callFetchReportsApi()
-                callDoctorsApi()
-            }
-            etDoctorName.setOnItemClickListener { parent, view, position, id ->
-                selectedDoctorUidForList = doctorList[position].doctorId.toString()
                 callFetchReportsApi()
             }
         }
@@ -103,7 +99,6 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                 recyclerDocuments.visibility = VISIBLE
                 documentViewModel.callFetchReportsApi(
                     request = FetchReportsRequestModel(
-                        doctor_id = selectedDoctorUidForList,
                         patient_id = patientUid
                     )
                 )
@@ -158,21 +153,6 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                             if (::forwardDocAdapter.isInitialized) {
                                 forwardDocAdapter.notifyDataSetChanged()
                             }
-                            val list: ArrayList<String> = ArrayList()
-                            list.clear()
-                            for (i in doctorList) {
-                                list.add(i.title.toString())
-                            }
-                            val adapterReports =
-                                ArrayAdapter<String>(
-                                    requireActivity(),
-                                    android.R.layout.simple_list_item_1,
-                                    list
-                                )
-                            etDoctorName.setAdapter(adapterReports)
-                            etDoctorName.setText(doctorList[0].title.toString())
-                            selectedDoctorUidForList = doctorList[0].doctorId.toString()
-                            callFetchReportsApi()
                         } else {
 
                         }
@@ -220,12 +200,6 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                                 )
                             }
                         }
-//                        documentsList.add(
-//                            DocumentsModel(
-//                                documentItemType = DocumentItemType.ITEM_TITLE,
-//                                title = "03 Feb 2022"
-//                            )
-//                        )
                         if (isForPatientDocuments) {
                             documentsList.add(
                                 DocumentsModel(
@@ -251,7 +225,8 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                                         subTitle = i.assignee.name,
                                         uploadDocumentId = i.hospital_tests.id ?: 0,
                                         guid = i.assignee.uid,
-                                        doctorId = i.assignee_id
+                                        doctorId = i.assignee_id,
+                                        DocumentRequestId = i.id?:0
                                     )
                                 )
                             }
@@ -259,7 +234,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                         if (::documentAdapter.isInitialized) {
                             documentAdapter.notifyDataSetChanged()
                         }
-                        if (documentsList.isEmpty()) {
+                        if (data?.documents_request?.size == 0 && data.documents.size == 0) {
                             layoutNoData.root.visibility = VISIBLE
                         } else {
                             layoutNoData.root.visibility = GONE
@@ -411,11 +386,12 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         val i = Intent(requireContext(), UploadDocumentsActivity::class.java)
         val bundle = Bundle()
         bundle.putBoolean(Constants.IsFromAdd, false)
-        bundle.putString(Constants.PendingDocumentName, documentsList[position].title)
+        bundle.putString(Constants.PendingDocumentType, documentsList[position].title)
         bundle.putString(Constants.PendingDocumentBy, documentsList[position].subTitle)
         bundle.putString(Constants.PendingDocumentGuid, documentsList[position].guid)
         bundle.putString(Constants.PendingDocumentDoctorId, documentsList[position].doctorId)
         bundle.putInt(Constants.PendingDocumentId, documentsList[position].uploadDocumentId)
+        bundle.putInt(Constants.DocumentRequestId, documentsList[position].DocumentRequestId)
         i.putExtras(bundle)
         uploadReportResult.launch(i)
     }

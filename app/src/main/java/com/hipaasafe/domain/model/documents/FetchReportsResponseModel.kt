@@ -1,5 +1,7 @@
 package com.hipaasafe.domain.model.documents
 
+import com.hipaasafe.domain.model.get_doctors.DoctorDetailsModel
+
 data class FetchReportsResponseModel(
     var success: Boolean? = null,
     var message: String? = "",
@@ -13,14 +15,24 @@ data class FetchReportData(
 
 data class UploadedDocuments(
     var id: Int? = 0,
+    var document_name: String? = "",
     var document_file: String? = "",
     var patient_id: String? = "",
+    var doctor_id: String? = "",
     var report_name_id: Int? = 0,
     var is_active: Boolean? = null,
+    var role_name: String? = "",
+    var createdBy: String? = "",
+    var updatedBy: String? = "",
     var createdAt: String? = "",
     var updatedAt: String? = "",
     var hospital_tests: ReportDataModel = ReportDataModel(),
+    var doctor_details:DoctorDetails = DoctorDetails()
     )
+
+data class DoctorDetails(
+    var name:String =""
+)
 
 data class RequestedDocuments(
     var id: Int? = 0,
@@ -45,6 +57,5 @@ data class ReportDataModel(
 )
 
 data class FetchReportsRequestModel(
-    var doctor_id:String ="",
     var patient_id:String =""
 )

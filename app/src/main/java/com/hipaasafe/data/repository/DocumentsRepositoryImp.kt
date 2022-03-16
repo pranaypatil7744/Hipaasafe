@@ -35,7 +35,7 @@ class DocumentsRepositoryImp constructor(private val apiService: ApiService) : D
     }
 
     override suspend fun callFetchReportsApi(request: FetchReportsRequestModel): FetchReportsResponseModel {
-        return apiService.callFetchReportsApi(doctor_id = request.doctor_id, patient_id = request.patient_id)
+        return apiService.callFetchReportsApi(patient_id = request.patient_id)
     }
 
 

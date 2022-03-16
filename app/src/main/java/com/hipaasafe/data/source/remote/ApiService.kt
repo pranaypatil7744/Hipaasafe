@@ -75,7 +75,6 @@ interface ApiService {
 
     @GET(ApiNames.FetchReportsDocumentListApi)
     suspend fun callFetchReportsApi(
-        @Query("doctor_id")doctor_id:String,
         @Query("patient_id")patient_id:String,
     ): FetchReportsResponseModel
 

@@ -44,10 +44,10 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
     private lateinit var doctorListAdapter: ForwardDocAdapter
     private var doctorList: ArrayList<ForwardDocumentModel> = ArrayList()
     var repostList: ArrayList<ReportsDataModel> = ArrayList()
-    private var unselectedDoctorsList: ArrayList<ForwardDocumentModel> = ArrayList()
-    var pendingDocName: String = ""
+    var pendingDocType: String = ""
     var pendingDocBy: String = ""
     var pendingDocGuid: String = ""
+    var documentRequestId: Int? = null
     var isFromAddDocument: Boolean = false
     var uploadDocPath: String = ""
     var fileName: String = ""
@@ -87,6 +87,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
             request.report_name_id = selectedDocumentId
             request.doctor_uids = selectedDoctorUids
             request.document_name = etDocumentName.text.toString().trim()
+            request.document_request_id = documentRequestId
             return request
         }
     }
@@ -443,10 +444,11 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
             intent.extras?.run {
                 isFromAddDocument = getBoolean(Constants.IsFromAdd)
                 isForAttachment = getBoolean(Constants.IsForAttachDoc)
-                pendingDocName = getString(Constants.PendingDocumentName).toString()
+                pendingDocType = getString(Constants.PendingDocumentType).toString()
                 pendingDocBy = getString(Constants.PendingDocumentBy).toString()
                 pendingDocGuid = getString(Constants.PendingDocumentGuid).toString()
                 selectedDocumentId = getInt(Constants.PendingDocumentId)
+                documentRequestId = getInt(Constants.DocumentRequestId)
                 selectedDoctorUid = getString(Constants.PendingDocumentDoctorId).toString()
                 setUpView()
             }
@@ -460,7 +462,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                 callDoctorsApi()
                 callGetReportsList()
             } else {
-                etDocumentName.setText(pendingDocName)
+                etDocumentType.setText(pendingDocType)
                 hintSelectDoctor.visibility = INVISIBLE
                 selectedDoctorUids.clear()
                 selectedDoctorUids.add(pendingDocGuid)
