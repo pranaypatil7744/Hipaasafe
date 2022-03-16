@@ -21,11 +21,13 @@ import com.hipaasafe.call_manager.helper.OutgoingAudioHelper
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.imageview.ShapeableImageView
 import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.settings.CometChatFeatureRestriction
 import com.hipaasafe.utils.AnimUtil
 import com.hipaasafe.utils.AppUtils
+import com.hipaasafe.utils.ImageUtils
 import com.hipaasafe.utils.PermissionUtils
 
 /**
@@ -67,6 +69,9 @@ class CometChatCallActivity : AppCompatActivity(), View.OnClickListener {
     private var isIncoming = false
     private var isOngoing = false
     private var notification: Uri? = null
+    private var userAv: ShapeableImageView? = null
+    private var callerAvatar: ShapeableImageView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         callActivity = this
@@ -115,7 +120,7 @@ class CometChatCallActivity : AppCompatActivity(), View.OnClickListener {
     private fun initView() {
         callerName = findViewById(R.id.caller_name)
         callMessage = findViewById(R.id.call_type)
-//        callerAvatar = findViewById(R.id.caller_av)
+        callerAvatar = findViewById(R.id.caller_av)
         acceptCall = findViewById(R.id.accept_incoming)
         acceptCall!!.setOnClickListener(this)
         declineCall = findViewById(R.id.decline_incoming)
@@ -124,7 +129,7 @@ class CometChatCallActivity : AppCompatActivity(), View.OnClickListener {
         outgoingCallView = findViewById(R.id.outgoing_call_view)
         callTv = findViewById(R.id.calling_tv)
         userTv = findViewById(R.id.user_tv)
-//        userAv = findViewById(R.id.user_av)
+        userAv = findViewById(R.id.user_av)
         hangUp = findViewById(R.id.call_hang_btn)
         tvDots = findViewById(R.id.tv_dots)
         hangUp!!.setOnClickListener(this)
@@ -166,6 +171,8 @@ class CometChatCallActivity : AppCompatActivity(), View.OnClickListener {
         }
         userTv!!.text = name
         callerName!!.text = name
+        userAv?.let { ImageUtils.INSTANCE?.loadRemoteImageForProfile(it,avatar) }
+        callerAvatar?.let { ImageUtils.INSTANCE?.loadRemoteImageForProfile(it,avatar) }
 //        userAv!!.setAvatar(avatar)
 //        callerAvatar!!.setAvatar(avatar)
     }

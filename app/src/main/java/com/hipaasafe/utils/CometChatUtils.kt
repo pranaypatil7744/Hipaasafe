@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.hipaasafe.AppConfig
 import com.hipaasafe.Constants
 import com.hipaasafe.R
+import com.hipaasafe.call_manager.CometChatCallActivity
 import com.hipaasafe.call_manager.CometChatStartCallActivity
 import com.hipaasafe.presentation.comet_chat_main_screen.MainCometChatActivity
 import com.hipaasafe.presentation.home_screen.HomeActivity
@@ -36,8 +37,7 @@ class CometChatUtils {
             context: Context, user: User, type: String?,
             isOutgoing: Boolean, sessionId: String
         ) {
-            //todo handle call screen
-            val videoCallIntent = Intent(context, HomeActivity::class.java)
+            val videoCallIntent = Intent(context, CometChatCallActivity::class.java)
             videoCallIntent.putExtra(Constants.CometChatConstant.NAME, user.name)
             videoCallIntent.putExtra(Constants.CometChatConstant.UID, user.uid)
             videoCallIntent.putExtra(Constants.CometChatConstant.SESSION_ID, sessionId)
@@ -86,8 +86,7 @@ class CometChatUtils {
             context: Context, group: Group, type: String?,
             isOutgoing: Boolean, sessionId: String
         ) {
-            //todo handle call screen
-            val videoCallIntent = Intent(context, HomeActivity::class.java)
+            val videoCallIntent = Intent(context, CometChatCallActivity::class.java)
             videoCallIntent.putExtra(Constants.CometChatConstant.NAME, group.name)
             videoCallIntent.putExtra(Constants.CometChatConstant.UID, group.guid)
             videoCallIntent.putExtra(Constants.CometChatConstant.SESSION_ID, sessionId)

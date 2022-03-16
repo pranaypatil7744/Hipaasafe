@@ -12,8 +12,11 @@ import androidx.multidex.MultiDex
 import com.cometchat.pro.core.AppSettings
 import com.cometchat.pro.core.CometChat
 import com.cometchat.pro.exceptions.CometChatException
+import com.geniusscansdk.core.GeniusScanSDK
+import com.geniusscansdk.core.LicenseException
 import com.hipaasafe.AppConfig
 import com.hipaasafe.Constants
+import com.hipaasafe.Constants.Companion.GENIUS_SDK_LICENSE
 import com.hipaasafe.R
 import com.hipaasafe.di.AppModule
 import com.hipaasafe.di.NetworkModule
@@ -60,6 +63,11 @@ class BaseApplication : Application(), LifecycleObserver, Application.ActivityLi
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+        try {
+            GeniusScanSDK.init(this, GENIUS_SDK_LICENSE)
+        } catch (e: LicenseException) {
+            // The license is expired or invalid
+        }
         setUpOneSignal()
         setUpCometChat()
     }

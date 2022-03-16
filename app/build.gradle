@@ -98,4 +98,10 @@ dependencies {
 
     implementation 'com.cometchat:pro-android-chat-sdk:3.0.0'
     implementation 'com.cometchat:pro-android-calls-sdk:2.1.1'
+
+    implementation 'com.geniusscansdk:gssdk-core:4.4.1'
+    // Optionally:
+//    implementation 'com.geniusscansdk:gssdk-ocr:4.4.1'
+//    implementation 'com.rmtheis:tess-two:5.4.1'
+    implementation 'com.geniusscansdk:gssdk-scanflow:4.4.1'
 }

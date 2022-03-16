@@ -44,7 +44,7 @@ class CometChatAudioHelper(private val context: Context) {
 
     fun startIncomingAudio(ringtone: Uri?, isVibarte: Boolean) {
         val audioManager = AppUtils.INSTANCE?.getAudioManager(context)
-        val speaker = !audioManager!!.isWiredHeadsetOn && !audioManager!!.isBluetoothScoOn
+        val speaker = !audioManager!!.isWiredHeadsetOn && !audioManager.isBluetoothScoOn
         audioManager.mode = AudioManager.MODE_RINGTONE
         audioManager.isMicrophoneMute = false
         audioManager.isSpeakerphoneOn = speaker

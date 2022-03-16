@@ -3,6 +3,7 @@ package com.hipaasafe.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
 import android.location.Geocoder
 import android.media.AudioManager
@@ -51,6 +52,10 @@ class AppUtils {
                 INSTANCE = AppUtils()
             }
         }
+    }
+    fun dpToPixel(dp: Float, resources: Resources): Float {
+        val density = resources.displayMetrics.density
+        return dp * density
     }
 
     fun extracCompany(str: ArrayList<String>, website: String, email: String): String {

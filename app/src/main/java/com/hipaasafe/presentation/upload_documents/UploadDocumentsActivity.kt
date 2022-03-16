@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.isEmpty
+import com.geniusscansdk.scanflow.ScanConfiguration
+import com.geniusscansdk.scanflow.ScanFlow
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.hipaasafe.Constants
@@ -309,6 +311,8 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
         addPhotoBottomSheetDialogBinding.apply {
             imgPdf.visibility = VISIBLE
             tvPdf.visibility = VISIBLE
+            imgScanDoc.visibility = VISIBLE
+            tvScanDoc.visibility = VISIBLE
             tvAddPhoto.text = getString(R.string.choose_document)
             imgCamera.setOnClickListener {
                 b.putBoolean(Constants.IS_CAMERA, true)
@@ -329,8 +333,72 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                 pdfResult.launch(intent)
                 bottomSheetDialog.dismiss()
             }
+            imgScanDoc.setOnClickListener {
+                scanDoc()
+            }
         }
 
+    }
+
+    private fun scanDoc() {
+
+//        val f = File(Environment.getExternalStorageDirectory(), "tessdata")
+//        if (!f.exists()) {
+//            f.mkdirs()
+//        }
+//        val filePath: String = "/storage/emulated/0/tessdata/eng.traineddata"
+//        val file = File(filePath)
+//
+//        if (!file.exists()) {
+//            try {
+//                val fileNew = File("/storage/emulated/0/tessdata/", "eng.traineddata")
+//                val myInput = context!!.resources.openRawResource(R.raw.eng)
+//                val os: OutputStream = FileOutputStream(fileNew)
+//                val buffer: ByteArray = ByteArray(1024)
+//                var length: Int
+//                while (myInput.read(buffer).also { length = it } > 0) {
+//                    os.write(buffer, 0, length)
+//                }
+//                os.flush()
+//                os.close()
+//                myInput.close()
+//
+//            } catch (e: IOException) {
+//                Log.w("ExternalStorage", "Error writing $file", e)
+//            }
+//        }
+//        val ocr = ScanConfiguration.OcrConfiguration()
+//        ocr.languages = listOf("eng")
+//        ocr.languagesDirectory = File("/storage/emulated/0/tessdata/")
+
+        val scanConfiguration = ScanConfiguration().apply {
+            multiPage = true
+            jpegQuality = 30
+            defaultFilter = ScanConfiguration.Filter.NONE
+//            ocrConfiguration = ocr
+        }
+        ScanFlow.scanWithConfiguration(this, scanConfiguration)
+    }
+
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        try {
+            val result = ScanFlow.getScanResultFromActivityResult(data)
+            result.pdfFile?.let {
+                uploadDocPath = it.absolutePath
+                fileName = it.name
+                binding.apply {
+                    imgDoc.setImageResource(R.drawable.ic_default_pdf)
+                    tvUploadedDocName.text = fileName
+                    hideAddDocumentLayout()
+                }
+            }
+
+        } catch (e: Exception) {
+            val error = e.localizedMessage
+            // There was an error during the scan flow. Check the exception for more details.
+        }
     }
 
     private val pdfResult =

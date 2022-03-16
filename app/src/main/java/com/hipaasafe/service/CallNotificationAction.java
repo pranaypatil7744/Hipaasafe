@@ -13,6 +13,7 @@ import com.cometchat.pro.core.Call;
 import com.cometchat.pro.core.CometChat;
 import com.cometchat.pro.exceptions.CometChatException;
 import com.hipaasafe.Constants;
+import com.hipaasafe.call_manager.CometChatStartCallActivity;
 import com.hipaasafe.presentation.home_screen.HomeActivity;
 
 public class CallNotificationAction extends BroadcastReceiver {
@@ -27,7 +28,7 @@ public class CallNotificationAction extends BroadcastReceiver {
                 @Override
                 public void onSuccess(Call call) {
                     //TOdo handle call
-                    Intent acceptIntent = new Intent(context, HomeActivity.class);
+                    Intent acceptIntent = new Intent(context, CometChatStartCallActivity.class);
                     acceptIntent.putExtra(Constants.CometChatConstant.SESSION_ID,call.getSessionId());
                     acceptIntent.putExtra(Constants.CometChatConstant.TYPE,call.getType());
                     acceptIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -298,6 +298,14 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
 
     private fun setUpAdapter() {
         binding.apply {
+            documentsList.clear()
+            documentsList.add(
+                DocumentsModel(
+                    documentItemType = DocumentItemType.ITEM_ADD_DOC,
+                    title = getString(R.string.upload_documents),
+                    subTitle = getString(R.string.click_here_to_upload_reports_documents)
+                )
+            )
             documentAdapter =
                 DocumentAdapter(requireContext(), documentsList, this@DocumentFragment)
             recyclerDocuments.adapter = documentAdapter

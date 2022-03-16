@@ -4,6 +4,9 @@ import com.cometchat.pro.constants.CometChatConstants
 
 class Constants {
     companion object {
+        const val ONE_SIGNAL_APP_ID = "29500431-ac41-47af-908c-fcc2ba1d978d"
+        const val GENIUS_SDK_LICENSE = "533c5006575e0906045d075539525a0e4a0b5b145557415804536b57010b08095a0d57560b"
+
         const val AUTHORITY = "com.hipaasafe.fileprovider"
         const val BASE_URL_PROFILE_PIC = "https://akbh.s3.ap-south-1.amazonaws.com/hs/avatar/"
         const val BASE_URL_REPORT= "https://akbh.s3.ap-south-1.amazonaws.com/hs/user/reports/"
@@ -18,7 +21,6 @@ class Constants {
         const val LOGIN_WITH = "LOGIN_WITH"
         const val COUNTRY_CODE = "COUNTRY_CODE"
         const val RESEND_OTP_SECOND = 30000.toLong() //i.e 30 secs
-        const val ONE_SIGNAL_APP_ID = "29500431-ac41-47af-908c-fcc2ba1d978d"
         const val DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         const val Notifications = "Notifications"
         const val IsImportant = "is_important"
