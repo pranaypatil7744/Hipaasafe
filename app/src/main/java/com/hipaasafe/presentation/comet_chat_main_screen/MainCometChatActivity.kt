@@ -72,6 +72,7 @@ import com.hipaasafe.presentation.comet_chat_main_screen.model.AttachmentMenuMod
 import com.hipaasafe.presentation.comet_chat_main_screen.model.MembersWithColor
 import com.hipaasafe.presentation.forward_message_screen.ForwardMessageActivity
 import com.hipaasafe.presentation.home_screen.HomeActivity
+import com.hipaasafe.presentation.upload_documents.UploadDocumentsActivity
 import com.hipaasafe.presentation.view_documents.ViewDocumentsActivity
 import com.hipaasafe.utils.*
 import com.hipaasafe.utils.CometChatUtils.Companion.initiateCall
@@ -147,9 +148,9 @@ class MainCometChatActivity : BaseActivity(),
         binding = ActivityMainCometChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
         preferenceUtils = PreferenceUtils(this)
-        setUpView()
         setUpAttachmentMenuList()
         getIntentData()
+        setUpView()
         setUpListener()
         setUpToolbar()
     }
@@ -198,6 +199,11 @@ class MainCometChatActivity : BaseActivity(),
         binding.apply {
             linearLayoutManager =
                 LinearLayoutManager(this@MainCometChatActivity, LinearLayoutManager.VERTICAL, false)
+            if (type == CometChatConstants.RECEIVER_TYPE_GROUP){
+                btnAttachMedia.visibility = VISIBLE
+            }else{
+                btnAttachMedia.visibility = GONE
+            }
         }
     }
 
@@ -307,7 +313,11 @@ class MainCometChatActivity : BaseActivity(),
 //                    } else {
 //                        showToast(getString(R.string.no_internet_connection_please_try_again_later))
 //                    }
-                    val i = Intent(this@MainCometChatActivity,AttachmentActivity::class.java)
+                    val i: Intent = if (loginUserType == LoginUserType.PATIENT.value){
+                        Intent(this@MainCometChatActivity,AttachmentActivity::class.java)
+                    }else{
+                        Intent(this@MainCometChatActivity,UploadDocumentsActivity::class.java)
+                    }
                     val b = Bundle()
                     b.putBoolean(Constants.IsForAttachDoc,true)
                     b.putString(Constants.AttachmentSendTo,id)
@@ -2378,8 +2388,11 @@ class MainCometChatActivity : BaseActivity(),
             layoutEditMsg.visibility = GONE
             etEnterMsg.setText("")
             etEnterMsg.hint = getString(R.string.write_a_message)
-//            btnAttachMedia.visibility = GONE
-            btnAttachMedia.visibility = VISIBLE
+            if (type == CometChatConstants.RECEIVER_TYPE_GROUP){
+                btnAttachMedia.visibility = VISIBLE
+            }else{
+                btnAttachMedia.visibility = GONE
+            }
         }
     }
 
@@ -2460,8 +2473,11 @@ class MainCometChatActivity : BaseActivity(),
             layoutReplyMsg.visibility = GONE
             etEnterMsg.setText("")
             etEnterMsg.hint = getString(R.string.write_a_message)
-//            btnAttachMedia.visibility = GONE
-            btnAttachMedia.visibility = VISIBLE
+            if (type == CometChatConstants.RECEIVER_TYPE_GROUP){
+                btnAttachMedia.visibility = VISIBLE
+            }else{
+                btnAttachMedia.visibility = GONE
+            }
         }
     }
 

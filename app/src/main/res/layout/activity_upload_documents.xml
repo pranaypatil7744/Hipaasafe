@@ -32,12 +32,13 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutUploadDoc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/layoutUploadDoc"
                 android:visibility="invisible"
-                app:layout_constraintTop_toTopOf="@id/layoutAddDoc"
-                app:layout_constraintBottom_toBottomOf="@id/layoutAddDoc">
+                app:layout_constraintBottom_toBottomOf="@id/layoutAddDoc"
+                app:layout_constraintTop_toTopOf="@id/layoutAddDoc">
+
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imgDoc"
                     android:layout_width="42dp"
@@ -67,8 +68,8 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/codGray"
-                    app:layout_constraintEnd_toStartOf="@id/btnDiscard"
                     app:layout_constraintBottom_toBottomOf="@id/imgDoc"
+                    app:layout_constraintEnd_toStartOf="@id/btnDiscard"
                     app:layout_constraintStart_toEndOf="@id/imgDoc"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Upload Documents" />
@@ -79,8 +80,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:visibility="visible"
                 android:background="@drawable/bg_dotted_line"
+                android:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@id/tvDocument">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -111,13 +112,13 @@
                 app:layout_constraintTop_toBottomOf="@id/layoutAddDoc" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutShare"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/bg_box"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="15dp"
-                android:id="@+id/layoutShare"
                 app:layout_constraintTop_toBottomOf="@id/tvShare">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -161,26 +162,52 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layoutShare" />
 
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etDocumentName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_box"
+                android:layout_marginTop="5dp"
+                android:hint="@string/enter_document_name"
+                android:inputType="text"
+                android:singleLine="true"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="18dp"
+                android:textColor="@color/codGray"
+                android:textColorHint="@color/heather"
+                app:layout_constraintTop_toBottomOf="@id/tvDocumentName" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDocumentType"
+                style="@style/metropolis_regular_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/document_type"
+                android:textColor="@color/scorpion"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etDocumentName" />
+
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutDocumentName"
+                android:id="@+id/layoutDocumentType"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                app:boxBackgroundColor="@color/white"
                 app:boxCornerRadiusBottomEnd="10dp"
                 app:boxCornerRadiusBottomStart="10dp"
                 app:boxCornerRadiusTopEnd="10dp"
                 app:boxCornerRadiusTopStart="10dp"
                 app:boxStrokeColor="@color/alabaster"
-                app:boxBackgroundColor="@color/white"
                 app:errorEnabled="true"
                 app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDocumentName">
+                app:layout_constraintTop_toBottomOf="@+id/tvDocumentType">
 
                 <AutoCompleteTextView
-                    android:id="@+id/etDocumentName"
+                    android:id="@+id/etDocumentType"
                     style="@style/metropolis_medium_small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

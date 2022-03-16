@@ -253,6 +253,8 @@
     <string name="add_a_note">Add a note...</string>
     <string name="save">Save</string>
     <string name="requested_documents">Requested Documents</string>
+    <string name="document_type">Document Type</string>
+    <string name="enter_document_name">Enter document name</string>
 
 
 </resources>

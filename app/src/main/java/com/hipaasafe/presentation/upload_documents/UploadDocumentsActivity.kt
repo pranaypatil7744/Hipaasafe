@@ -39,7 +39,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
     private val documentViewModel: DocumentViewModel by viewModel()
     private val myNetworkViewModel: MyNetworkViewModel by viewModel()
 
-    lateinit var bottomSheetDialog:BottomSheetDialog
+    lateinit var bottomSheetDialog: BottomSheetDialog
 
     private lateinit var doctorListAdapter: ForwardDocAdapter
     private var doctorList: ArrayList<ForwardDocumentModel> = ArrayList()
@@ -54,7 +54,8 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
     var uploadedFile: String = ""
     var selectedDocumentId: Int = 0
     var selectedDoctorUids: ArrayList<String> = ArrayList()
-    var selectedDoctorUid: String =""
+    var selectedDoctorUid: String = ""
+    var isForAttachment: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +65,6 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
         setUpObserver()
         setUpToolbar()
         setUpListener()
-        callDoctorsApi()
     }
 
     private fun callDoctorsApi() {
@@ -81,11 +81,14 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
     }
 
     private fun getUploadAndShareDocumentRequestModel(): UploadAndShareDocumentRequestModel {
-        val request = UploadAndShareDocumentRequestModel()
-        request.document_file = uploadedFile
-        request.report_name_id = selectedDocumentId
-        request.doctor_id = selectedDoctorUid
-        return request
+        binding.apply {
+            val request = UploadAndShareDocumentRequestModel()
+            request.document_file = uploadedFile
+            request.report_name_id = selectedDocumentId
+            request.doctor_uids = selectedDoctorUids
+            request.document_name = etDocumentName.text.toString().trim()
+            return request
+        }
     }
 
     private fun setUpObserver() {
@@ -108,7 +111,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                                     android.R.layout.simple_list_item_1,
                                     list
                                 )
-                            etDocumentName.setAdapter(adapterReports)
+                            etDocumentType.setAdapter(adapterReports)
                         }
                     } else {
                         showToast(it.message.toString())
@@ -189,7 +192,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                 toggleLoader(true)
                 documentViewModel.callGetReportListApi(
                     request = GetReportsListRequestModel(
-                       doctor_id = selectedDoctorUid
+                        doctor_id = selectedDoctorUid
                     )
                 )
             } else {
@@ -224,13 +227,16 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                     uploadDocPath.isEmpty() -> {
                         showToast("Please upload document")
                     }
-                    selectedDoctorUid.isEmpty() ->{
-                        if (isFromAddDocument){
-                            showToast(getString(R.string.please_select_at_least_1_doctor))
-                        }
+//                    selectedDoctorUid.isEmpty() ->{
+//                        if (isFromAddDocument){
+//                            showToast(getString(R.string.please_select_at_least_1_doctor))
+//                        }
+//                    }
+                    etDocumentName.text.toString().trim().isEmpty() -> {
+                        showToast("Please enter document name")
                     }
                     selectedDocumentId == 0 -> {
-                        showToast("Please select document name")
+                        showToast("Please select document type")
                     }
 //                    selectedDoctorUids.isEmpty() -> {
 //                        showToast(getString(R.string.please_select_at_least_1_doctor))
@@ -249,7 +255,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                 showAddDocumentLayout()
             }
 
-            etDocumentName.setOnItemClickListener { parent, view, position, id ->
+            etDocumentType.setOnItemClickListener { parent, view, position, id ->
                 selectedDocumentId = repostList[position].id ?: 0
             }
         }
@@ -335,6 +341,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
             }
             imgScanDoc.setOnClickListener {
                 scanDoc()
+                bottomSheetDialog.dismiss()
             }
         }
 
@@ -380,7 +387,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
         ScanFlow.scanWithConfiguration(this, scanConfiguration)
     }
 
-        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         try {
@@ -435,6 +442,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
         binding.apply {
             intent.extras?.run {
                 isFromAddDocument = getBoolean(Constants.IsFromAdd)
+                isForAttachment = getBoolean(Constants.IsForAttachDoc)
                 pendingDocName = getString(Constants.PendingDocumentName).toString()
                 pendingDocBy = getString(Constants.PendingDocumentBy).toString()
                 pendingDocGuid = getString(Constants.PendingDocumentGuid).toString()
@@ -449,6 +457,8 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
         binding.apply {
             if (isFromAddDocument) {
                 hintSelectDoctor.visibility = VISIBLE
+                callDoctorsApi()
+                callGetReportsList()
             } else {
                 etDocumentName.setText(pendingDocName)
                 hintSelectDoctor.visibility = INVISIBLE
@@ -486,7 +496,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
             doctorListAdapter = ForwardDocAdapter(
                 this@UploadDocumentsActivity,
                 doctorList,
-                listener = this@UploadDocumentsActivity,isHideCheck = true
+                listener = this@UploadDocumentsActivity, isHideCheck = true
             )
             recyclerAttendanceHistory.adapter = doctorListAdapter
             btnShare.text = getString(R.string._continue)
@@ -505,7 +515,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                 }
             }
             imgClose.setOnClickListener {
-                for (i in doctorList){
+                for (i in doctorList) {
                     i.isSelected = false
                 }
                 doctorListAdapter.notifyDataSetChanged()
@@ -541,7 +551,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                         val list = doctorList.find {
                             it.guid?.equals(c.tag) == true
                         }
-                        if (list != null){
+                        if (list != null) {
                             val index = doctorList.indexOf(list)
                             doctorList[index].isSelected = false
                         }
