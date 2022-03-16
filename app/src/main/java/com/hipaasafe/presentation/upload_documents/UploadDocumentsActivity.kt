@@ -131,6 +131,13 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                     toggleLoader(false)
                     if (it.success == true) {
                         val resultIntent = intent
+                        val data = getUploadAndShareDocumentRequestModel()
+                        val b = Bundle()
+                        b.putString(
+                            Constants.DocumentLink,
+                            Constants.BASE_URL_REPORT + data.document_file
+                        )
+                        resultIntent.putExtras(b)
                         setResult(Activity.RESULT_OK, resultIntent)
                         finish()
                     } else {
@@ -457,30 +464,42 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
 
     private fun setUpView() {
         binding.apply {
-            if (isFromAddDocument) {
-                hintSelectDoctor.visibility = VISIBLE
-                callDoctorsApi()
-                callGetReportsList()
-            } else {
-                etDocumentType.setText(pendingDocType)
-                hintSelectDoctor.visibility = INVISIBLE
-                selectedDoctorUids.clear()
-                selectedDoctorUids.add(pendingDocGuid)
-                val chip = layoutInflater.inflate(R.layout.layout_chip, chipsDoctors, false) as Chip
-                chip.apply {
-                    text = pendingDocBy
-                    chipIcon =
-                        ContextCompat.getDrawable(
-                            this@UploadDocumentsActivity,
-                            R.drawable.ic_default_profile_picture
-                        )
-                    isCloseIconVisible = false
-//                    setOnCloseIconClickListener {
-//                        chipsDoctors.removeAllViews()
-//                        hintSelectDoctor.visibility = VISIBLE
-//                    }
+            when {
+                isFromAddDocument -> {
+                    hintSelectDoctor.visibility = VISIBLE
+                    layoutShare.visibility = VISIBLE
+                    tvShare.visibility = VISIBLE
+                    callDoctorsApi()
+                    callGetReportsList()
                 }
-                chipsDoctors.addView(chip)
+                isForAttachment -> {
+                    layoutShare.visibility = GONE
+                    tvShare.visibility = GONE
+                    callGetReportsList()
+                }
+                else -> {
+                    layoutShare.visibility = VISIBLE
+                    tvShare.visibility = VISIBLE
+                    etDocumentType.setText(pendingDocType)
+                    hintSelectDoctor.visibility = INVISIBLE
+                    selectedDoctorUids.clear()
+                    selectedDoctorUids.add(pendingDocGuid)
+                    val chip = layoutInflater.inflate(R.layout.layout_chip, chipsDoctors, false) as Chip
+                    chip.apply {
+                        text = pendingDocBy
+                        chipIcon =
+                            ContextCompat.getDrawable(
+                                this@UploadDocumentsActivity,
+                                R.drawable.ic_default_profile_picture
+                            )
+                        isCloseIconVisible = false
+        //                    setOnCloseIconClickListener {
+        //                        chipsDoctors.removeAllViews()
+        //                        hintSelectDoctor.visibility = VISIBLE
+        //                    }
+                    }
+                    chipsDoctors.addView(chip)
+                }
             }
         }
     }

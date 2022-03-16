@@ -51,6 +51,7 @@ class ViewDocumentsActivity : BaseActivity() {
             documentFragment.patientUid = patientUid
             documentFragment.selectedDoctorUid = doctorUid
             documentFragment.isForPatientDocuments = true
+            documentFragment.isShowUploadDoc = false
         }
     }
 

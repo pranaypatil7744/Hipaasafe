@@ -48,8 +48,9 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     var patientUid: String = ""
     var selectedDoctorUid: String = ""
     var selectedDoctorUidForList: String = ""
-    var isAttachmentFlow:Boolean = false
-    var attachmentShareTo:String = ""
+    var isAttachmentFlow: Boolean = false
+    var attachmentShareTo: String = ""
+    var isShowUploadDoc: Boolean = true
 
     companion object {
         fun newInstance(): DocumentFragment {
@@ -200,23 +201,22 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                                 )
                             }
                         }
-                        if (isForPatientDocuments) {
-                            documentsList.add(
-                                DocumentsModel(
-                                    documentItemType = DocumentItemType.ITEM_TITLE,
-                                    title = getString(R.string.requested_documents)
-                                )
-                            )
-                        } else {
-                            documentsList.add(
-                                DocumentsModel(
-                                    documentItemType = DocumentItemType.ITEM_TITLE
-                                )
-                            )
-                        }
-
 
                         if (data?.documents_request?.size != 0) {
+                            if (isForPatientDocuments) {
+                                documentsList.add(
+                                    DocumentsModel(
+                                        documentItemType = DocumentItemType.ITEM_TITLE,
+                                        title = getString(R.string.requested_documents)
+                                    )
+                                )
+                            } else {
+                                documentsList.add(
+                                    DocumentsModel(
+                                        documentItemType = DocumentItemType.ITEM_TITLE
+                                    )
+                                )
+                            }
                             for (i in data?.documents_request ?: arrayListOf()) {
                                 documentsList.add(
                                     DocumentsModel(
@@ -226,7 +226,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                                         uploadDocumentId = i.hospital_tests.id ?: 0,
                                         guid = i.assignee.uid,
                                         doctorId = i.assignee_id,
-                                        DocumentRequestId = i.id?:0
+                                        DocumentRequestId = i.id ?: 0
                                     )
                                 )
                             }
@@ -247,15 +247,18 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                 shareReportsResponseData.observe(requireActivity()) {
                     toggleLoader(false)
                     if (it.success == true) {
-                        if (isAttachmentFlow){
+                        if (isAttachmentFlow) {
                             val data = getShareReportRequestModel()
                             val resultIntent = requireActivity().intent
                             val b = Bundle()
-                            b.putString(Constants.DocumentLink,Constants.BASE_URL_REPORT+data.document_file)
+                            b.putString(
+                                Constants.DocumentLink,
+                                Constants.BASE_URL_REPORT + data.document_file
+                            )
                             resultIntent.putExtras(b)
                             requireActivity().setResult(Activity.RESULT_OK, resultIntent)
                             requireActivity().finish()
-                        }else{
+                        } else {
                             showToast(it.message.toString())
                         }
                     } else {
@@ -273,14 +276,16 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
 
     private fun setUpAdapter() {
         binding.apply {
-            documentsList.clear()
-            documentsList.add(
-                DocumentsModel(
-                    documentItemType = DocumentItemType.ITEM_ADD_DOC,
-                    title = getString(R.string.upload_documents),
-                    subTitle = getString(R.string.click_here_to_upload_reports_documents)
+            if (isShowUploadDoc) {
+                documentsList.clear()
+                documentsList.add(
+                    DocumentsModel(
+                        documentItemType = DocumentItemType.ITEM_ADD_DOC,
+                        title = getString(R.string.upload_documents),
+                        subTitle = getString(R.string.click_here_to_upload_reports_documents)
+                    )
                 )
-            )
+            }
             documentAdapter =
                 DocumentAdapter(requireContext(), documentsList, this@DocumentFragment)
             recyclerDocuments.adapter = documentAdapter
@@ -321,10 +326,10 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
 
     private fun getShareReportRequestModel(): ShareDocumentRequestModel {
         val selectedDoctorsIds: ArrayList<String> = ArrayList()
-        if (isAttachmentFlow){
+        if (isAttachmentFlow) {
             selectedDoctorsIds.clear()
             selectedDoctorsIds.add(attachmentShareTo)
-        }else{
+        } else {
             val list = doctorList.filter {
                 it.isSelected
             }
@@ -354,9 +359,9 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     private val uploadReportResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                if (isAttachmentFlow){
+                if (isAttachmentFlow) {
 
-                }else{
+                } else {
 
                 }
                 callFetchReportsApi()
@@ -374,9 +379,9 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
 
     override fun clickOnForwardDoc(position: Int) {
         selectedItemPosition = position
-        if (isAttachmentFlow){
+        if (isAttachmentFlow) {
             callShareReportApi()
-        }else{
+        } else {
             openForwardListBottomSheet()
         }
     }

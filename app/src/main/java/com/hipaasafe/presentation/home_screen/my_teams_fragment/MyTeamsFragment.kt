@@ -48,13 +48,18 @@ class MyTeamsFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager {
         preferenceUtils = PreferenceUtils(requireContext())
         setUpAdapter()
         setUpObserver()
-        callDoctorsListApi()
         setUpListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        callDoctorsListApi()
     }
 
     private fun callDoctorsListApi() {
         binding.apply {
             if (requireContext().isNetworkAvailable()) {
+                toggleLoader(true)
                 myNetworkViewModel.callDoctorMyTeamsListApi(
                     DoctorMyTeamsRequestModel(page = 1, limit = 30)
                 )

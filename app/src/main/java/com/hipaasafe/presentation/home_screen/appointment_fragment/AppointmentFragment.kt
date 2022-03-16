@@ -96,6 +96,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
             with(appointmentViewModel) {
 
                 getMyQueueResponseData.observe(requireActivity()){
+                    toggleLoader(false)
                     if (it.success == true){
                         layoutYourTurn.visibility = VISIBLE
                         setUpWaitingUI(it.data.queue_no?:0)

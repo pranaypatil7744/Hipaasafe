@@ -46,8 +46,12 @@ class MyPatientsFragment : BaseFragment(), MyPatientsAdapter.MyPatientsClickMana
         super.onViewCreated(view, savedInstanceState)
         setUpAdapter()
         setUpObserver()
-        callMyPatientsListApi()
         setUpListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        callMyPatientsListApi()
     }
 
     private fun setUpListener() {
