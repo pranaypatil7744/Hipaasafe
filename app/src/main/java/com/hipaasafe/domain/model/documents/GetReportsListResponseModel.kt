@@ -14,5 +14,5 @@ data class ReportsDataModel(
 data class GetReportsListRequestModel(
 //    var page:Int,
 //    var limit:Int,
-    var doctor_id:String = ""
+    var doctor_id:String ?= null
 )

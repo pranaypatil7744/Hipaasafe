@@ -9,10 +9,8 @@ import com.hipaasafe.domain.model.documents.*
 import com.hipaasafe.domain.model.get_doctors.DoctorMyTeamResponseModel
 import com.hipaasafe.domain.model.get_doctors.GetDoctorsResponseModel
 import com.hipaasafe.domain.model.get_patients.GetPatientsListResponseModel
-import com.hipaasafe.domain.model.get_patients.PatientsDataModel
 import com.hipaasafe.domain.model.notes.AddNoteRequestModel
 import com.hipaasafe.domain.model.notes.AddNoteResponseModel
-import com.hipaasafe.domain.model.notes.GetNotesListRequestModel
 import com.hipaasafe.domain.model.notes.GetNotesListResponseModel
 import com.hipaasafe.domain.model.patient_login.*
 import com.hipaasafe.domain.model.static_details.GetStaticDetailsResponseModel
@@ -62,7 +60,7 @@ interface ApiService {
     suspend fun callGetReportsList(
 //        @Query("page") page: Int,
 //        @Query("limit") limit: Int
-        @Query("doctor_id") doctor_id: String
+        @Query("doctor_id") doctor_id: String?
     ): GetReportsListResponseModel
 
     @Multipart
@@ -142,7 +140,7 @@ interface ApiService {
         @Query("page")page: Int,
         @Query("limit")limit: Int,
         @Query("doctor_id")doctor_id: String,
-        @Query("patient_id")patient_id: String,
+        @Query("guid")guid: String,
     ): GetNotesListResponseModel
 
 }

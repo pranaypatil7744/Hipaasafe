@@ -89,7 +89,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
             request.doctor_uids = selectedDoctorUids
             request.document_name = etDocumentName.text.toString().trim()
             request.document_request_id = documentRequestId
-            request.guid = attachmentSendTo.ifEmpty { null }
+            request.guid = if (isForAttachment)attachmentSendTo else null
             return request
         }
     }

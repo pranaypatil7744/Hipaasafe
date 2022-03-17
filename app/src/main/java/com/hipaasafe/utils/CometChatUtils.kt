@@ -51,10 +51,9 @@ class CometChatUtils {
             }
             context.startActivity(videoCallIntent)
         }
-        fun startGroupIntent(group: Group,context: Context,patientId:String?="") {
+        fun startGroupIntent(group: Group,context: Context) {
             val intent = Intent(context, MainCometChatActivity::class.java)
             intent.putExtra(Constants.CometChatConstant.GUID, group.guid)
-            intent.putExtra(Constants.CometChatConstant.PATIENT_ID, patientId)
             intent.putExtra(Constants.CometChatConstant.GROUP_OWNER, group.owner)
             intent.putExtra(Constants.CometChatConstant.AVATAR, group.icon)
             intent.putExtra(Constants.CometChatConstant.NAME, group.name)

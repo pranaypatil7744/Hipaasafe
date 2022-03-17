@@ -88,7 +88,7 @@ class RequestDocumentFragment : BaseFragment(), RequestDocumentAdapter.RequestDo
 
     private fun getRequestDocumentFromPatientRequestModel():RequestDocumentFromPatientRequestModel{
         val request = RequestDocumentFromPatientRequestModel()
-        request.patient_id = (requireActivity() as RequestDocumentActivity).patientUid
+        request.guid = (requireActivity() as RequestDocumentActivity).guid
         request.hospital_reports_id = selectedDocList
         return request
     }

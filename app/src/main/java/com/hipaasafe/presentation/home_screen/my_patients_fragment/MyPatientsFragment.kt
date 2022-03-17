@@ -135,7 +135,7 @@ class MyPatientsFragment : BaseFragment(), MyPatientsAdapter.MyPatientsClickMana
         group.name = patientsList[position].name
         group.icon = patientsList[position].list_patient_details.avatar
 //        joinGroup(group)
-        startGroupIntent(group, requireContext(),patientsList[position].patient_id.toString())
+        startGroupIntent(group, requireContext())
     }
 
 }

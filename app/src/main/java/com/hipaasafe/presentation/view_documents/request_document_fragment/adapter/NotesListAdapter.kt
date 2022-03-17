@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hipaasafe.R
 import com.hipaasafe.databinding.ItemNoteBinding
 import com.hipaasafe.domain.model.notes.NotesListModel
+import com.hipaasafe.utils.AppUtils
 
 class NotesListAdapter(
     val context: Context,
@@ -24,9 +25,10 @@ class NotesListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
        val data = notesList[position]
         holder.binding.apply {
+            val date = data.createdAt?.substring(0,10).toString()
             tvName.text = data.doctor_details.name
             tvMsg.text = data.notes
-            tvTime.text = data.createdAt
+            tvTime.text = AppUtils.INSTANCE?.convertDateFormat("yyyy-MM-dd",date,"dd MMM yyyy")
         }
     }
 

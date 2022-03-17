@@ -13,6 +13,6 @@ class NotesRepositoryImp constructor(private val apiService: ApiService) : Notes
     }
 
     override suspend fun callGetNotesListApi(request: GetNotesListRequestModel): GetNotesListResponseModel {
-        return apiService.callGetNotesListApi(page = request.page, limit = request.limit, doctor_id = request.doctor_id, patient_id = request.patient_id)
+        return apiService.callGetNotesListApi(page = request.page, limit = request.limit, doctor_id = request.doctor_id, guid = request.guid)
     }
 }

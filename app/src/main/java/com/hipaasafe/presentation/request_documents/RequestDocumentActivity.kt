@@ -12,7 +12,7 @@ class RequestDocumentActivity : BaseActivity() {
     var requestDocumentFragment = RequestDocumentFragment.newInstance()
     lateinit var binding:ActivityRequestDocumentBinding
     var chatName: String = ""
-    var patientUid: String = ""
+    var guid: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +26,7 @@ class RequestDocumentActivity : BaseActivity() {
         binding.apply {
             intent?.extras?.run {
                 chatName = getString(Constants.CometChatConstant.NAME).toString()
-                patientUid = getString(Constants.CometChatConstant.PATIENT_ID).toString()
+                guid = getString(Constants.CometChatConstant.GUID).toString()
             }
         }
     }

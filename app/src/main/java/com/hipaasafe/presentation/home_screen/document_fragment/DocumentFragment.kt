@@ -30,6 +30,7 @@ import com.hipaasafe.presentation.upload_documents.DocumentViewModel
 import com.hipaasafe.presentation.upload_documents.UploadDocumentsActivity
 import com.hipaasafe.presentation.view_documents.ViewDocumentsActivity
 import com.hipaasafe.utils.PreferenceUtils
+import com.hipaasafe.utils.enum.LoginUserType
 import com.hipaasafe.utils.isNetworkAvailable
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -53,6 +54,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     var attachmentShareTo: String = ""
     var isShowUploadDoc: Boolean = true
     var guid:String =""
+    var loginUserType:Int = 0
 
     companion object {
         fun newInstance(): DocumentFragment {
@@ -77,7 +79,6 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         setUpObserver()
         setUpListener()
         if (isForPatientDocuments){
-//            callMyTeamApi()
             guid = (requireActivity() as ViewDocumentsActivity).groupId
         }else{
             callDoctorsApi()
@@ -85,23 +86,12 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         callFetchReportsApi()
     }
 
-    private fun callMyTeamApi() {
-        binding.apply {
-            if (requireContext().isNetworkAvailable()) {
-                toggleLoader(true)
-                myNetworkViewModel.callDoctorMyTeamsListApi(
-                    DoctorMyTeamsRequestModel(page = 1, limit = 30)
-                )
-
-            } else {
-
-            }
-        }
-    }
-
     private fun getPreferenceData() {
         binding.apply {
-            patientUid = preferenceUtils.getValue(Constants.PreferenceKeys.uid)
+            loginUserType = preferenceUtils.getValue(Constants.PreferenceKeys.role_id).toIntOrNull()?:0
+            if (loginUserType == LoginUserType.PATIENT.value){
+                patientUid = preferenceUtils.getValue(Constants.PreferenceKeys.uid)
+            }
         }
     }
 
@@ -187,31 +177,31 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                     }
                 }
 
-                doctorMyTeamsListResponseData.observe(requireActivity()) {
-                    toggleLoader(false)
-                    if (it.success == true) {
-                        if (it.data.count != 0) {
-                            doctorList.clear()
-                            for (i in it.data.rows ?: arrayListOf()) {
-                                doctorList.add(
-                                    ForwardDocumentModel(
-                                        title = i.name,
-                                        icon = i.avatar,
-                                        guid = i.uid,
-                                        doctorId = i.doctor_details?.id.toString()
-                                    )
-                                )
-                            }
-                            if (::forwardDocAdapter.isInitialized) {
-                                forwardDocAdapter.notifyDataSetChanged()
-                            }
-                        } else {
-
-                        }
-                    } else {
-                        showToast(it.message.toString())
-                    }
-                }
+//                doctorMyTeamsListResponseData.observe(requireActivity()) {
+//                    toggleLoader(false)
+//                    if (it.success == true) {
+//                        if (it.data.count != 0) {
+//                            doctorList.clear()
+//                            for (i in it.data.rows ?: arrayListOf()) {
+//                                doctorList.add(
+//                                    ForwardDocumentModel(
+//                                        title = i.name,
+//                                        icon = i.avatar,
+//                                        guid = i.uid,
+//                                        doctorId = i.doctor_details?.id.toString()
+//                                    )
+//                                )
+//                            }
+//                            if (::forwardDocAdapter.isInitialized) {
+//                                forwardDocAdapter.notifyDataSetChanged()
+//                            }
+//                        } else {
+//
+//                        }
+//                    } else {
+//                        showToast(it.message.toString())
+//                    }
+//                }
 
                 messageData.observe(requireActivity()) {
                     toggleLoader(false)

@@ -29,7 +29,6 @@ class ViewDocumentsActivity : BaseActivity() {
     lateinit var notesListAdapter: NotesListAdapter
     var chatName: String = ""
     var age: String = ""
-    var patientUid: String = ""
     var doctorUid: String = ""
     var groupId: String = ""
     var notesList: ArrayList<NotesListModel> = ArrayList()
@@ -97,8 +96,7 @@ class ViewDocumentsActivity : BaseActivity() {
 
     private fun setUpView() {
         binding.apply {
-            documentFragment.patientUid = patientUid
-            documentFragment.selectedDoctorUid = doctorUid
+//            documentFragment.selectedDoctorUid = doctorUid
             documentFragment.isForPatientDocuments = true
             documentFragment.isShowUploadDoc = false
         }
@@ -110,7 +108,7 @@ class ViewDocumentsActivity : BaseActivity() {
                 val i = Intent(this@ViewDocumentsActivity, RequestDocumentActivity::class.java)
                 val b = Bundle()
                 b.putString(Constants.CometChatConstant.NAME, chatName)
-                b.putString(Constants.CometChatConstant.PATIENT_ID, patientUid)
+                b.putString(Constants.CometChatConstant.GUID,groupId)
                 i.putExtras(b)
                 requestDocResult.launch(i)
             }
@@ -133,7 +131,6 @@ class ViewDocumentsActivity : BaseActivity() {
         binding.apply {
             intent?.extras?.run {
                 chatName = getString(Constants.CometChatConstant.NAME).toString()
-                patientUid = getString(Constants.CometChatConstant.PATIENT_ID).toString()
                 groupId = getString(Constants.CometChatConstant.GUID).toString()
             }
         }
@@ -184,7 +181,7 @@ class ViewDocumentsActivity : BaseActivity() {
                 toggleLoader(true)
                 notesViewModel.callGetNotesListApi(
                     request = GetNotesListRequestModel(
-                        page = 1, limit = 30, doctor_id = doctorUid, patientUid
+                        page = 1, limit = 30, doctor_id = doctorUid, guid =  groupId
                     )
                 )
             } else {
@@ -203,7 +200,7 @@ class ViewDocumentsActivity : BaseActivity() {
                     request =
                     AddNoteRequestModel(
                         doctor_id = doctorUid,
-                        patient_id = patientUid,
+                        guid = groupId,
                         notes = note
                     )
                 )

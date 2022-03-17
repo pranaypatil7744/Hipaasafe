@@ -17,6 +17,7 @@ data class RequestDocumentFromPatientData(
 )
 
 data class RequestDocumentFromPatientRequestModel(
-    var patient_id:String ="",
+    var patient_id:String ?=null,
+    var guid:String? =null,
     var hospital_reports_id:ArrayList<Int> = ArrayList()
 )
