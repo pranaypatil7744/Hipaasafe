@@ -344,7 +344,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                 )
             }
             documentAdapter =
-                DocumentAdapter(requireContext(), documentsList, this@DocumentFragment)
+                DocumentAdapter(requireContext(), documentsList, this@DocumentFragment, isHideShare = isForPatientDocuments)
             recyclerDocuments.adapter = documentAdapter
         }
     }

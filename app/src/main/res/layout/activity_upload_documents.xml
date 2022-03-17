@@ -109,7 +109,7 @@
                 android:text="@string/share_to"
                 android:textColor="@color/scorpion"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layoutAddDoc" />
+                app:layout_constraintTop_toBottomOf="@id/etDocumentName" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutShare"
@@ -160,7 +160,7 @@
                 android:text="@string/document_name"
                 android:textColor="@color/scorpion"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layoutShare" />
+                app:layout_constraintTop_toBottomOf="@id/layoutAddDoc" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etDocumentName"
@@ -186,7 +186,7 @@
                 android:text="@string/document_type"
                 android:textColor="@color/scorpion"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/etDocumentName" />
+                app:layout_constraintTop_toBottomOf="@id/layoutShare" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layoutDocumentType"
@@ -238,7 +238,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="20dp"
         android:fontFamily="@font/metropolis_regular"
-        android:text="@string/share_upload"
+        android:text="@string/upload"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"

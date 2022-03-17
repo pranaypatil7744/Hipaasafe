@@ -255,6 +255,7 @@
     <string name="requested_documents">Requested Documents</string>
     <string name="document_type">Document Type</string>
     <string name="enter_document_name">Enter document name</string>
+    <string name="upload">Upload</string>
 
 
 </resources>

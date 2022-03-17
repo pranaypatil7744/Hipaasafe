@@ -2,6 +2,8 @@ package com.hipaasafe.presentation.home_screen.document_fragment.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hipaasafe.R
@@ -11,7 +13,8 @@ import com.hipaasafe.presentation.home_screen.document_fragment.model.DocumentsM
 
 class DocumentAdapter(
     val context: Context, private val documentList: ArrayList<DocumentsModel>,
-    var listener: DocumentClickManager
+    var listener: DocumentClickManager,
+    var isHideShare:Boolean = false
 ) :
     RecyclerView.Adapter<DocumentAdapter.ViewHolder>() {
 
@@ -109,6 +112,11 @@ class DocumentAdapter(
                             imgDoc.setImageResource(R.drawable.ic_default_pdf)
                         }else{
                             imgDoc.setImageResource(R.drawable.ic_default_img)
+                        }
+                        if (isHideShare){
+                            btnForward.visibility = GONE
+                        }else{
+                            btnForward.visibility = VISIBLE
                         }
                         btnForward.setOnClickListener {
                             listener.clickOnForwardDoc(position)
