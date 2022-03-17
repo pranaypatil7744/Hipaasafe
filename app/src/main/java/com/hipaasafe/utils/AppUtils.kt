@@ -522,6 +522,15 @@ class AppUtils {
         return calendar.time
     }
 
+
+    fun getPreviousDate(day:Int):String{
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_MONTH, -day)
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        return sdf.format(calendar.time)
+    }
+
+
      fun convertStringToDate(
         dateFormatToRead: String,
         dateToRead: String

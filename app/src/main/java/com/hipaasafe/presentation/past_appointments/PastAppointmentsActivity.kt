@@ -55,7 +55,7 @@ class PastAppointmentsActivity : BaseActivity() {
                 toDate =
                     AppUtils.INSTANCE?.convertDateFormat("dd MMM yyyy", currentDate, "yyyy-MM-dd")
                         .toString()
-                fromDate = toDate.substring(0, 7) + "-01"
+                fromDate = AppUtils.INSTANCE?.getPreviousDate(3).toString()
                 callDoctorPastAppointmentApi(fromDate = fromDate, toDate = toDate)
                 etFromDate.visibility = VISIBLE
                 etToDate.visibility = VISIBLE
