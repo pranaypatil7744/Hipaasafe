@@ -7,10 +7,10 @@
 <!--        android:title="@string/export_chats"-->
 <!--        app:showAsAction="never" />-->
 
-    <item
-        android:id="@+id/menu_block"
-        android:title="@string/block"
-        app:showAsAction="never" />
+<!--    <item-->
+<!--        android:id="@+id/menu_block"-->
+<!--        android:title="@string/block"-->
+<!--        app:showAsAction="never" />-->
 
     <item
         android:id="@+id/menu_view_contact"

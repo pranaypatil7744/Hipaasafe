@@ -1644,9 +1644,9 @@ class MainCometChatActivity : BaseActivity(),
 
     private fun setUpToolbar() {
         binding.toolbar.apply {
-//            setSupportActionBar(toolbarChat)
-//            toolbarChat.overflowIcon =
-//                ContextCompat.getDrawable(this@MainCometChatActivity, R.drawable.ic_more)
+            setSupportActionBar(toolbarChat)
+            toolbarChat.overflowIcon =
+                ContextCompat.getDrawable(this@MainCometChatActivity, R.drawable.ic_more)
             tvChatName.text = chatName
             toolbarIcon1.setImageResource(R.drawable.img_audio_call)
             toolbarIcon2.setImageResource(R.drawable.img_video_call)
@@ -1700,11 +1700,11 @@ class MainCometChatActivity : BaseActivity(),
             menuInflater.inflate(R.menu.chat_menu, menu)
         } else {
             menuInflater.inflate(R.menu.chat_menu_personal, menu)
-            if (isBlockedByMe) {
-                menu.findItem(R.id.menu_block)?.title = getString(R.string.unblock)
-            } else {
-                menu.findItem(R.id.menu_block)?.title = getString(R.string.block)
-            }
+//            if (isBlockedByMe) {
+//                menu.findItem(R.id.menu_block)?.title = getString(R.string.unblock)
+//            } else {
+//                menu.findItem(R.id.menu_block)?.title = getString(R.string.block)
+//            }
         }
         this.menu = menu
         return true
@@ -1717,17 +1717,24 @@ class MainCometChatActivity : BaseActivity(),
 //                true
 //            }
             R.id.menu_view_contact -> {
-
+                DialogUtils.showUserProfileDialog(
+                    this,
+                    chatName.toString(),
+                    profilePicUrl.toString(),
+                    userDetails,
+                    isBlockedByMe,
+                    this
+                )
                 true
             }
-            R.id.menu_block -> {
-                if (isBlockedByMe) {
-                    callUnblockUserApi()
-                } else {
-
-                }
-                true
-            }
+//            R.id.menu_block -> {
+//                if (isBlockedByMe) {
+//                    callUnblockUserApi()
+//                } else {
+//
+//                }
+//                true
+//            }
             R.id.menu_delete_group -> {
                 DialogUtils.showConfirmationDialog(
                     this,

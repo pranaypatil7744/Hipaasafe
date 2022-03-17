@@ -11,19 +11,65 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.Window
 import android.widget.RelativeLayout
+import androidx.core.content.ContextCompat
 import com.cometchat.pro.models.BaseMessage
 import com.hipaasafe.BuildConfig
 import com.hipaasafe.R
-import com.hipaasafe.databinding.DialogBlockUserBinding
-import com.hipaasafe.databinding.DialogCancelAppointmentConfirmationBinding
-import com.hipaasafe.databinding.DialogPermissionBinding
-import com.hipaasafe.databinding.DialogRescheduleDoneBinding
+import com.hipaasafe.databinding.*
 
 class DialogUtils {
     companion object {
         private lateinit var permissionDialog: Dialog
         private lateinit var bookingCancelConfirmationDialog: Dialog
         private lateinit var rescheduleDoneDialog: Dialog
+
+
+        fun showUserProfileDialog(
+            context: Context,
+            userName: String,
+            profilePicUrl: String,
+            details: String,
+            isBlock: Boolean,
+            listener: DialogManager
+        ) {
+            val binding = LayoutDialogViewProfileBinding.inflate(LayoutInflater.from(context))
+            val dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(binding.root)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window?.attributes?.windowAnimations = R.style.DialogTheme
+            dialog.window?.setLayout(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+            )
+
+            binding.apply {
+                tvName.text = userName
+                ImageUtils.INSTANCE?.loadRemoteImageForProfile(imgDoc, profilePicUrl)
+                tvSpecialtyLocExp.text = details
+                btnClose.setOnClickListener {
+                    dialog.dismiss()
+                }
+                if (isBlock) {
+                    btnBlockUnBlock.apply {
+                        text = context.getString(R.string.unblock)
+                        icon = null
+                        setTextColor(ContextCompat.getColor(context, R.color.green_600))
+                    }
+                } else {
+                    btnBlockUnBlock.apply {
+                        text = context.getString(R.string.block)
+                        icon = ContextCompat.getDrawable(context, R.drawable.ic_block)
+                        setTextColor(ContextCompat.getColor(context, R.color.monza))
+                    }
+                }
+                btnBlockUnBlock.setOnClickListener {
+                    dialog.dismiss()
+                    listener.clickOnBlockUnblock()
+                }
+            }
+            dialog.show()
+        }
 
 
         fun showRescheduleDoneDialog(
@@ -218,5 +264,7 @@ class DialogUtils {
         fun onExitGroup() {}
         fun onEFaxContinueClick(faxNo: String, baseMessage: BaseMessage) {}
         fun onCancelClick() {}
+        fun clickOnBlockUnblock() {
+        }
     }
 }
