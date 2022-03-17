@@ -49,13 +49,8 @@ class MyTeamsFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager {
         setUpAdapter()
         setUpObserver()
         setUpListener()
-    }
-
-    override fun onResume() {
-        super.onResume()
         callDoctorsListApi()
     }
-
     private fun callDoctorsListApi() {
         binding.apply {
             if (requireContext().isNetworkAvailable()) {
@@ -75,6 +70,10 @@ class MyTeamsFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager {
     private fun setUpListener() {
         binding.apply {
             layoutNoInternet.btnRetry.setOnClickListener {
+                callDoctorsListApi()
+            }
+            swipeMyPatient.setOnRefreshListener {
+                swipeMyPatient.isRefreshing = false
                 callDoctorsListApi()
             }
         }

@@ -150,6 +150,10 @@ class CometChatGroupFragment : BaseFragment(), GroupChatListAdapter.ChatListClic
                     }
                 }
             })
+            swipeMyPatient.setOnRefreshListener {
+                swipeMyPatient.isRefreshing = false
+                getChatsList()
+            }
         }
     }
 

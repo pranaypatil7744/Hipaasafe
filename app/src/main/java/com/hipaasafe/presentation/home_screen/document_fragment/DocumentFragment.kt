@@ -110,6 +110,10 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
             layoutNoInternet.btnRetry.setOnClickListener {
                 callFetchReportsApi()
             }
+            swipeMyPatient.setOnRefreshListener {
+                swipeMyPatient.isRefreshing = false
+                callFetchReportsApi()
+            }
         }
     }
 

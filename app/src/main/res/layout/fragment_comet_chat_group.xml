@@ -44,6 +44,10 @@
         android:id="@+id/layoutNoInternet"
         layout="@layout/layout_no_internet"
         android:visibility="gone" />
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipeMyPatient">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerChatsList"
@@ -54,6 +58,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include
         android:id="@+id/content_loading"

@@ -26,5 +26,6 @@ data class UploadAndShareDocumentRequestModel(
     var document_name: String = "",
     var report_name_id: Int = 0,
     var document_request_id: Int? = null,
-    var doctor_uids: ArrayList<String> = ArrayList()
+    var doctor_uids: ArrayList<String> = ArrayList(),
+    var guid:String? =null
 )

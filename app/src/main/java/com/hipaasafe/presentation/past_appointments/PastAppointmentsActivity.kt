@@ -97,6 +97,14 @@ class PastAppointmentsActivity : BaseActivity() {
 
     private fun setUpListener() {
         binding.apply {
+            swipeMyPatient.setOnRefreshListener {
+                swipeMyPatient.isRefreshing = false
+                if (loginUserType == LoginUserType.PATIENT.value) {
+                    callPastAppointmentsApi()
+                } else {
+                    callDoctorPastAppointmentApi(fromDate = fromDate, toDate = toDate)
+                }
+            }
             layoutNoInternet.btnRetry.setOnClickListener {
                 if (loginUserType == LoginUserType.PATIENT.value) {
                     callPastAppointmentsApi()
@@ -159,9 +167,11 @@ class PastAppointmentsActivity : BaseActivity() {
                         if (etFromDate.text.toString().trim()
                                 .isNotEmpty() && etToDate.text.toString().trim().isNotEmpty()
                         ) {
+                            fromDate = etFromDate.text.toString().trim()
+                            toDate = etToDate.text.toString().trim()
                             callDoctorPastAppointmentApi(
-                                fromDate = etFromDate.text.toString().trim(),
-                                toDate = etToDate.text.toString().trim()
+                                fromDate = fromDate,
+                                toDate = toDate
                             )
                             isCalendarClick = true
                         } else {
@@ -203,7 +213,8 @@ class PastAppointmentsActivity : BaseActivity() {
                     if (it.success) {
                         if (it.data != null && it.data.count != 0) {
                             layoutNoData.root.visibility = GONE
-                            isLoading = true
+//                            isLoading = true
+                            pastAppointmentHistoryList.clear()
                             setUpAdapter(it.data.rows)
                         } else {
                             isLoading = false

@@ -56,6 +56,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
     var selectedDoctorUids: ArrayList<String> = ArrayList()
     var selectedDoctorUid: String = ""
     var isForAttachment: Boolean = false
+    var attachmentSendTo:String =""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +89,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
             request.doctor_uids = selectedDoctorUids
             request.document_name = etDocumentName.text.toString().trim()
             request.document_request_id = documentRequestId
+            request.guid = attachmentSendTo.ifEmpty { null }
             return request
         }
     }
@@ -450,6 +452,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
         binding.apply {
             intent.extras?.run {
                 isFromAddDocument = getBoolean(Constants.IsFromAdd)
+                attachmentSendTo = getString(Constants.AttachmentSendTo).toString()
                 isForAttachment = getBoolean(Constants.IsForAttachDoc)
                 pendingDocType = getString(Constants.PendingDocumentType).toString()
                 pendingDocBy = getString(Constants.PendingDocumentBy).toString()

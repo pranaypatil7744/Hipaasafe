@@ -6,14 +6,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.home_screen.my_patients_fragment.MyPatientsFragment">
 
-
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerMyPatients"
-        tools:listitem="@layout/item_my_patients"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"/>
+        android:id="@+id/swipeMyPatient">
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recyclerMyPatients"
+            tools:listitem="@layout/item_my_patients"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include
         android:id="@+id/content_loading"

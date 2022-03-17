@@ -2713,6 +2713,12 @@ class MainCometChatActivity : BaseActivity(),
 
     override fun clickOnTextMsg(position: Int, baseMessage: BaseMessage) {
         this.baseMessage = baseMessage
+        startActivity(
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse((baseMessage as MediaMessage).attachment.fileUrl)
+            )
+        )
     }
 
     override fun clickOnImageMsg(position: Int, baseMessage: BaseMessage) {

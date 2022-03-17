@@ -6,6 +6,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.cometchat.pro.constants.CometChatConstants
 import com.cometchat.pro.models.Group
 import com.hipaasafe.base.BaseFragment
@@ -47,16 +48,17 @@ class MyPatientsFragment : BaseFragment(), MyPatientsAdapter.MyPatientsClickMana
         setUpAdapter()
         setUpObserver()
         setUpListener()
-    }
-
-    override fun onResume() {
-        super.onResume()
         callMyPatientsListApi()
+
     }
 
     private fun setUpListener() {
         binding.apply {
             layoutNoInternet.btnRetry.setOnClickListener {
+                callMyPatientsListApi()
+            }
+            swipeMyPatient.setOnRefreshListener {
+                swipeMyPatient.isRefreshing = false
                 callMyPatientsListApi()
             }
         }

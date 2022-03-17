@@ -61,6 +61,13 @@ class DoctorAppointmentsListFragment : BaseFragment() {
                     parentFr.loginDoctorId
                 )
             }
+            swipeMyPatient.setOnRefreshListener {
+                swipeMyPatient.isRefreshing = false
+                callDoctorAppointmentListApi(
+                    date = parentFr.nextSevenDaysList[parentFr.selectedTabPosition].date.toString(),
+                    parentFr.loginDoctorId
+                )
+            }
         }
     }
 

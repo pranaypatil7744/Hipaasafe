@@ -79,6 +79,10 @@ class RequestDocumentFragment : BaseFragment(), RequestDocumentAdapter.RequestDo
                     showToast(getString(R.string.please_select_at_least_one_document))
                 }
             }
+            swipeMyPatient.setOnRefreshListener {
+                swipeMyPatient.isRefreshing = false
+                callRequestDocumentListApi()
+            }
         }
     }
 
