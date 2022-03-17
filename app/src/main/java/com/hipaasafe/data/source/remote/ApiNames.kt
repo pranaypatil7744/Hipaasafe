@@ -29,5 +29,7 @@ class ApiNames {
         const val RequestDocumentFromPatientApi = "documents/request-from-patient"
         const val GetMyQueueApi = "appointment/get/my-queue"
         const val RemoveRequestDocApi = "documents/remove-request-from-patient"
+        const val AddNoteApi = "notes/add"
+        const val GetNotesApi = "notes/get"
     }
 }

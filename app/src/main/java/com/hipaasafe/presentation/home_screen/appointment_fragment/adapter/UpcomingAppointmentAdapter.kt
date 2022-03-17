@@ -105,7 +105,6 @@ class UpcomingAppointmentAdapter(
                             }
                             AppointmentStatus.ITEM_CONFIRM -> {
                                 layoutPending.visibility = GONE
-                                btnReschedule.visibility = GONE
                                 layoutReschedule.visibility = GONE
                                 tvDateTime.text = data.date + "  |  " + data.time + "  |  "
                                 tvStatus.apply {
@@ -116,6 +115,13 @@ class UpcomingAppointmentAdapter(
                                 imgStatus.apply {
                                     visibility = VISIBLE
                                     setImageResource(R.drawable.ic_check)
+                                }
+                                btnReschedule.apply {
+                                    visibility = VISIBLE
+                                    text = context.getString(R.string.cancel)
+                                    setOnClickListener {
+                                        listener.clickedOnCancelAppointment(position)
+                                    }
                                 }
                             }
                             AppointmentStatus.ITEM_CANCEL -> {

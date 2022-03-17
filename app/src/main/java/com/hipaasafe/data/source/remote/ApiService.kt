@@ -10,6 +10,10 @@ import com.hipaasafe.domain.model.get_doctors.DoctorMyTeamResponseModel
 import com.hipaasafe.domain.model.get_doctors.GetDoctorsResponseModel
 import com.hipaasafe.domain.model.get_patients.GetPatientsListResponseModel
 import com.hipaasafe.domain.model.get_patients.PatientsDataModel
+import com.hipaasafe.domain.model.notes.AddNoteRequestModel
+import com.hipaasafe.domain.model.notes.AddNoteResponseModel
+import com.hipaasafe.domain.model.notes.GetNotesListRequestModel
+import com.hipaasafe.domain.model.notes.GetNotesListResponseModel
 import com.hipaasafe.domain.model.patient_login.*
 import com.hipaasafe.domain.model.static_details.GetStaticDetailsResponseModel
 import com.hipaasafe.presentation.profile_edit_details.model.ProfileEditRequestModel
@@ -75,8 +79,8 @@ interface ApiService {
 
     @GET(ApiNames.FetchReportsDocumentListApi)
     suspend fun callFetchReportsApi(
-        @Query("patient_id")patient_id:String?,
-        @Query("guid")guid:String?,
+        @Query("patient_id") patient_id: String?,
+        @Query("guid") guid: String?,
     ): FetchReportsResponseModel
 
     @POST(ApiNames.ShareDocumentApi)
@@ -119,12 +123,26 @@ interface ApiService {
     ): GetDoctorPastAppointmentsResponseModel
 
     @POST(ApiNames.RequestDocumentFromPatientApi)
-    suspend fun callRequestDocumentFromPatientsApi(@Body request: RequestDocumentFromPatientRequestModel
+    suspend fun callRequestDocumentFromPatientsApi(
+        @Body request: RequestDocumentFromPatientRequestModel
     ): RequestDocumentFromPatientResponseModel
 
     @GET(ApiNames.GetMyQueueApi)
-    suspend fun callGetMyQueueApi():GetMyQueueResponseModel
+    suspend fun callGetMyQueueApi(): GetMyQueueResponseModel
 
-    @POST(ApiNames.RemoveRequestDocApi)
-    suspend fun callRemoveRequestDocApi(@Body request:RemoveRequestDocumentRequestModel):RemoveRequestDocumentResponseModel
+    @HTTP(method = "DELETE", path = ApiNames.RemoveRequestDocApi, hasBody = true)
+//    @DELETE(ApiNames.RemoveRequestDocApi)
+    suspend fun callRemoveRequestDocApi(@Body request: RemoveRequestDocumentRequestModel): RemoveRequestDocumentResponseModel
+
+    @POST(ApiNames.AddNoteApi)
+    suspend fun callAddNoteApi(@Body request: AddNoteRequestModel): AddNoteResponseModel
+
+    @GET(ApiNames.GetNotesApi)
+    suspend fun callGetNotesListApi(
+        @Query("page")page: Int,
+        @Query("limit")limit: Int,
+        @Query("doctor_id")doctor_id: String,
+        @Query("patient_id")patient_id: String,
+    ): GetNotesListResponseModel
+
 }

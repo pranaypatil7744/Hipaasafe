@@ -8,7 +8,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hipaasafe.Constants
@@ -27,7 +26,6 @@ import com.hipaasafe.presentation.home_screen.document_fragment.model.DocumentIt
 import com.hipaasafe.presentation.home_screen.document_fragment.model.DocumentsModel
 import com.hipaasafe.presentation.home_screen.document_fragment.model.ForwardDocumentModel
 import com.hipaasafe.presentation.home_screen.my_network.MyNetworkViewModel
-import com.hipaasafe.presentation.home_screen.my_network.model.DoctorModel
 import com.hipaasafe.presentation.upload_documents.DocumentViewModel
 import com.hipaasafe.presentation.upload_documents.UploadDocumentsActivity
 import com.hipaasafe.presentation.view_documents.ViewDocumentsActivity
@@ -79,8 +77,8 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         setUpObserver()
         setUpListener()
         if (isForPatientDocuments){
-            callMyTeamApi()
-            patientUid = (requireActivity() as ViewDocumentsActivity).patientUid
+//            callMyTeamApi()
+            guid = (requireActivity() as ViewDocumentsActivity).groupId
         }else{
             callDoctorsApi()
         }
@@ -218,7 +216,6 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
             }
 
             with(documentViewModel) {
-
                 removeRequestDocResponseData.observe(requireActivity()){
                     toggleLoader(false)
                     if (it.success == true){

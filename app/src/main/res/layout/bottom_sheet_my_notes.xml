@@ -38,11 +38,11 @@
             app:srcCompat="@drawable/ic_arrow_down_blue" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerAttendanceHistory"
+            android:id="@+id/recyclerNotes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:minHeight="100dp"
+            android:minHeight="300dp"
             android:orientation="vertical"
             android:paddingBottom="120dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -51,6 +51,26 @@
             app:layout_constraintVertical_bias="0.0"
             tools:itemCount="5"
             tools:listitem="@layout/item_note" />
+        <include
+            android:id="@+id/layoutNoData"
+            layout="@layout/layout_no_data"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@id/recyclerAttendanceHistory"
+            app:layout_constraintBottom_toBottomOf="@id/recyclerAttendanceHistory"/>
+
+        <include
+            android:id="@+id/layoutNoInternet"
+            layout="@layout/layout_no_internet"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@id/recyclerAttendanceHistory"
+            app:layout_constraintBottom_toBottomOf="@id/recyclerAttendanceHistory"/>
+
+        <include
+            android:id="@+id/content_loading"
+            layout="@layout/content_loading"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@id/recyclerAttendanceHistory"
+            app:layout_constraintBottom_toBottomOf="@id/recyclerAttendanceHistory"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etAddNote"

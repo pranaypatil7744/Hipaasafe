@@ -7,6 +7,7 @@ import com.hipaasafe.presentation.home_screen.my_patients_fragment.PatientsViewM
 import com.hipaasafe.presentation.login.LoginViewModel
 import com.hipaasafe.presentation.profile_edit_details.ProfileViewModel
 import com.hipaasafe.presentation.upload_documents.DocumentViewModel
+import com.hipaasafe.presentation.view_documents.NotesViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -16,6 +17,7 @@ val AppModule = module {
     viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
     viewModel { ProfileViewModel(get(),get()) }
     viewModel { MyNetworkViewModel(get(),get()) }
+    viewModel { NotesViewModel(get(),get()) }
     viewModel { HelpViewModel(get()) }
     viewModel { PatientsViewModel(get()) }
     viewModel { DocumentViewModel(get(),get(),get(),get(),get(),get(),get()) }
@@ -58,5 +60,9 @@ val AppModule = module {
 
     single { createPatientsRepository(get(named("normalService"))) }
     single { createGetPatientsListUseCase(get()) }
+
+    single { createNotesRepository(get(named("normalService"))) }
+    single { createGetNotesListUseCase(get()) }
+    single { createAddNotUseCase(get()) }
 
 }
