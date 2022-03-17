@@ -12,10 +12,10 @@
 <!--        android:title="@string/block"-->
 <!--        app:showAsAction="never" />-->
 
-    <item
-        android:id="@+id/menu_view_contact"
-        android:title="@string/menu_view_contact"
-        app:showAsAction="never" />
+<!--    <item-->
+<!--        android:id="@+id/menu_view_contact"-->
+<!--        android:title="@string/menu_view_contact"-->
+<!--        app:showAsAction="never" />-->
 
     <item
         android:id="@+id/menu_delete_chat_and_exit"

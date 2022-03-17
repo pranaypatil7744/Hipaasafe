@@ -94,7 +94,7 @@ class BaseApplication : Application(), LifecycleObserver, Application.ActivityLi
         })
         val cometChatSettings = CometChatSettings(this)
         cometChatSettings.addConnectionListener(TagName.COMET_SDK)
-        CometChatCallListener.addCallListener(TAG, this)
+        CometChatCallListener.addCallListener(TagName.COMET_SDK, this)
         createNotificationChannel()
         ProcessLifecycleOwner.get().lifecycle.addObserver(this);
         val isMuteNotification = preferenceUtils.getValue(Constants.Notifications, false)

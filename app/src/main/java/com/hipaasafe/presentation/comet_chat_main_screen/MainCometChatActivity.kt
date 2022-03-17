@@ -1716,17 +1716,17 @@ class MainCometChatActivity : BaseActivity(),
 //
 //                true
 //            }
-            R.id.menu_view_contact -> {
-                DialogUtils.showUserProfileDialog(
-                    this,
-                    chatName.toString(),
-                    profilePicUrl.toString(),
-                    userDetails,
-                    isBlockedByMe,
-                    this
-                )
-                true
-            }
+//            R.id.menu_view_contact -> {
+//                DialogUtils.showUserProfileDialog(
+//                    this,
+//                    chatName.toString(),
+//                    profilePicUrl.toString(),
+//                    userDetails,
+//                    isBlockedByMe,
+//                    this
+//                )
+//                true
+//            }
 //            R.id.menu_block -> {
 //                if (isBlockedByMe) {
 //                    callUnblockUserApi()
@@ -1759,18 +1759,18 @@ class MainCometChatActivity : BaseActivity(),
                 )
                 true
             }
-            R.id.menu_exit_group -> {
-                DialogUtils.showConfirmationDialog(
-                    this,
-                    this,
-                    title = getString(R.string.menu_exit_group),
-                    msg = getString(R.string.are_you_sure_you_want_to_exit_group),
-                    btnText = getString(R.string.yes),
-                    icon = R.drawable.ic_exit_group,
-                    isExitGroup = true
-                )
-                true
-            }
+//            R.id.menu_exit_group -> {
+//                DialogUtils.showConfirmationDialog(
+//                    this,
+//                    this,
+//                    title = getString(R.string.menu_exit_group),
+//                    msg = getString(R.string.are_you_sure_you_want_to_exit_group),
+//                    btnText = getString(R.string.yes),
+//                    icon = R.drawable.ic_exit_group,
+//                    isExitGroup = true
+//                )
+//                true
+//            }
             else -> super.onOptionsItemSelected(item)
         }
     }

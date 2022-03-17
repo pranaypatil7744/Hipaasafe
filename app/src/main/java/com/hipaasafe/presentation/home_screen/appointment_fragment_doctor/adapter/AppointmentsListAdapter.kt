@@ -2,6 +2,8 @@ package com.hipaasafe.presentation.home_screen.appointment_fragment_doctor.adapt
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +29,12 @@ class AppointmentsListAdapter(val context: Context,private val doctorAppointment
             tvTitle.text = data.patient_details.name
             tvSubTitle.text = data.patient_details.age
             tvStatus.text = data.appointment_status?.lowercase(Locale.ROOT)
-            tvQueue.text = "Queue : ${data.queue_no}"
+            if (data.queue_no != null){
+                tvQueue.visibility = VISIBLE
+                tvQueue.text = "Queue : ${data.queue_no}"
+            }else{
+                tvQueue.visibility = GONE
+            }
             when(data.appointment_status){
                 Constants.PENDING ->{
                     tvStatus.apply {

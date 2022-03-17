@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "164650831436",
+    "project_id": "hipaasafe-25d51",
+    "storage_bucket": "hipaasafe-25d51.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164650831436:android:e3ed701e04ad9f6d4b2ee9",
+        "android_client_info": {
+          "package_name": "com.ckurex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "164650831436-d9g92gdrgp37vag1fbv4k84me5gf0ftg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ckurex",
+            "certificate_hash": "00f3c3d71bd98a6cba4c7035bef5fbec4610bbbc"
+          }
+        },
+        {
+          "client_id": "164650831436-4fr8mgckpibbnjcnrm79ci7lnl1m0qid.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOliMyUAL3gG9yDeWV4vPVH1_pjOlk4vU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "164650831436-4fr8mgckpibbnjcnrm79ci7lnl1m0qid.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "164650831436-69al4q6es96ad7edkv65lemk1vb6q67h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hipaasafe"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164650831436:android:88e9abe8ddab6f854b2ee9",
+        "android_client_info": {
+          "package_name": "com.hipaasafe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "164650831436-op8eocuc5jdkkpkitshnlvc8np8j9alv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hipaasafe",
+            "certificate_hash": "00f3c3d71bd98a6cba4c7035bef5fbec4610bbbc"
+          }
+        },
+        {
+          "client_id": "164650831436-4fr8mgckpibbnjcnrm79ci7lnl1m0qid.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOliMyUAL3gG9yDeWV4vPVH1_pjOlk4vU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "164650831436-4fr8mgckpibbnjcnrm79ci7lnl1m0qid.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "164650831436-69al4q6es96ad7edkv65lemk1vb6q67h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hipaasafe"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

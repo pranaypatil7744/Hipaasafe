@@ -9,6 +9,8 @@ import com.cometchat.pro.core.CometChat.CallbackListener
 import com.cometchat.pro.exceptions.CometChatException
 import com.cometchat.pro.models.Group
 import com.cometchat.pro.models.User
+import com.hipaasafe.call_manager.CometChatCallActivity
+import com.hipaasafe.utils.AppUtils
 import com.hipaasafe.utils.CometChatUtils
 
 /**
@@ -46,18 +48,18 @@ object CometChatCallListener {
             }
 
             override fun onOutgoingCallAccepted(call: Call) {
-//                if (CometChatCallActivity.mainView != null) {
-//                    CometChatCallActivity.cometChatAudioHelper!!.stop(false)
-//                    Utils.startCall(CometChatCallActivity.callActivity!!, call, CometChatCallActivity.mainView)
-//                }
+                if (CometChatCallActivity.mainView != null) {
+                    CometChatCallActivity.cometChatAudioHelper!!.stop(false)
+                    AppUtils.INSTANCE?.startCall(CometChatCallActivity.callActivity!!, call, CometChatCallActivity.mainView)
+                }
             }
 
             override fun onOutgoingCallRejected(call: Call) {
-//                if (CometChatCallActivity.callActivity != null) CometChatCallActivity.callActivity!!.finish()
+                if (CometChatCallActivity.callActivity != null) CometChatCallActivity.callActivity!!.finish()
             }
 
             override fun onIncomingCallCancelled(call: Call) {
-//                if (CometChatCallActivity.callActivity != null) CometChatCallActivity.callActivity!!.finish()
+                if (CometChatCallActivity.callActivity != null) CometChatCallActivity.callActivity!!.finish()
             }
         })
     }

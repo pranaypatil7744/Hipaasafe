@@ -372,8 +372,8 @@ class AppUtils {
     fun startCall(activity: Activity, call: Call, mainView: RelativeLayout?) {
         val callSettings = CallSettings.CallSettingsBuilder(activity, mainView)
             .setSessionId(call.sessionId)
-            .startWithAudioMuted(true)
-            .startWithVideoMuted(true)
+            .startWithAudioMuted(false)
+            .startWithVideoMuted(false)
             .build()
         CometChat.startCall(callSettings, object : CometChat.OngoingCallListener {
             override fun onUserJoined(user: User) {

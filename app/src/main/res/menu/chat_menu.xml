@@ -16,8 +16,8 @@
         android:id="@+id/menu_delete_group"
         android:title="@string/delete_group"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/menu_exit_group"
-        android:title="@string/menu_exit_group"
-        app:showAsAction="never" />
+<!--    <item-->
+<!--        android:id="@+id/menu_exit_group"-->
+<!--        android:title="@string/menu_exit_group"-->
+<!--        app:showAsAction="never" />-->
 </menu>

@@ -132,7 +132,7 @@ class CometChatGroupFragment : BaseFragment(), GroupChatListAdapter.ChatListClic
     private fun setUpListener() {
         binding.apply {
 
-            recyclerChatsList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            recyclerChatsList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 //                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
 //                    if (!recyclerView.canScrollVertically(1)) {
 //                        if (!isSearch) {
@@ -140,16 +140,16 @@ class CometChatGroupFragment : BaseFragment(), GroupChatListAdapter.ChatListClic
 //                        }
 //                    }
 //                }
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (dy > 0) { //check for scroll down
-                        if (!isSearch) {
-                            if (isMore){
-                                getChatsList()
-                            }
-                        }
-                    }
-                }
-            })
+//                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                    if (dy > 0) { //check for scroll down
+//                        if (!isSearch) {
+//                            if (isMore){
+//                                getChatsList()
+//                            }
+//                        }
+//                    }
+//                }
+//            })
             swipeMyPatient.setOnRefreshListener {
                 swipeMyPatient.isRefreshing = false
                 getChatsList()
