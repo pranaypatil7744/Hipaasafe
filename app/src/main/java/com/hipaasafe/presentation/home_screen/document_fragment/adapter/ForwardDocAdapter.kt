@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hipaasafe.R
 import com.hipaasafe.databinding.ItemForwardDoctorBinding
 import com.hipaasafe.presentation.home_screen.document_fragment.model.ForwardDocumentModel
+import com.hipaasafe.utils.ImageUtils
 
 class ForwardDocAdapter(
     var context: Context,
@@ -39,6 +40,7 @@ class ForwardDocAdapter(
             }else{
                 btnIsSelect.visibility = VISIBLE
             }
+            ImageUtils.INSTANCE?.loadRemoteImageForProfile(imgProfile,data.icon)
             holder.itemView.setOnClickListener {
                 listener.onItemClick(position)
             }

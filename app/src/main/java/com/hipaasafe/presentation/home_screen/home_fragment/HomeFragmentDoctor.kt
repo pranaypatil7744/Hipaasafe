@@ -93,7 +93,7 @@ class HomeFragmentDoctor : BaseFragment(), ForwardDocAdapter.ForwardClickManager
                 val data = Gson().fromJson<ArrayList<DoctorsMappedModel>>(preferenceUtils.getValue(Constants.PreferenceKeys.doctorsMappedModel),collectionType)
                 doctorsListForNurse.clear()
                 doctorsListForNurse.addAll(data)
-                setNurseUI()
+                setNurseUI(0)
             }else{
                 selectedDoctorId = preferenceUtils.getValue(Constants.PreferenceKeys.uid)
                 layoutSelectDoctor.visibility = GONE
@@ -101,15 +101,15 @@ class HomeFragmentDoctor : BaseFragment(), ForwardDocAdapter.ForwardClickManager
         }
     }
 
-    private fun setNurseUI() {
+    private fun setNurseUI(position: Int) {
         binding.apply {
             if (doctorsListForNurse.size != 0){
-                selectedDoctorId = doctorsListForNurse[0].uid.toString()
+                selectedDoctorId = doctorsListForNurse[position].uid.toString()
                 hintSelectDoctor.visibility = GONE
                 imgProfile.visibility = VISIBLE
                 tvDoctorName.visibility = VISIBLE
-                ImageUtils.INSTANCE?.loadRemoteImageForProfile(imgProfile,doctorsListForNurse[0].avatar)
-                tvDoctorName.text = doctorsListForNurse[0].name
+                ImageUtils.INSTANCE?.loadRemoteImageForProfile(imgProfile,doctorsListForNurse[position].avatar)
+                tvDoctorName.text = doctorsListForNurse[position].name
                 doctorsList.clear()
                 for (i in doctorsListForNurse){
                     doctorsList.add(ForwardDocumentModel(
@@ -213,14 +213,16 @@ class HomeFragmentDoctor : BaseFragment(), ForwardDocAdapter.ForwardClickManager
     }
 
     override fun onItemClick(position: Int) {
-        bottomSheetDialog.dismiss()
-        selectedDoctorId = doctorsList[position].doctorId.toString()
-        when(selectedBottomTabPosition){
-            R.id.navigation_doctor_appointments -> {
-                doctorAppointmentFragment.setUpTabListener(doctorAppointmentFragment.selectedTabPosition)
-            }
-            R.id.navigation_my_patients ->{
-                myPatientsFragment.callMyPatientsListApi()
+        binding.apply {
+            bottomSheetDialog.dismiss()
+            setNurseUI(position)
+            when(selectedBottomTabPosition){
+                R.id.navigation_doctor_appointments -> {
+                    doctorAppointmentFragment.setUpTabListener(doctorAppointmentFragment.selectedTabPosition)
+                }
+                R.id.navigation_my_patients ->{
+                    myPatientsFragment.callMyPatientsListApi()
+                }
             }
         }
     }

@@ -6,36 +6,50 @@ import android.view.View.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.databinding.ActivityViewDocumentsBinding
 import com.hipaasafe.databinding.BottomSheetMyNotesBinding
+import com.hipaasafe.databinding.BottomsheetForwardDocBinding
+import com.hipaasafe.domain.model.doctor_login.DoctorsMappedModel
 import com.hipaasafe.domain.model.notes.AddNoteRequestModel
 import com.hipaasafe.domain.model.notes.GetNotesListRequestModel
 import com.hipaasafe.domain.model.notes.NotesListModel
 import com.hipaasafe.presentation.home_screen.document_fragment.DocumentFragment
+import com.hipaasafe.presentation.home_screen.document_fragment.adapter.ForwardDocAdapter
+import com.hipaasafe.presentation.home_screen.document_fragment.model.ForwardDocumentModel
 import com.hipaasafe.presentation.request_documents.RequestDocumentActivity
 import com.hipaasafe.presentation.view_documents.request_document_fragment.adapter.NotesListAdapter
+import com.hipaasafe.utils.ImageUtils
 import com.hipaasafe.utils.PreferenceUtils
 import com.hipaasafe.utils.enum.LoginUserType
 import com.hipaasafe.utils.isNetworkAvailable
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.lang.reflect.Type
 
 
-class ViewDocumentsActivity : BaseActivity() {
+class ViewDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickManager {
     lateinit var binding: ActivityViewDocumentsBinding
     lateinit var bottomSheetDialog: BottomSheetDialog
     lateinit var notesListAdapter: NotesListAdapter
     var chatName: String = ""
     var age: String = ""
-    var doctorUid: String = ""
     var groupId: String = ""
     var notesList: ArrayList<NotesListModel> = ArrayList()
     var documentFragment = DocumentFragment.newInstance()
     lateinit var bottomSheetMyNotesBinding: BottomSheetMyNotesBinding
     private val notesViewModel: NotesViewModel by viewModel()
-    var loginUser: Int = 0
+    var loginUserType:Int =0
+    var selectedDoctorId:String =""
+    var doctorsListForNurse:ArrayList<DoctorsMappedModel> = ArrayList()
+    var doctorsList:ArrayList<ForwardDocumentModel> = ArrayList()
+    lateinit var bottomSheetDialogDoctor: BottomSheetDialog
+    lateinit var bottomSheetSelectDoctorBinding: BottomsheetForwardDocBinding
+    private lateinit var doctorListAdapter: ForwardDocAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityViewDocumentsBinding.inflate(layoutInflater)
@@ -85,18 +99,49 @@ class ViewDocumentsActivity : BaseActivity() {
 
     private fun getPreferenceData() {
         binding.apply {
-            loginUser =
-                PreferenceUtils(this@ViewDocumentsActivity).getValue(Constants.PreferenceKeys.role_id)
-                    .toIntOrNull() ?: 0
-            if (loginUser == LoginUserType.DOCTOR.value) {
-                doctorUid = preferenceUtils.getValue(Constants.PreferenceKeys.uid)
+            loginUserType = preferenceUtils.getValue(Constants.PreferenceKeys.role_id).toIntOrNull()?:0
+            if (loginUserType == LoginUserType.NURSE.value){
+                layoutSelectDoctor.visibility = VISIBLE
+                val collectionType: Type = object : TypeToken<ArrayList<DoctorsMappedModel>>() {}.type
+                val data = Gson().fromJson<ArrayList<DoctorsMappedModel>>(preferenceUtils.getValue(Constants.PreferenceKeys.doctorsMappedModel),collectionType)
+                doctorsListForNurse.clear()
+                doctorsListForNurse.addAll(data)
+                setNurseUI(0)
+            }else{
+                selectedDoctorId = preferenceUtils.getValue(Constants.PreferenceKeys.uid)
+                layoutSelectDoctor.visibility = GONE
+            }
+        }
+    }
+
+    private fun setNurseUI(position: Int) {
+        binding.apply {
+            if (doctorsListForNurse.size != 0){
+                selectedDoctorId = doctorsListForNurse[position].uid.toString()
+                hintSelectDoctor.visibility = GONE
+                imgProfile.visibility = VISIBLE
+                tvDoctorName.visibility = VISIBLE
+                ImageUtils.INSTANCE?.loadRemoteImageForProfile(imgProfile,doctorsListForNurse[position].avatar)
+                tvDoctorName.text = doctorsListForNurse[position].name
+                doctorsList.clear()
+                for (i in doctorsListForNurse){
+                    doctorsList.add(ForwardDocumentModel(
+                        title = i.name,
+                        icon = i.avatar,
+                        doctorId = i.uid
+                    ))
+                }
+                if (::doctorListAdapter.isInitialized){
+                    doctorListAdapter.notifyDataSetChanged()
+                }
+            }else{
+                hintSelectDoctor.visibility = VISIBLE
             }
         }
     }
 
     private fun setUpView() {
         binding.apply {
-//            documentFragment.selectedDoctorUid = doctorUid
             documentFragment.isForPatientDocuments = true
             documentFragment.isShowUploadDoc = false
         }
@@ -115,7 +160,37 @@ class ViewDocumentsActivity : BaseActivity() {
             layoutMyNotes.setOnClickListener {
                 openForwardListBottomSheet()
             }
+
+            btnDown.setOnClickListener {
+                if (doctorsListForNurse.size != 0){
+                    openDoctorsListBottomSheet()
+                }
+            }
+            tvDoctorName.setOnClickListener {
+                openDoctorsListBottomSheet()
+            }
         }
+    }
+
+    private fun openDoctorsListBottomSheet() {
+        bottomSheetDialogDoctor = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.bottomsheet_forward_doc, null)
+        bottomSheetSelectDoctorBinding = BottomsheetForwardDocBinding.bind(view)
+        bottomSheetDialogDoctor.setContentView(view)
+        bottomSheetDialogDoctor.setCancelable(true)
+        bottomSheetSelectDoctorBinding.apply {
+            btnShare.visibility = GONE
+            imgClose.setOnClickListener {
+                bottomSheetDialogDoctor.dismiss()
+            }
+            doctorListAdapter = ForwardDocAdapter(
+                this@ViewDocumentsActivity,
+                doctorsList,
+                listener = this@ViewDocumentsActivity, isHideCheck = true
+            )
+            recyclerAttendanceHistory.adapter = doctorListAdapter
+        }
+        bottomSheetDialogDoctor.show()
     }
 
     private val requestDocResult =
@@ -181,7 +256,7 @@ class ViewDocumentsActivity : BaseActivity() {
                 toggleLoader(true)
                 notesViewModel.callGetNotesListApi(
                     request = GetNotesListRequestModel(
-                        page = 1, limit = 30, doctor_id = doctorUid, guid =  groupId
+                        page = 1, limit = 30, doctor_id = selectedDoctorId, guid =  groupId
                     )
                 )
             } else {
@@ -199,7 +274,7 @@ class ViewDocumentsActivity : BaseActivity() {
                 notesViewModel.callAddNoteApi(
                     request =
                     AddNoteRequestModel(
-                        doctor_id = doctorUid,
+                        doctor_id = selectedDoctorId,
                         guid = groupId,
                         notes = note
                     )
@@ -230,4 +305,10 @@ class ViewDocumentsActivity : BaseActivity() {
             toolbarIcon2.visibility = GONE
         }
     }
+
+    override fun onItemClick(position: Int) {
+        bottomSheetDialogDoctor.dismiss()
+        setNurseUI(position)
+    }
+
 }
