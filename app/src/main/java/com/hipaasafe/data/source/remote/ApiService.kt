@@ -111,6 +111,7 @@ interface ApiService {
     suspend fun callPatientsListApi(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
+        @Query("doctor_id") doctor_id: String,
     ): GetPatientsListResponseModel
 
     @GET(ApiNames.DoctorPastAppointmentsListApi)

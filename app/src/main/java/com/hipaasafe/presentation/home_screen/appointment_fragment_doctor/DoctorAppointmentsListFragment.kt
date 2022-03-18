@@ -49,7 +49,7 @@ class DoctorAppointmentsListFragment : BaseFragment() {
         setUpListener()
         callDoctorAppointmentListApi(
             date = parentFr.nextSevenDaysList[parentFr.selectedTabPosition].date.toString(),
-            parentFr.loginDoctorId
+            parentFr.selectedDoctorId
         )
     }
 
@@ -58,14 +58,14 @@ class DoctorAppointmentsListFragment : BaseFragment() {
             layoutNoInternet.btnRetry.setOnClickListener {
                 callDoctorAppointmentListApi(
                     date = parentFr.nextSevenDaysList[parentFr.selectedTabPosition].date.toString(),
-                    parentFr.loginDoctorId
+                    parentFr.selectedDoctorId
                 )
             }
             swipeMyPatient.setOnRefreshListener {
                 swipeMyPatient.isRefreshing = false
                 callDoctorAppointmentListApi(
                     date = parentFr.nextSevenDaysList[parentFr.selectedTabPosition].date.toString(),
-                    parentFr.loginDoctorId
+                    parentFr.selectedDoctorId
                 )
             }
         }

@@ -3,20 +3,17 @@ package com.hipaasafe.presentation.home_screen.appointment_fragment_doctor
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.hipaasafe.Constants
 import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.FragmentDoctorAppointmentBinding
 import com.hipaasafe.presentation.adapter.PagerAdapter
+import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.home_screen.appointment_fragment_doctor.model.AppointmentTabModel
 import com.hipaasafe.utils.AppUtils
 import com.hipaasafe.utils.PreferenceUtils
-import com.hipaasafe.utils.enum.LoginUserType
 
 
 class DoctorAppointmentFragment : BaseFragment() {
@@ -36,9 +33,8 @@ class DoctorAppointmentFragment : BaseFragment() {
     var doctorAppointmentsListFragment7 = DoctorAppointmentsListFragment.newInstance()
     var nextSevenDaysList: ArrayList<AppointmentTabModel> = ArrayList()
     lateinit var binding: FragmentDoctorAppointmentBinding
-    var loginDoctorId: String = ""
-    var loginUserType:Int =0
     var selectedTabPosition: Int = 0
+    var selectedDoctorId: String = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,17 +46,11 @@ class DoctorAppointmentFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         preferenceUtils = PreferenceUtils(requireContext())
-        getPreferenceData()
+        val homeFragmentDoctor = (requireActivity() as HomeActivity).homeFragmentDoctor
+        selectedDoctorId = homeFragmentDoctor.selectedDoctorId
         setUpView()
         setUpTabs()
         setUpListener()
-    }
-
-    private fun getPreferenceData() {
-        binding.apply {
-            loginDoctorId = preferenceUtils.getValue(Constants.PreferenceKeys.uid)
-            loginUserType = preferenceUtils.getValue(Constants.PreferenceKeys.role_id).toIntOrNull()?:0
-        }
     }
 
     private fun setUpListener() {
@@ -68,65 +58,7 @@ class DoctorAppointmentFragment : BaseFragment() {
             tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     selectedTabPosition = tab?.position ?: 0
-                    when (tab?.position) {
-                        0 -> {
-                            doctorAppointmentsListFragment1.apply {
-                                callDoctorAppointmentListApi(
-                                    date = nextSevenDaysList[0].date.toString(),
-                                    loginDoctorId
-                                )
-                            }
-                        }
-                        1 -> {
-                            doctorAppointmentsListFragment2.apply {
-                                callDoctorAppointmentListApi(
-                                    date = nextSevenDaysList[1].date.toString(),
-                                    loginDoctorId
-                                )
-                            }
-                        }
-                        2 -> {
-                            doctorAppointmentsListFragment3.apply {
-                                callDoctorAppointmentListApi(
-                                    date = nextSevenDaysList[2].date.toString(),
-                                    loginDoctorId
-                                )
-                            }
-                        }
-                        3 -> {
-                            doctorAppointmentsListFragment4.apply {
-                                callDoctorAppointmentListApi(
-                                    date = nextSevenDaysList[3].date.toString(),
-                                    loginDoctorId
-                                )
-                            }
-                        }
-                        4 -> {
-                            doctorAppointmentsListFragment5.apply {
-                                callDoctorAppointmentListApi(
-                                    date = nextSevenDaysList[4].date.toString(),
-                                    loginDoctorId
-                                )
-                            }
-                        }
-                        5 -> {
-                            doctorAppointmentsListFragment6.apply {
-                                callDoctorAppointmentListApi(
-                                    date = nextSevenDaysList[5].date.toString(),
-                                    loginDoctorId
-                                )
-                            }
-                        }
-                        6 -> {
-                            doctorAppointmentsListFragment7.apply {
-                                callDoctorAppointmentListApi(
-                                    date = nextSevenDaysList[6].date.toString(),
-                                    loginDoctorId
-                                )
-                            }
-                        }
-                    }
-
+                    setUpTabListener(selectedTabPosition)
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -141,14 +73,70 @@ class DoctorAppointmentFragment : BaseFragment() {
         }
     }
 
+    fun setUpTabListener(tabPosition: Int) {
+        when (selectedTabPosition) {
+            0 -> {
+                doctorAppointmentsListFragment1.apply {
+                    callDoctorAppointmentListApi(
+                        date = nextSevenDaysList[0].date.toString(),
+                        selectedDoctorId
+                    )
+                }
+            }
+            1 -> {
+                doctorAppointmentsListFragment2.apply {
+                    callDoctorAppointmentListApi(
+                        date = nextSevenDaysList[1].date.toString(),
+                        selectedDoctorId
+                    )
+                }
+            }
+            2 -> {
+                doctorAppointmentsListFragment3.apply {
+                    callDoctorAppointmentListApi(
+                        date = nextSevenDaysList[2].date.toString(),
+                        selectedDoctorId
+                    )
+                }
+            }
+            3 -> {
+                doctorAppointmentsListFragment4.apply {
+                    callDoctorAppointmentListApi(
+                        date = nextSevenDaysList[3].date.toString(),
+                        selectedDoctorId
+                    )
+                }
+            }
+            4 -> {
+                doctorAppointmentsListFragment5.apply {
+                    callDoctorAppointmentListApi(
+                        date = nextSevenDaysList[4].date.toString(),
+                        selectedDoctorId
+                    )
+                }
+            }
+            5 -> {
+                doctorAppointmentsListFragment6.apply {
+                    callDoctorAppointmentListApi(
+                        date = nextSevenDaysList[5].date.toString(),
+                        selectedDoctorId
+                    )
+                }
+            }
+            6 -> {
+                doctorAppointmentsListFragment7.apply {
+                    callDoctorAppointmentListApi(
+                        date = nextSevenDaysList[6].date.toString(),
+                        selectedDoctorId
+                    )
+                }
+            }
+        }
+    }
+
     private fun setUpView() {
         binding.apply {
             nextSevenDaysList = AppUtils.INSTANCE?.getNextSevenDays() ?: ArrayList()
-            if (loginUserType == LoginUserType.NURSE.value){
-                layoutSelectDoctor.visibility = VISIBLE
-            }else{
-                layoutSelectDoctor.visibility = GONE
-            }
         }
     }
 

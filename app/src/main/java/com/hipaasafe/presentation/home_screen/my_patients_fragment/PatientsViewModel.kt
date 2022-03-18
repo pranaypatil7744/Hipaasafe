@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hipaasafe.domain.exception.ApiError
 import com.hipaasafe.domain.model.CommonRequestModel
+import com.hipaasafe.domain.model.get_patients.GetPatientsListRequestModel
 import com.hipaasafe.domain.model.get_patients.GetPatientsListResponseModel
 import com.hipaasafe.domain.usecase.base.UseCaseResponse
 import com.hipaasafe.domain.usecase.patients.GetPatientsListUseCase
@@ -15,7 +16,7 @@ class PatientsViewModel constructor(private val getPatientsListUseCase: GetPatie
     val patientsListResponseData = MutableLiveData<GetPatientsListResponseModel>()
     val messageData = MutableLiveData<String>()
 
-    fun callGetStaticDetailsApi(request: CommonRequestModel) {
+    fun callGetStaticDetailsApi(request: GetPatientsListRequestModel) {
         getPatientsListUseCase.invoke(
             viewModelScope, request,
             object : UseCaseResponse<GetPatientsListResponseModel> {

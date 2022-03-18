@@ -27,3 +27,9 @@ data class PatientListDetails(
     var country_code: String? = "",
     var number: String? = "",
 )
+
+data class GetPatientsListRequestModel(
+    var page:Int = 1,
+    var limit:Int = 10,
+    var doctor_id:String
+)

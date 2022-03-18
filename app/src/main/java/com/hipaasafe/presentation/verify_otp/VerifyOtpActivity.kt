@@ -246,6 +246,7 @@ class VerifyOtpActivity : BaseActivity(), CometListener {
                 setValue(Constants.PreferenceKeys.qr_code, data.doctor_details?.qr_code)
                 setValue(Constants.PreferenceKeys.mute_notifications, data.mute_notifications?:false)
                 setValue(Constants.PreferenceKeys.specialityModel, Gson().toJson(data.doctor_details?.speciality))
+                setValue(Constants.PreferenceKeys.doctorsMappedModel, Gson().toJson(data.doctors_mapped))
                 setValue(Constants.PreferenceKeys.speciality, data.doctor_details?.speciality?.title)
                 setValue(Constants.PreferenceKeys.tags, Gson().toJson(data.doctor_details?.tags))
                 setValue(

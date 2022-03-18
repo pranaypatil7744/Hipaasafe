@@ -12,7 +12,9 @@ import com.cometchat.pro.models.Group
 import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.FragmentMyPatientsBinding
 import com.hipaasafe.domain.model.CommonRequestModel
+import com.hipaasafe.domain.model.get_patients.GetPatientsListRequestModel
 import com.hipaasafe.domain.model.get_patients.PatientsListModel
+import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.home_screen.my_patients_fragment.adapter.MyPatientsAdapter
 import com.hipaasafe.utils.CometChatUtils.Companion.startGroupIntent
 import com.hipaasafe.utils.isNetworkAvailable
@@ -33,6 +35,7 @@ class MyPatientsFragment : BaseFragment(), MyPatientsAdapter.MyPatientsClickMana
     private var patientsList: ArrayList<PatientsListModel> = ArrayList()
     var pageNo: Int = 1
     private val patientsViewModel: PatientsViewModel by viewModel()
+    var selectedDoctorId:String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +48,8 @@ class MyPatientsFragment : BaseFragment(), MyPatientsAdapter.MyPatientsClickMana
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val homeDoctorFragment = (requireActivity() as HomeActivity).homeFragmentDoctor
+        selectedDoctorId = homeDoctorFragment.selectedDoctorId
         setUpAdapter()
         setUpObserver()
         setUpListener()
@@ -109,16 +114,16 @@ class MyPatientsFragment : BaseFragment(), MyPatientsAdapter.MyPatientsClickMana
         )
     }
 
-    private fun callMyPatientsListApi() {
+     fun callMyPatientsListApi() {
         binding.apply {
             if (requireContext().isNetworkAvailable()) {
                 toggleLoader(true)
                 layoutNoInternet.root.visibility = GONE
                 recyclerMyPatients.visibility = VISIBLE
                 patientsViewModel.callGetStaticDetailsApi(
-                    request = CommonRequestModel(
+                    request = GetPatientsListRequestModel(
                         page = pageNo,
-                        limit = 10
+                        limit = 10, doctor_id = selectedDoctorId
                     )
                 )
             } else {

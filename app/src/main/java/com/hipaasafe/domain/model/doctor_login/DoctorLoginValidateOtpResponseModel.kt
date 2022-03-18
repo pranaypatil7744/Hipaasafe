@@ -21,8 +21,23 @@ data class DoctorDataModel(
     var organization_id: String? = "",
     var mute_notifications: Boolean? = false,
     var doctor_details: DoctorDetailsModel? = DoctorDetailsModel(),
+    var doctors_mapped:ArrayList<DoctorsMappedModel>? = ArrayList(),
     var access_token: String? = "",
     var refresh_token: String? = ""
+)
+data class DoctorsMappedModel(
+    var id:Int? =0,
+    var uid:String? ="",
+    var name:String? ="",
+    var email:String? ="",
+    var country_code:String? ="",
+    var number:String? ="",
+    var role_id:String? ="",
+    var role_name:String? ="",
+    var avatar:String? ="",
+    var organization_id:Int? =0,
+    var mute_notifications:Boolean? =null,
+    var doctor_details: DoctorDetailsModel?=DoctorDetailsModel()
 )
 
 data class DoctorDetailsModel(

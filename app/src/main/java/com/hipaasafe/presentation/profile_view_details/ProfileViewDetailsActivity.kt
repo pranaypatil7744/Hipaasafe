@@ -56,7 +56,7 @@ class ProfileViewDetailsActivity : BaseActivity() {
                 helpDetailsResponseData.observe(this@ProfileViewDetailsActivity) {
                     toggleLoader(false)
                     if (it.success == true) {
-                        helpNo = it.data[0].value.toString()
+                        helpNo = it.data[1].value.toString()
                         val text = getString(R.string.to_update_above_information_call_on)+" <b><u>"+ helpNo+"</u></b>"
                         tvInfo.text = Html.fromHtml(text)
                     } else {
