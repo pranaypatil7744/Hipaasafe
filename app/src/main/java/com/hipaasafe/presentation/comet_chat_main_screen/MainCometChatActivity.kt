@@ -1732,7 +1732,7 @@ class MainCometChatActivity : BaseActivity(),
 //                }
 //                true
 //            }
-            R.id.menu_delete_group -> {
+            R.id.menu_delete_group,R.id.menu_delete_chat_and_exit -> {
                 DialogUtils.showConfirmationDialog(
                     this,
                     this,
@@ -1744,18 +1744,18 @@ class MainCometChatActivity : BaseActivity(),
                 )
                 true
             }
-            R.id.menu_delete_chat_and_exit -> {
-                DialogUtils.showConfirmationDialog(
-                    this,
-                    this,
-                    title = getString(R.string.delete_and_exit),
-                    msg = getString(R.string.are_you_sure_you_want_to_delete_chat),
-                    btnText = getString(R.string.yes),
-                    icon = R.drawable.delete,
-                    isDeleteGroup = true
-                )
-                true
-            }
+//            R.id.menu_delete_chat_and_exit -> {
+//                DialogUtils.showConfirmationDialog(
+//                    this,
+//                    this,
+//                    title = getString(R.string.delete_and_exit),
+//                    msg = getString(R.string.are_you_sure_you_want_to_delete_chat),
+//                    btnText = getString(R.string.yes),
+//                    icon = R.drawable.delete,
+//                    isDeleteGroup = true
+//                )
+//                true
+//            }
 //            R.id.menu_exit_group -> {
 //                DialogUtils.showConfirmationDialog(
 //                    this,
@@ -2205,7 +2205,26 @@ class MainCometChatActivity : BaseActivity(),
     }
 
     override fun onDeleteGroup() {
-        callDeleteChatApi()
+//        callDeleteChatApi()
+        callDeleteConversionApi()
+    }
+
+    private fun callDeleteConversionApi() {
+        binding.apply {
+            CometChat.deleteConversation(
+                id,
+                type,
+                object : CometChat.CallbackListener<String>() {
+                    override fun onSuccess(p0: String?) {
+                        finish()
+                    }
+
+                    override fun onError(p0: CometChatException?) {
+                        showToast(p0?.message.toString())
+                    }
+
+                })
+        }
     }
 
     override fun onExitGroup() {

@@ -148,7 +148,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
                                         time = i.appointment_time,
                                         appointment_id = i.appointment_id.toString(),
                                         appointmentStatus = AppUtils.INSTANCE?.getBookingStatus(i.appointment_status.toString()),
-                                        isLessThan24 = i.lest_than_24?:false
+                                        isLessThan24 = i.less_than_24?:false
                                     )
                                 )
                                 upcomingAppointmentList.add(
