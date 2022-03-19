@@ -157,8 +157,15 @@ class UpcomingAppointmentAdapter(
                                 layoutPending.visibility = GONE
                                 btnReschedule.visibility = GONE
                                 layoutReschedule.visibility = GONE
-                                imgStatus.visibility = GONE
-                                tvStatus.visibility = GONE
+                                tvStatus.apply {
+                                    text = context.getString(R.string.completed)
+                                    setTextColor(ContextCompat.getColor(context, R.color.apple))
+                                    visibility = VISIBLE
+                                }
+                                imgStatus.apply {
+                                    visibility = VISIBLE
+                                    setImageResource(R.drawable.ic_check)
+                                }
                             }
                             else -> {
                                 tvDateTime.text = data.date + "  |  " + data.time

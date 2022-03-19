@@ -18,7 +18,6 @@ import com.hipaasafe.databinding.FragmentDocumentBinding
 import com.hipaasafe.domain.model.documents.FetchReportsRequestModel
 import com.hipaasafe.domain.model.documents.RemoveRequestDocumentRequestModel
 import com.hipaasafe.domain.model.documents.ShareDocumentRequestModel
-import com.hipaasafe.domain.model.get_doctors.DoctorMyTeamsRequestModel
 import com.hipaasafe.domain.model.get_doctors.GetDoctorsRequestModel
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.DocumentAdapter
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.ForwardDocAdapter
@@ -100,10 +99,10 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
             layoutNoInternet.btnRetry.setOnClickListener {
                 callFetchReportsApi()
             }
-            swipeMyPatient.setOnRefreshListener {
-                swipeMyPatient.isRefreshing = false
-                callFetchReportsApi()
-            }
+//            swipeMyPatient.setOnRefreshListener {
+//                swipeMyPatient.isRefreshing = false
+//                callFetchReportsApi()
+//            }
         }
     }
 
@@ -245,9 +244,10 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                                 documentsList.add(
                                     DocumentsModel(
                                         documentItemType = DocumentItemType.ITEM_UPLOADED_DOC,
-                                        title = i.hospital_tests.title,
                                         uploadDocumentId = i.report_name_id ?: 0,
-                                        uploadedFileName = i.document_file
+                                        uploadedFileName = i.document_name,
+                                        uploadedFileBy = i.doctor_details.name,
+                                        uploadedFileType = i.hospital_tests.title
                                     )
                                 )
                             }

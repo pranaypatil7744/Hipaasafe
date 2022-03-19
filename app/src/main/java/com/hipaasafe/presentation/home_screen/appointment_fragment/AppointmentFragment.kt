@@ -113,6 +113,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
                     }
                 }
                 queueMessageData.observe(requireActivity()) {
+                    toggleLoader(false)
                     handler.removeCallbacks(runnable!!)
                 }
 

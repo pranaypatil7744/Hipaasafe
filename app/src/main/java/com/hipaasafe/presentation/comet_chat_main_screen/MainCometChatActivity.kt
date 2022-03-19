@@ -1738,8 +1738,8 @@ class MainCometChatActivity : BaseActivity(),
                 DialogUtils.showConfirmationDialog(
                     this,
                     this,
-                    title = getString(R.string.delete_group),
-                    msg = getString(R.string.are_you_sure_you_want_to_delete_group),
+                    title = getString(R.string.menu_clear_chat),
+                    msg = getString(R.string.are_you_sure_you_want_to_clear_chat),
                     btnText = getString(R.string.yes),
                     icon = R.drawable.delete,
                     isDeleteGroup = true

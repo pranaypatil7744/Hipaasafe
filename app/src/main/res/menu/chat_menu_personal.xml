@@ -19,7 +19,7 @@
 
     <item
         android:id="@+id/menu_delete_chat_and_exit"
-        android:title="@string/menu_delete_chat"
+        android:title="@string/menu_clear_chat"
         app:showAsAction="never" />
 
 </menu>

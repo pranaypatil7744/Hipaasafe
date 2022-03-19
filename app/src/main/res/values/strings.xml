@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Hipaasafe</string>
     <string name="find_and_connect_with_the_doctors_around_you_chat_with_them">Find and connect with the doctors around you chat with them</string>
-    <string name="login_as_doctor">Login as Doctor</string>
+    <string name="login_as_doctor_office">Login as Doctor office</string>
     <string name="login_as_patient">Login as Patient</string>
     <string name="login">Login</string>
     <string name="enter_your_details">Enter your details</string>
@@ -111,6 +111,7 @@
     <string name="are_you_sure">Are you sure?</string>
     <string name="are_you_sure_you_want_to_delete_group">Are you sure you want to delete group?</string>
     <string name="are_you_sure_you_want_to_delete_chat">Are you sure you want to delete chat?</string>
+    <string name="are_you_sure_you_want_to_clear_chat">Are you sure you want to clear chat?</string>
     <string name="delete_and_exit">Delete &amp; Exit</string>
     <string name="are_you_sure_you_want_to_exit_group">Are you sure you want to exit group ?</string>
     <string name="no_chats_available_for_delete">No chats available for delete</string>

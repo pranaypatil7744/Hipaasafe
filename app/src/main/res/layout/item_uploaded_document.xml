@@ -1,11 +1,11 @@
-<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingHorizontal="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:layout_marginBottom="5dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:paddingHorizontal="20dp">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgDoc"
@@ -25,8 +25,8 @@
         app:layout_constraintBottom_toBottomOf="@id/imgDoc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/azure_radiance"
-        app:srcCompat="@drawable/ic_forward_to_contact" />
+        app:srcCompat="@drawable/ic_forward_to_contact"
+        app:tint="@color/azure_radiance" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTitle"
@@ -36,12 +36,29 @@
         android:layout_marginHorizontal="16dp"
         android:ellipsize="end"
         android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@id/tvSubTitle"
         android:textColor="@color/codGray"
+        android:layout_marginTop="3dp"
         app:layout_constraintEnd_toStartOf="@id/btnForward"
-        app:layout_constraintBottom_toBottomOf="@id/imgDoc"
         app:layout_constraintStart_toEndOf="@id/imgDoc"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Upload Documents" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvSubTitle"
+        style="@style/metropolis_regular_x_small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/gray"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintEnd_toStartOf="@id/btnForward"
+        app:layout_constraintBottom_toBottomOf="@id/imgDoc"
+        app:layout_constraintStart_toEndOf="@id/imgDoc"
+        tools:text="Upload Documents" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/devider"
         android:layout_width="match_parent"

@@ -10,7 +10,9 @@ data class DocumentsModel(
     var doctorId:String? ="",
     var uploadDocumentId:Int =0,
     var DocumentRequestId:Int =0,
-    var uploadedFileName:String?= ""
+    var uploadedFileName:String?= "",
+    var uploadedFileType:String?= "",
+    var uploadedFileBy:String?= "",
 ):Serializable
 enum class DocumentItemType(val value:Int){
     ITEM_ADD_DOC(1),

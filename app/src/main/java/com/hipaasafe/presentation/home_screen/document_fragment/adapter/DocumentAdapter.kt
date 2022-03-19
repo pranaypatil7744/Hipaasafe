@@ -107,7 +107,14 @@ class DocumentAdapter(
                 }
                 DocumentItemType.ITEM_UPLOADED_DOC.value -> {
                     itemUploadedDocumentBinding?.apply {
-                        tvTitle.text = data.title
+                        tvTitle.text = data.uploadedFileName+" ("+data.uploadedFileType+")"
+                        if (data.uploadedFileBy.isNullOrEmpty()){
+                            tvSubTitle.visibility = GONE
+                        }else{
+                            tvSubTitle.visibility = VISIBLE
+                            tvSubTitle.text = "Shared with - "+data.uploadedFileBy
+                        }
+
                         if (data.uploadedFileName?.contains(".pdf") == true){
                             imgDoc.setImageResource(R.drawable.ic_default_pdf)
                         }else{
