@@ -19,7 +19,7 @@ data class AddNoteDataModel(
 )
 
 data class AddNoteRequestModel(
-    var doctor_id:String? ="",
+//    var doctor_id:String? ="",
     var guid:String? ="",
     var notes:String? =""
 )

@@ -101,7 +101,8 @@ class ViewDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMana
         binding.apply {
             loginUserType = preferenceUtils.getValue(Constants.PreferenceKeys.role_id).toIntOrNull()?:0
             if (loginUserType == LoginUserType.NURSE.value){
-                layoutSelectDoctor.visibility = VISIBLE
+                // todo visible if needed
+                layoutSelectDoctor.visibility = GONE
                 val collectionType: Type = object : TypeToken<ArrayList<DoctorsMappedModel>>() {}.type
                 val data = Gson().fromJson<ArrayList<DoctorsMappedModel>>(preferenceUtils.getValue(Constants.PreferenceKeys.doctorsMappedModel),collectionType)
                 doctorsListForNurse.clear()
@@ -256,7 +257,7 @@ class ViewDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMana
                 toggleLoader(true)
                 notesViewModel.callGetNotesListApi(
                     request = GetNotesListRequestModel(
-                        page = 1, limit = 30, doctor_id = selectedDoctorId, guid =  groupId
+                        page = 1, limit = 30, guid =  groupId
                     )
                 )
             } else {
@@ -274,7 +275,6 @@ class ViewDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMana
                 notesViewModel.callAddNoteApi(
                     request =
                     AddNoteRequestModel(
-                        doctor_id = selectedDoctorId,
                         guid = groupId,
                         notes = note
                     )

@@ -143,7 +143,6 @@ interface ApiService {
     suspend fun callGetNotesListApi(
         @Query("page")page: Int,
         @Query("limit")limit: Int,
-        @Query("doctor_id")doctor_id: String,
         @Query("guid")guid: String,
     ): GetNotesListResponseModel
 

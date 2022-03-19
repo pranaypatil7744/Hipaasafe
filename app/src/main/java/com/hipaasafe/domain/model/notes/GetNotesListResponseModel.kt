@@ -26,7 +26,7 @@ data class DoctorDetailsModel(
 data class GetNotesListRequestModel(
     var page:Int = 0,
     var limit:Int =10,
-    var doctor_id:String ="",
+//    var doctor_id:String ?="",
     var guid:String =""
 )
 
