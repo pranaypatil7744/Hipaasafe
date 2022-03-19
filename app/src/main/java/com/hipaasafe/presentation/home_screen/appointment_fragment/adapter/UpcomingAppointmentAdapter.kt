@@ -81,13 +81,13 @@ class UpcomingAppointmentAdapter(
                         tvSpeciality.text = data.speciality
                         when (data.appointmentStatus) {
                             AppointmentStatus.ITEM_PENDING -> {
-                                val isRescheduleHide = AppUtils.INSTANCE?.checkIsRescheduleHide(data.date+" "+data.time)
-                                if (isRescheduleHide == true){
-                                    layoutPending.visibility = GONE
-                                    btnReschedule.visibility = VISIBLE
-                                }else{
+//                                val isRescheduleHide = AppUtils.INSTANCE?.checkIsRescheduleHide(data.date+" "+data.time)
+                                if (data.isLessThan24){
                                     layoutPending.visibility = VISIBLE
                                     btnReschedule.visibility = GONE
+                                }else{
+                                    layoutPending.visibility = GONE
+                                    btnReschedule.visibility = VISIBLE
                                 }
                                 layoutReschedule.visibility = GONE
                                 imgStatus.visibility = GONE
@@ -149,18 +149,24 @@ class UpcomingAppointmentAdapter(
                                 layoutPending.visibility = GONE
                                 btnReschedule.visibility = GONE
                                 layoutReschedule.visibility = VISIBLE
+                                imgStatus.visibility = GONE
+                                tvStatus.visibility = GONE
                             }
                             AppointmentStatus.ITEM_COMPLETED -> {
                                 tvDateTime.text = data.date + "  |  " + data.time
                                 layoutPending.visibility = GONE
                                 btnReschedule.visibility = GONE
                                 layoutReschedule.visibility = GONE
+                                imgStatus.visibility = GONE
+                                tvStatus.visibility = GONE
                             }
                             else -> {
                                 tvDateTime.text = data.date + "  |  " + data.time
                                 layoutPending.visibility = GONE
                                 btnReschedule.visibility = GONE
                                 layoutReschedule.visibility = GONE
+                                imgStatus.visibility = GONE
+                                tvStatus.visibility = GONE
                             }
                         }
                     }

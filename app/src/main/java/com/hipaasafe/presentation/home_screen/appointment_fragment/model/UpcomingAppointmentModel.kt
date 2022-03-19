@@ -7,7 +7,8 @@ data class UpcomingAppointmentModel(
     var date:String? = "",
     var time:String? = "",
     var appointmentStatus: AppointmentStatus? = AppointmentStatus.ITEM_PENDING,
-    var appointment_id:String =""
+    var appointment_id:String ="",
+    var isLessThan24:Boolean =false
 )
 enum class AppointmentItemType(val value: Int){
     ITEM_APPOINTMENT(1),

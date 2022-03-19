@@ -175,12 +175,12 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutAge"
+                android:id="@+id/layoutDob"
                 style="@style/TextInputLayoutStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:hint="@string/age"
+                android:hint="@string/date_of_birth"
                 android:textColorHint="@color/heather"
                 app:boxStrokeColor="@color/alabaster"
                 app:errorEnabled="true"
@@ -193,14 +193,13 @@
                 app:startIconTint="@color/azure_radiance">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etAge"
+                    android:id="@+id/etDob"
                     style="@style/metropolis_semi_bold_small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:imeOptions="actionDone"
-                    android:inputType="numberDecimal"
-                    android:maxLength="3"
+                    android:inputType="none"
+                    android:focusable="false"
                     android:padding="18dp"
                     android:singleLine="true"
                     android:textColor="@color/codGray"

@@ -24,7 +24,8 @@ data class AppointmentItemsModel(
     var appointment_time:String? ="",
     var appointment_status:String? ="",
     var appointment_doctor_details:AppointmentDoctorDetailsModel? = AppointmentDoctorDetailsModel(),
-    var patient_details:PatientDetailsModel? = PatientDetailsModel()
+    var patient_details:PatientDetailsModel? = PatientDetailsModel(),
+    var lest_than_24:Boolean? = null
 )
 data class AppointmentDoctorDetailsModel(
     var name:String? = "",
