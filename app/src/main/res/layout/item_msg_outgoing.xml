@@ -48,6 +48,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:autoLink="all"
+                android:textColorHighlight="@color/azure_radiance"
                 android:padding="1dp"
                 android:textColor="@color/codGray"
                 android:textColorLink="@color/azure_radiance"

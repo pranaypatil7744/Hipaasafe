@@ -12,8 +12,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera" />
 
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:name=".base.BaseApplication"
@@ -24,15 +24,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hipaasafe"
         android:usesCleartextTraffic="true">
+        <activity android:name=".presentation.web_view.WebViewActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"/>
+        <activity
+            android:name=".presentation.image_viewer.ImageViewerActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".presentation.request_documents.RequestDocumentActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".presentation.attach_document.AttachmentActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".presentation.view_documents.ViewDocumentsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".presentation.qr_scan.QRDetectionActivity"
             android:exported="false"
@@ -41,7 +51,7 @@
             android:name=".call_manager.CometChatCallActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/TransparentCompat"/>
+            android:theme="@style/TransparentCompat" />
         <activity
             android:name=".presentation.forward_message_screen.ForwardMessageActivity"
             android:exported="false"

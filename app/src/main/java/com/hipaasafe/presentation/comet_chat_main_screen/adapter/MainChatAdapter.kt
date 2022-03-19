@@ -1,7 +1,12 @@
 package com.hipaasafe.presentation.comet_chat_main_screen.adapter
 
 import android.content.Context
-import android.net.Uri
+import android.text.Html
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.URLSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,30 +15,27 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.cometchat.pro.constants.CometChatConstants
 import com.cometchat.pro.core.Call
 import com.cometchat.pro.core.CometChat
 import com.cometchat.pro.models.*
-import com.hipaasafe.utils.sticker_header.StickyHeaderAdapter
 import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.databinding.*
 import com.hipaasafe.extension.Extensions
-import com.hipaasafe.settings.CometChatFeatureRestriction
 import com.hipaasafe.presentation.comet_chat_main_screen.model.MembersWithColor
+import com.hipaasafe.settings.CometChatFeatureRestriction
 import com.hipaasafe.utils.AppUtils
 import com.hipaasafe.utils.CometChatUtils
-import org.json.JSONException
+import com.hipaasafe.utils.sticker_header.StickyHeaderAdapter
 import org.json.JSONObject
 import java.util.*
-import kotlin.collections.ArrayList
 
 
-class MainChatAdapter(
+open class MainChatAdapter(
     val context: Context,
     private val msgList: ArrayList<BaseMessage>,
     val membersList: ArrayList<MembersWithColor>,
@@ -232,6 +234,9 @@ class MainChatAdapter(
                         tvEdited.visibility = GONE
                         tvEditDate.visibility = GONE
                     }
+                    tvMsg.handleUrlClicks {
+                        listener.clickOnAttachmentLink(position,it)
+                    }
                 }
 
                 holder.itemView.apply {
@@ -268,6 +273,10 @@ class MainChatAdapter(
                         tvEdited.visibility = GONE
                         tvEditDate.visibility = GONE
                     }
+                    tvMsg.handleUrlClicks {
+                        listener.clickOnAttachmentLink(position,it)
+                    }
+
                 }
 
                 holder.itemView.apply {
@@ -1105,6 +1114,7 @@ class MainChatAdapter(
         fun clickOnMapMsg(position: Int, baseMessage: BaseMessage)
         fun clickOnAudioMsg(position: Int, baseMessage: BaseMessage)
         fun clickOnReplyMsg(position: Int, baseMessage: BaseMessage)
+        fun clickOnAttachmentLink(position: Int,link:String)
 
         fun longClickOnTextMsg(position: Int, baseMessage: BaseMessage, msgType: Int)
         fun longClickOnImageMsg(position: Int, baseMessage: BaseMessage, msgType: Int)
@@ -1142,5 +1152,29 @@ class MainChatAdapter(
                 visibility = GONE
             }
         }
+    }
+
+    private fun TextView.handleUrlClicks(onClicked: ((String) -> Unit)? = null) {
+        //create span builder and replaces current text with it
+        text = SpannableStringBuilder.valueOf(text).apply {
+            //search for all URL spans and replace all spans with our own clickable spans
+            getSpans(0, length, URLSpan::class.java).forEach {
+                //add new clickable span at the same position
+                setSpan(
+                    object : ClickableSpan() {
+                        override fun onClick(widget: View) {
+                            onClicked?.invoke(it.url)
+                        }
+                    },
+                    getSpanStart(it),
+                    getSpanEnd(it),
+                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+                )
+                //remove old URLSpan
+                removeSpan(it)
+            }
+        }
+        //make sure movement method is set
+        movementMethod = LinkMovementMethod.getInstance()
     }
 }

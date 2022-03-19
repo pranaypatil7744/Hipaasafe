@@ -72,8 +72,10 @@ import com.hipaasafe.presentation.comet_chat_main_screen.model.AttachmentMenuMod
 import com.hipaasafe.presentation.comet_chat_main_screen.model.MembersWithColor
 import com.hipaasafe.presentation.forward_message_screen.ForwardMessageActivity
 import com.hipaasafe.presentation.home_screen.HomeActivity
+import com.hipaasafe.presentation.image_viewer.ImageViewerActivity
 import com.hipaasafe.presentation.upload_documents.UploadDocumentsActivity
 import com.hipaasafe.presentation.view_documents.ViewDocumentsActivity
+import com.hipaasafe.presentation.web_view.WebViewActivity
 import com.hipaasafe.utils.*
 import com.hipaasafe.utils.CometChatUtils.Companion.initiateCall
 import com.hipaasafe.utils.enum.LoginUserType
@@ -2791,6 +2793,23 @@ class MainCometChatActivity : BaseActivity(),
 
     override fun clickOnReplyMsg(position: Int, baseMessage: BaseMessage) {
         this.baseMessage = baseMessage
+    }
+
+    override fun clickOnAttachmentLink(position: Int, link: String) {
+        val extension = link.split(".").last()
+        if (extension == "pdf"){
+            val i = Intent(this,WebViewActivity::class.java)
+            val b = Bundle()
+            b.putString(Constants.DocumentLink,link)
+            i.putExtras(b)
+            startActivity(i)
+        }else{
+            val i = Intent(this,ImageViewerActivity::class.java)
+            val b = Bundle()
+            b.putString(Constants.DocumentLink,link)
+            i.putExtras(b)
+            startActivity(i)
+        }
     }
 
     override fun longClickOnTextMsg(position: Int, baseMessage: BaseMessage, msgType: Int) {

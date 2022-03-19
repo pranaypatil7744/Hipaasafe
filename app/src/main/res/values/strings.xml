@@ -259,6 +259,7 @@
     <string name="upload">Upload</string>
     <string name="profile">Profile</string>
     <string name="date_of_birth">Date of birth</string>
+    <string name="view_document">View Document</string>
 
 
 </resources>
