@@ -3,7 +3,7 @@ package com.hipaasafe.domain.model.documents
 data class RemoveRequestDocumentResponseModel(
     var success:Boolean? = null,
     var message:String?= "",
-    var data:RemoveDocumentData =RemoveDocumentData()
+    var data:ArrayList<RemoveDocumentData> =ArrayList()
 )
 
 data class RemoveDocumentData(
@@ -17,5 +17,5 @@ data class RemoveDocumentData(
 )
 
 data class RemoveRequestDocumentRequestModel(
-    var request_ids:ArrayList<Int> = ArrayList()
+    val request_ids: ArrayList<Int>
 )
