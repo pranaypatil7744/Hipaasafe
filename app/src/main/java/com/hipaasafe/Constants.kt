@@ -92,6 +92,7 @@ class Constants {
             const val EMAIL_ERROR = "EMAIL_ERROR"
             const val AGE_ERROR = "AGE_ERROR"
             const val MOBILE_ERROR = "MOBILE_ERROR"
+            const val DOB_ERROR = "DOB_ERROR"
         }
     }
 
@@ -120,6 +121,7 @@ class Constants {
             const val organization_id = "organization_id"
             const val mute_notifications = "mute_notifications"
             const val age = "age"
+            const val dob = "dob"
             const val profile_update = "profile_update"
             const val access_token = "access_token"
             const val location = "location"

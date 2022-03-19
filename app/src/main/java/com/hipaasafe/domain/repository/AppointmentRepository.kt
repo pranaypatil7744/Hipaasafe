@@ -14,4 +14,6 @@ interface AppointmentRepository {
     suspend fun callDoctorPastAppointmentsListApi(request: GetDoctorPastAppointmentsRequestModel): GetDoctorPastAppointmentsResponseModel
 
     suspend fun callGetMyQueueApi():GetMyQueueResponseModel
+
+    suspend fun callStopMyQueueApi(request:StopMyQueueRequestModel):StopMyQueueResponseModel
 }

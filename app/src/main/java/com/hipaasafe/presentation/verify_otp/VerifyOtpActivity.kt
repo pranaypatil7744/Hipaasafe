@@ -221,8 +221,8 @@ class VerifyOtpActivity : BaseActivity(), CometListener {
                     data.patient_details?.profile_update ?: false
                 )
                 setValue(
-                    Constants.PreferenceKeys.age,
-                    data.patient_details?.age
+                    Constants.PreferenceKeys.dob,
+                    data.patient_details?.dob
                 )
             }
         }

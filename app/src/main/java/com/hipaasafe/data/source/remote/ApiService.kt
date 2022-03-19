@@ -129,8 +129,11 @@ interface ApiService {
     @GET(ApiNames.GetMyQueueApi)
     suspend fun callGetMyQueueApi(): GetMyQueueResponseModel
 
-    @HTTP(method = "DELETE", path = ApiNames.RemoveRequestDocApi, hasBody = true)
-//    @DELETE(ApiNames.RemoveRequestDocApi)
+    @POST(ApiNames.StopMyQueueApi)
+    suspend fun callStopMyQueueApi(@Body request:StopMyQueueRequestModel):StopMyQueueResponseModel
+
+//    @HTTP(method = "DELETE", path = ApiNames.RemoveRequestDocApi, hasBody = true)
+    @POST(ApiNames.RemoveRequestDocApi)
     suspend fun callRemoveRequestDocApi(@Body request: RemoveRequestDocumentRequestModel): RemoveRequestDocumentResponseModel
 
     @POST(ApiNames.AddNoteApi)

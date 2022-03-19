@@ -21,6 +21,7 @@ import com.hipaasafe.databinding.FragmentAppointmentBinding
 import com.hipaasafe.domain.model.appointment.AddAppointmentRequestModel
 import com.hipaasafe.domain.model.appointment.GetAppointmentsRequestModel
 import com.hipaasafe.domain.model.appointment.ModifyAppointmentRequestModel
+import com.hipaasafe.domain.model.appointment.StopMyQueueRequestModel
 import com.hipaasafe.presentation.home_screen.appointment_fragment.adapter.UpcomingAppointmentAdapter
 import com.hipaasafe.presentation.home_screen.appointment_fragment.model.AppointmentItemType
 import com.hipaasafe.presentation.home_screen.appointment_fragment.model.AppointmentStatus
@@ -44,6 +45,8 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
     var handler: Handler = Handler()
     var runnable: Runnable? = null
     var delay = 20000
+    var currentDate: String = ""
+    var currentTime: String = ""
     private val appointmentViewModel: AppointmentViewModel by viewModel()
     var pageNo: Int = 1
     var isLoading: Boolean = true
@@ -85,8 +88,8 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
         handler.removeCallbacks(runnable!!)
     }
 
-    fun callMyQueueApi(){
-        if (requireContext().isNetworkAvailable()){
+    fun callMyQueueApi() {
+        if (requireContext().isNetworkAvailable()) {
             appointmentViewModel.callGetMyQueueApi()
         }
     }
@@ -95,17 +98,32 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
         binding.apply {
             with(appointmentViewModel) {
 
-                getMyQueueResponseData.observe(requireActivity()){
+                getMyQueueResponseData.observe(requireActivity()) {
                     toggleLoader(false)
-                    if (it.success == true){
-                        layoutYourTurn.visibility = VISIBLE
-                        setUpWaitingUI(it.data.queue_no?:0)
-                    }else{
+                    if (it.success == true) {
+                        if (it.data.queue_status == true) {
+                            layoutYourTurn.visibility = VISIBLE
+                            setUpWaitingUI(it.data.queue_no ?: 0)
+                        } else {
+                            handler.removeCallbacks(runnable!!)
+                            layoutYourTurn.visibility = GONE
+                        }
+                    } else {
 
                     }
                 }
-                queueMessageData.observe(requireActivity()){
+                queueMessageData.observe(requireActivity()) {
                     handler.removeCallbacks(runnable!!)
+                }
+
+                stopMyQueueResponseData.observe(requireActivity()){
+                    toggleLoader(false)
+                    if (it.success == true){
+                        handler.removeCallbacks(runnable!!)
+                        layoutYourTurn.visibility = GONE
+                    }else{
+                        showToast(it.message.toString())
+                    }
                 }
 
                 getAppointmentsResponseData.observe(requireActivity()) {
@@ -219,8 +237,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
 //                setUpWaitingUI(0)
 //            }
             btnGotIt.setOnClickListener {
-                handler.removeCallbacks(runnable!!)
-                layoutYourTurn.visibility = GONE
+                callStopMyQueueApi()
             }
             layoutNoInternet.btnRetry.setOnClickListener {
                 callUpcomingAppointmentApi()
@@ -230,6 +247,21 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
 //                callUpcomingAppointmentApi()
 //                callMyQueueApi()
 //            }
+        }
+    }
+
+    private fun callStopMyQueueApi() {
+        binding.apply {
+            if (requireActivity().isNetworkAvailable()) {
+                toggleLoader(true)
+                appointmentViewModel.callStopMyQueueApi(
+                    request = StopMyQueueRequestModel(
+                        appointment_date = currentDate
+                    )
+                )
+            } else {
+                showToast(getString(R.string.please_check_your_internet_connection))
+            }
         }
     }
 
@@ -265,7 +297,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
 //            ["{\"uid\":\"0b93a526-7977-4179-94be-991e88115ee5\",\"organization_id\":1}"]
                 val uid = detectedText.toString().split(",").first()
                 val uid2 = uid.split(":").last()
-                val extractUid = uid2.substring(1,37)
+                val extractUid = uid2.substring(1, 37)
 
 
                 val organizationId = detectedText.toString().split(",").last()
@@ -281,15 +313,10 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
         binding.apply {
             if (requireContext().isNetworkAvailable()) {
                 toggleLoader(true)
-                val date = AppUtils.INSTANCE?.getCurrentDate()
-                val currentDate =
-                    AppUtils.INSTANCE?.convertDateFormat("dd MMM yyyy",date.toString(),"yyyy-MM-dd")
-
-                val currentTime = AppUtils.INSTANCE?.getCurrentTime()
                 appointmentViewModel.callAddAppointmentApi(
                     request = AddAppointmentRequestModel(
                         doctor_id = doctorId,
-                        appointment_date = currentDate.toString(),
+                        appointment_date = currentDate,
                         appointment_time = currentTime,
                         organization_id = organizationId
                     )
@@ -327,6 +354,16 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
 
     private fun setUpView() {
         binding.apply {
+            val date = AppUtils.INSTANCE?.getCurrentDate()
+            currentDate =
+                AppUtils.INSTANCE?.convertDateFormat(
+                    "dd MMM yyyy",
+                    date.toString(),
+                    "yyyy-MM-dd"
+                )
+                    .toString()
+
+            currentTime = AppUtils.INSTANCE?.getCurrentTime().toString()
             layoutScanQr.apply {
                 btnAdd.setImageResource(R.drawable.ic_qr_code)
                 tvTitle.text = getString(R.string.clinic_visit)

@@ -1,6 +1,7 @@
 package com.hipaasafe.presentation.profile_edit_details
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -25,6 +26,8 @@ import com.hipaasafe.presentation.profile_edit_details.model.ProfilePicUploadReq
 import com.hipaasafe.utils.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
 
@@ -35,6 +38,7 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
     var profileFile: File? = null
     var fileName:String = ""
     var countryList: ArrayList<CountryModel> = ArrayList()
+    var selectedDob: Calendar? = null
     var selectedCountryCode: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +64,7 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
 //                            setValue(Constants.PreferenceKeys.email, data.email)
 //                            setValue(Constants.PreferenceKeys.country_code, data.country_code)
 //                            setValue(Constants.PreferenceKeys.number, data.number)
-                            setValue(Constants.PreferenceKeys.age, data.age)
+                            setValue(Constants.PreferenceKeys.dob, data.dob)
                             finish()
                         }
                     } else {
@@ -123,7 +127,7 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
             }
             edtName.setText(preferenceUtils.getValue(Constants.PreferenceKeys.name))
             edtEmail.setText(preferenceUtils.getValue(Constants.PreferenceKeys.email))
-            etAge.setText(preferenceUtils.getValue(Constants.PreferenceKeys.age))
+            etDob.setText(preferenceUtils.getValue(Constants.PreferenceKeys.dob))
             etMobile.setText(preferenceUtils.getValue(Constants.PreferenceKeys.number))
             setUpCountryCodes()
         }
@@ -311,11 +315,11 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                         layoutMobile.setBackgroundResource(R.drawable.bg_box_focused)
                     }
                 }
-            etAge.onFocusChangeListener =
+            etDob.onFocusChangeListener =
                 View.OnFocusChangeListener { _: View, hasFocus: Boolean ->
                     if (hasFocus) {
                         clearErrorLabels()
-                        layoutAge.setStartIconTintList(
+                        layoutDob.setStartIconTintList(
                             ColorStateList.valueOf(
                                 ContextCompat.getColor(
                                     this@ProfileEditDetailsActivity,
@@ -323,14 +327,14 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                                 )
                             )
                         )
-                        layoutAge.boxStrokeColor =
+                        layoutDob.boxStrokeColor =
                             ContextCompat.getColor(
                                 this@ProfileEditDetailsActivity,
                                 R.color.azure_radiance
                             )
 
                     } else {
-                        layoutAge.setStartIconTintList(
+                        layoutDob.setStartIconTintList(
                             ColorStateList.valueOf(
                                 ContextCompat.getColor(
                                     this@ProfileEditDetailsActivity,
@@ -338,16 +342,16 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                                 )
                             )
                         )
-                        layoutAge.boxStrokeColor =
+                        layoutDob.boxStrokeColor =
                             ContextCompat.getColor(
                                 this@ProfileEditDetailsActivity,
                                 R.color.alabaster
                             )
 
                     }
-                    val input = etAge.text.toString().trim()
+                    val input = etDob.text.toString().trim()
                     if (!TextUtils.isEmpty(input)) {
-                        layoutAge.setStartIconTintList(
+                        layoutDob.setStartIconTintList(
                             ColorStateList.valueOf(
                                 ContextCompat.getColor(
                                     this@ProfileEditDetailsActivity,
@@ -370,6 +374,35 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                     // write code to perform some action
                 }
             }
+            etDob.setOnClickListener {
+                val cal = Calendar.getInstance()
+                val y = cal.get(Calendar.YEAR)
+                val m = cal.get(Calendar.MONTH)
+                val d = cal.get(Calendar.DAY_OF_MONTH)
+
+                val datePickerDialog = DatePickerDialog(
+                    this@ProfileEditDetailsActivity,
+                    { view, year, monthOfYear, dayOfMonth ->
+
+                        val selectedCalendar = Calendar.getInstance()
+                        selectedCalendar.set(Calendar.YEAR, year)
+                        selectedCalendar.set(Calendar.MONTH, monthOfYear)
+                        selectedCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                        selectedDob = selectedCalendar
+                        val selectedDate =
+                            AppUtils.INSTANCE?.convertDateToString(
+                                selectedCalendar.time,
+                                "yyyy-MM-dd"
+                            )
+                        etDob.setText(selectedDate)
+                    },
+                    y,
+                    m,
+                    d
+                )
+                datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+                datePickerDialog.show()
+            }
         }
     }
 
@@ -379,7 +412,7 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
             request.name = edtName.text.toString().trim()
 //            request.email = edtEmail.text.toString().trim()
 //            request.number = etMobile.text.toString().trim()
-            request.age = etAge.text.toString().trim()
+            request.dob = etDob.text.toString().trim()
 //            request.country_code = selectedCountryCode
             return request
         }
@@ -425,7 +458,7 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
                     layoutEmail.error = getString(msg)
                 }
                 Constants.ErrorMsg.AGE_ERROR -> {
-                    layoutAge.error = getString(msg)
+                    layoutDob.error = getString(msg)
                 }
                 Constants.ErrorMsg.MOBILE_ERROR -> {
                     errorText.text = getString(msg)
@@ -441,7 +474,7 @@ class ProfileEditDetailsActivity : BaseActivity(), ValidationListener {
         binding.apply {
             layoutName.error = ""
             layoutEmail.error = ""
-            layoutAge.error = ""
+            layoutDob.error = ""
             errorText.text = ""
             errorText.visibility = View.INVISIBLE
             layoutMobile.setBackgroundResource(R.drawable.bg_box)

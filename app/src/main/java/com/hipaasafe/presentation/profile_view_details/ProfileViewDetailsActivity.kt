@@ -28,7 +28,7 @@ class ProfileViewDetailsActivity : BaseActivity() {
     var name: String = ""
     var email: String = ""
     var mobile: String = ""
-    var age: String = ""
+    var dob: String = ""
     var profile: String = ""
     var experience: String = ""
     var speciality: String = ""
@@ -101,7 +101,7 @@ class ProfileViewDetailsActivity : BaseActivity() {
             name = preferenceUtils.getValue(Constants.PreferenceKeys.name)
             email = preferenceUtils.getValue(Constants.PreferenceKeys.email)
             mobile = preferenceUtils.getValue(Constants.PreferenceKeys.number)
-            age = preferenceUtils.getValue(Constants.PreferenceKeys.age)
+            dob = preferenceUtils.getValue(Constants.PreferenceKeys.dob)
             experience = preferenceUtils.getValue(Constants.PreferenceKeys.experience)
             speciality = preferenceUtils.getValue(Constants.PreferenceKeys.speciality)
             profile = preferenceUtils.getValue(Constants.PreferenceKeys.avatar)
@@ -137,7 +137,7 @@ class ProfileViewDetailsActivity : BaseActivity() {
                 viewProfileList.add(
                     ViewProfileModel(
                         icon = R.drawable.ic_calendar,
-                        title = getString(R.string.age), subTitle = age
+                        title = getString(R.string.date_of_birth), subTitle = dob
                     )
                 )
                 btnEditDetails.visibility = VISIBLE

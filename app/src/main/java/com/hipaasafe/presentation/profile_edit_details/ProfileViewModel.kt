@@ -95,10 +95,10 @@ class ProfileViewModel constructor(
 //            )
 //            return
 //        }
-        if (request.age.isNullOrEmpty()) {
+        if (request.dob.isNullOrEmpty()) {
             validationListener?.onValidationFailure(
-                Constants.ErrorMsg.AGE_ERROR,
-                R.string.please_enter_age
+                Constants.ErrorMsg.DOB_ERROR,
+                R.string.please_select_dob
             )
             return
         }

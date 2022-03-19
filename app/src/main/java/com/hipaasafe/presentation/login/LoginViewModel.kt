@@ -55,10 +55,10 @@ class LoginViewModel constructor(
             )
             return
         }
-        if (request.age == 0) {
+        if (request.dob.isEmpty()) {
             validationListener?.onValidationFailure(
-                Constants.ErrorMsg.AGE_ERROR,
-                R.string.please_enter_age
+                Constants.ErrorMsg.DOB_ERROR,
+                R.string.please_select_dob
             )
             return
         }

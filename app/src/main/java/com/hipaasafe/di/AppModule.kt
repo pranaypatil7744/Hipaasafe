@@ -21,7 +21,7 @@ val AppModule = module {
     viewModel { HelpViewModel(get()) }
     viewModel { PatientsViewModel(get()) }
     viewModel { DocumentViewModel(get(),get(),get(),get(),get(),get(),get()) }
-    viewModel { AppointmentViewModel(get(), get(),get(),get(),get(),get()) }
+    viewModel { AppointmentViewModel(get(), get(),get(),get(),get(),get(),get()) }
 
     single { createLoginRepository(get(named("normalService"))) }
     single { createPatientSendOtpUseCase(get()) }
@@ -41,6 +41,7 @@ val AppModule = module {
     single { createModifyAppointmentUseCase(get()) }
     single { createAddAppointmentUseCase(get()) }
     single { createDoctorAppointmentsListUseCase(get()) }
+    single { createStopMyQueueUseCase(get()) }
 
     single { createDoctorsRepository(get(named("normalService"))) }
     single { DoctorMyTeamsListUseCase(get()) }

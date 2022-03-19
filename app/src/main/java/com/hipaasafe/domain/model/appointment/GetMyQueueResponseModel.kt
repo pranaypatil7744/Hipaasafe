@@ -7,5 +7,6 @@ data class GetMyQueueResponseModel(
 )
 
 data class QueueDataModel(
+    var queue_status:Boolean? = null,
     var queue_no:Int? =0
 )

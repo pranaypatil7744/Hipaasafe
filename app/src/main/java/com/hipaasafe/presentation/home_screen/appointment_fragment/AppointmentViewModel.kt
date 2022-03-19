@@ -14,6 +14,7 @@ class AppointmentViewModel constructor(
     var addAppointmentUseCase: AddAppointmentUseCase,
     var doctorAppointmentsListUseCase: DoctorAppointmentsListUseCase,
     var getDoctorPastAppointmentsUseCase: GetDoctorPastAppointmentsUseCase,
+    var stopMyQueueUseCase: StopMyQueueUseCase,
     var getMyQueueUseCase: GetMyQueueUseCase
 ) : ViewModel() {
     val getAppointmentsResponseData = MutableLiveData<GetAppointmentResponseModel>()
@@ -21,10 +22,28 @@ class AppointmentViewModel constructor(
     val addAppointmentResponseData = MutableLiveData<AddAppointmentResponseModel>()
     val doctorAppointmentsListResponseData = MutableLiveData<DoctorAppointmentsResponseModel>()
     val getMyQueueResponseData = MutableLiveData<GetMyQueueResponseModel>()
+    val stopMyQueueResponseData = MutableLiveData<StopMyQueueResponseModel>()
     val getDoctorPastAppointmentsListResponseData =
         MutableLiveData<GetDoctorPastAppointmentsResponseModel>()
     val messageData = MutableLiveData<String>()
     val queueMessageData = MutableLiveData<String>()
+
+
+    fun callStopMyQueueApi(request:StopMyQueueRequestModel) {
+        stopMyQueueUseCase.invoke(
+            viewModelScope,
+            request,
+            object : UseCaseResponse<StopMyQueueResponseModel> {
+                override fun onSuccess(result: StopMyQueueResponseModel) {
+                    stopMyQueueResponseData.value = result
+                }
+
+                override fun onError(apiError: ApiError?) {
+                    queueMessageData.value = apiError?.message
+                }
+
+            })
+    }
 
     fun callGetMyQueueApi() {
         getMyQueueUseCase.invoke(

@@ -36,6 +36,7 @@
     <string name="please_enter_4_digit_otp">Please enter 4 digit OTP</string>
     <string name="please_enter_name">Please enter name</string>
     <string name="please_enter_age">Please enter age</string>
+    <string name="please_select_dob">Please select date of birth</string>
     <string name="success">Success</string>
     <string name="navigation_drawer_open">Drawer Open</string>
     <string name="navigation_drawer_close">Drawer Close</string>
@@ -257,6 +258,7 @@
     <string name="enter_document_name">Enter document name</string>
     <string name="upload">Upload</string>
     <string name="profile">Profile</string>
+    <string name="date_of_birth">Date of birth</string>
 
 
 </resources>

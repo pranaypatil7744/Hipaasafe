@@ -1,5 +1,6 @@
 package com.hipaasafe.presentation.sign_up
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -12,18 +13,18 @@ import com.hipaasafe.domain.model.patient_login.UserRegisterDataModel
 import com.hipaasafe.listener.ValidationListener
 import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.login.LoginViewModel
-import com.hipaasafe.utils.CometChatUtils
-import com.hipaasafe.utils.CometListener
-import com.hipaasafe.utils.PreferenceUtils
-import com.hipaasafe.utils.isNetworkAvailable
+import com.hipaasafe.utils.*
 import com.onesignal.OneSignal
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SignUpActivity : BaseActivity(), ValidationListener, CometListener {
     var countryCode: String = ""
     var mobileNo: String = ""
     lateinit var binding: ActivitySignUpBinding
     private val loginViewModel: LoginViewModel by viewModel()
+    var selectedDob: Calendar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,21 +40,26 @@ class SignUpActivity : BaseActivity(), ValidationListener, CometListener {
     private fun setUpObserver() {
         binding.apply {
             with(loginViewModel) {
-                patientRegisterResponseData.observe(this@SignUpActivity, {
+                patientRegisterResponseData.observe(this@SignUpActivity) {
                     if (it.success) {
                         savePatientData(it.data)
                         OneSignal.disablePush(false)
                         val token = preferenceUtils.getValue(Constants.FIREBASE_TOKEN)
-                        CometChatUtils.loginToComet(it.data.uid, it.data.name, this@SignUpActivity,token)
+                        CometChatUtils.loginToComet(
+                            it.data.uid,
+                            it.data.name,
+                            this@SignUpActivity,
+                            token
+                        )
                     } else {
                         showToast(it.message)
                     }
-                })
+                }
 
-                messageData.observe(this@SignUpActivity, {
+                messageData.observe(this@SignUpActivity) {
                     toggleLoader(false)
                     showToast(it.toString())
-                })
+                }
             }
         }
     }
@@ -90,7 +96,7 @@ class SignUpActivity : BaseActivity(), ValidationListener, CometListener {
                     Constants.PreferenceKeys.profile_update,
                     data.patient_details?.profile_update ?: false
                 )
-                setValue(Constants.PreferenceKeys.age,data.patient_details?.age.toString())
+                setValue(Constants.PreferenceKeys.dob,data.patient_details?.dob.toString())
             }
         }
     }
@@ -100,7 +106,7 @@ class SignUpActivity : BaseActivity(), ValidationListener, CometListener {
             val request = PatientRegisterRequestModel()
             request.name = etName.text.toString().trim()
             request.email = etEmail.text.toString().trim()
-            request.age = etAge.text.toString().trim().toIntOrNull()?:0
+            request.dob = etDob.text.toString().trim()
             return request
         }
     }
@@ -113,6 +119,35 @@ class SignUpActivity : BaseActivity(), ValidationListener, CometListener {
             btnContinue.setOnClickListener {
                 clearErrors()
                 loginViewModel.validatePatientRegisterData(request = getPatientRequestModelData())
+            }
+            etDob.setOnClickListener {
+                val cal = Calendar.getInstance()
+                val y = cal.get(Calendar.YEAR)
+                val m = cal.get(Calendar.MONTH)
+                val d = cal.get(Calendar.DAY_OF_MONTH)
+
+                val datePickerDialog = DatePickerDialog(
+                    this@SignUpActivity,
+                    { view, year, monthOfYear, dayOfMonth ->
+
+                        val selectedCalendar = Calendar.getInstance()
+                        selectedCalendar.set(Calendar.YEAR, year)
+                        selectedCalendar.set(Calendar.MONTH, monthOfYear)
+                        selectedCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                        selectedDob = selectedCalendar
+                        val selectedDate =
+                            AppUtils.INSTANCE?.convertDateToString(
+                                selectedCalendar.time,
+                                "yyyy-MM-dd"
+                            )
+                        etDob.setText(selectedDate)
+                    },
+                    y,
+                    m,
+                    d
+                )
+                datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+                datePickerDialog.show()
             }
         }
     }
@@ -177,8 +212,8 @@ class SignUpActivity : BaseActivity(), ValidationListener, CometListener {
                 Constants.ErrorMsg.EMAIL_ERROR -> {
                     layoutEmail.error = getString(msg)
                 }
-                Constants.ErrorMsg.AGE_ERROR -> {
-                    layoutAge.error = getString(msg)
+                Constants.ErrorMsg.DOB_ERROR -> {
+                    layoutDob.error = getString(msg)
                 }
             }
         }
@@ -188,7 +223,7 @@ class SignUpActivity : BaseActivity(), ValidationListener, CometListener {
         binding.apply {
             layoutName.error = ""
             layoutEmail.error = ""
-            layoutAge.error = ""
+            layoutDob.error = ""
         }
     }
     override fun onCometLoginSuccess() {

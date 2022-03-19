@@ -152,12 +152,12 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutAge"
+        android:id="@+id/layoutDob"
         style="@style/TextInputLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:hint="@string/age"
+        android:hint="@string/date_of_birth"
         android:textColorHint="@color/heather"
         app:boxStrokeColor="@color/athensGray"
         app:boxStrokeWidth="1dp"
@@ -169,14 +169,13 @@
         app:startIconTint="@color/heather">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etAge"
+            android:id="@+id/etDob"
             style="@style/metropolis_semi_bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            android:maxLength="3"
+            android:inputType="none"
+            android:focusable="false"
             android:padding="18dp"
             android:singleLine="true"
             android:textColor="@color/codGray" />
@@ -197,7 +196,7 @@
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toTopOf="@id/tvByClicking"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutAge" />
+        app:layout_constraintTop_toBottomOf="@id/layoutDob" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvByClicking"
