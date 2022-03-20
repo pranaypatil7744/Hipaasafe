@@ -115,7 +115,7 @@ class DocumentAdapter(
                             tvSubTitle.text = "Shared with - "+data.uploadedFileBy
                         }
 
-                        if (data.uploadedFileName?.contains(".pdf") == true){
+                        if (data.title?.contains(".pdf") == true){
                             imgDoc.setImageResource(R.drawable.ic_default_pdf)
                         }else{
                             imgDoc.setImageResource(R.drawable.ic_default_img)

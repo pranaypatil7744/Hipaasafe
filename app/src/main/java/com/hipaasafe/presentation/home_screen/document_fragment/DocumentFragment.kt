@@ -243,6 +243,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                             for (i in it.data?.documents ?: arrayListOf()) {
                                 documentsList.add(
                                     DocumentsModel(
+                                        title = i.document_file,
                                         documentItemType = DocumentItemType.ITEM_UPLOADED_DOC,
                                         uploadDocumentId = i.report_name_id ?: 0,
                                         uploadedFileName = i.document_name,
@@ -391,7 +392,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
             }
         }
         val request = ShareDocumentRequestModel()
-        request.document_file = documentsList[selectedItemPosition].uploadedFileName.toString()
+        request.document_file = documentsList[selectedItemPosition].title.toString()
         request.uids = selectedDoctorsIds
         request.type = if (isForPatientDocuments) "GROUP" else "USER"
         return request
