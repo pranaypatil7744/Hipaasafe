@@ -77,7 +77,8 @@ class LoginActivity : BaseActivity() {
                 b.putString(Constants.LOGIN_WITH, etEmail.text.toString().trim())
             } else {
                 b.putString(Constants.LOGIN_WITH, etMobile.text.toString().trim())
-                b.putString(Constants.COUNTRY_CODE, selectedCountryCode)
+//                b.putString(Constants.COUNTRY_CODE, selectedCountryCode)
+                b.putString(Constants.COUNTRY_CODE, etCountry.text.toString().trim())
             }
             i.putExtras(b)
             startActivity(i)
@@ -181,7 +182,15 @@ class LoginActivity : BaseActivity() {
                             layoutMobile.setBackgroundResource(R.drawable.bg_box_error)
                         }
                         else -> {
-                            callPatientSendOtpApi()
+
+                            val selectedCountry = countryList.find {
+                                it.dial_code == etCountry.text.toString().trim()
+                            }
+                            if (selectedCountry != null){
+                                callPatientSendOtpApi()
+                            }else{
+                                showToast("please select valid country code")
+                            }
                         }
                     }
                 }
@@ -259,7 +268,8 @@ class LoginActivity : BaseActivity() {
                 toggleLoader(true)
                 loginViewModel.callPatientSendOtpApi(
                     request = PatientSendOtpRequestModel(
-                        country_code = selectedCountryCode,
+//                        country_code = selectedCountryCode,
+                        country_code = etCountry.text.toString().trim(),
                         number = etMobile.text.toString().trim()
                     )
                 )

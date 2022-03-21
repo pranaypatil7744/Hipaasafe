@@ -13,6 +13,7 @@ data class DocumentsModel(
     var uploadedFileName:String?= "",
     var uploadedFileType:String?= "",
     var uploadedFileBy:String?= "",
+    var uploadedFileUrl:String? =""
 ):Serializable
 enum class DocumentItemType(val value:Int){
     ITEM_ADD_DOC(1),

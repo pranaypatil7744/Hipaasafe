@@ -25,9 +25,11 @@ import com.hipaasafe.presentation.home_screen.document_fragment.model.DocumentIt
 import com.hipaasafe.presentation.home_screen.document_fragment.model.DocumentsModel
 import com.hipaasafe.presentation.home_screen.document_fragment.model.ForwardDocumentModel
 import com.hipaasafe.presentation.home_screen.my_network.MyNetworkViewModel
+import com.hipaasafe.presentation.image_viewer.ImageViewerActivity
 import com.hipaasafe.presentation.upload_documents.DocumentViewModel
 import com.hipaasafe.presentation.upload_documents.UploadDocumentsActivity
 import com.hipaasafe.presentation.view_documents.ViewDocumentsActivity
+import com.hipaasafe.presentation.web_view.WebViewActivity
 import com.hipaasafe.utils.PreferenceUtils
 import com.hipaasafe.utils.enum.LoginUserType
 import com.hipaasafe.utils.isNetworkAvailable
@@ -243,7 +245,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                             for (i in it.data?.documents ?: arrayListOf()) {
                                 documentsList.add(
                                     DocumentsModel(
-                                        title = i.document_file,
+                                        uploadedFileUrl = i.document_file,
                                         documentItemType = DocumentItemType.ITEM_UPLOADED_DOC,
                                         uploadDocumentId = i.report_name_id ?: 0,
                                         uploadedFileName = i.document_name,
@@ -392,7 +394,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
             }
         }
         val request = ShareDocumentRequestModel()
-        request.document_file = documentsList[selectedItemPosition].title.toString()
+        request.document_file = documentsList[selectedItemPosition].uploadedFileUrl.toString()
         request.uids = selectedDoctorsIds
         request.type = if (isForPatientDocuments) "USER" else "GROUP"
         return request
@@ -462,6 +464,24 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
 
     override fun clickOnCancelDoc(position: Int) {
         callCancelDocApi(position)
+    }
+
+    override fun clickOnUploadedDoc(position: Int) {
+        val link =Constants.BASE_URL_REPORT+documentsList[position].uploadedFileUrl
+        val extension = link.split(".").last()
+        if (extension == "pdf"){
+            val i = Intent(requireContext(), WebViewActivity::class.java)
+            val b = Bundle()
+            b.putString(Constants.DocumentLink,link)
+            i.putExtras(b)
+            startActivity(i)
+        }else{
+            val i = Intent(requireContext(), ImageViewerActivity::class.java)
+            val b = Bundle()
+            b.putString(Constants.DocumentLink,link)
+            i.putExtras(b)
+            startActivity(i)
+        }
     }
 
     private fun callCancelDocApi(position: Int) {

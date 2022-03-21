@@ -75,6 +75,7 @@ class BaseApplication : Application(), LifecycleObserver, Application.ActivityLi
     private fun setUpCometChat() {
         val appSettings = AppSettings.AppSettingsBuilder().subscribePresenceForAllUsers()
             .setRegion(AppConfig.AppDetails.REGION)
+            .autoEstablishSocketConnection(true)
             .build()
         CometChat.init(this, AppConfig.AppDetails.APP_ID, appSettings, object :
             CometChat.CallbackListener<String>() {

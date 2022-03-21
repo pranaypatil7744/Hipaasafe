@@ -210,7 +210,7 @@ class MyNetworkFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager
 
     override fun clickOnChat(position: Int) {
         if (loginUserType == LoginUserType.PATIENT.value){
-            toggleLoader(true)
+//            toggleLoader(true)
             val group = Group()
             group.guid = myNetworkList[position].guid
             group.groupType = CometChatConstants.GROUP_TYPE_PRIVATE

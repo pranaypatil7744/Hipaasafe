@@ -239,7 +239,9 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                 val selectedList = doctorList.filter {
                     it.isSelected
                 }
-                selectedDoctorUids.clear()
+                if (isFromMyTeam || isForAttachment || isFromAddDocument){
+                    selectedDoctorUids.clear()
+                }
                 if (selectedList.isNotEmpty()) {
                     for (i in selectedList) {
                         selectedDoctorUids.add(i.guid.toString())

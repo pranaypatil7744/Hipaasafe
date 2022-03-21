@@ -115,7 +115,7 @@ class DocumentAdapter(
                             tvSubTitle.text = "Shared with - "+data.uploadedFileBy
                         }
 
-                        if (data.title?.contains(".pdf") == true){
+                        if (data.uploadedFileUrl?.contains(".pdf") == true){
                             imgDoc.setImageResource(R.drawable.ic_default_pdf)
                         }else{
                             imgDoc.setImageResource(R.drawable.ic_default_img)
@@ -127,6 +127,9 @@ class DocumentAdapter(
                         }
                         btnForward.setOnClickListener {
                             listener.clickOnForwardDoc(position)
+                        }
+                        holder.itemView.setOnClickListener {
+                            listener.clickOnUploadedDoc(position)
                         }
                     }
                 }
@@ -164,5 +167,6 @@ class DocumentAdapter(
         fun clickOnForwardDoc(position: Int)
         fun clickOnPendingDoc(position: Int)
         fun clickOnCancelDoc(position: Int)
+        fun clickOnUploadedDoc(position: Int)
     }
 }
