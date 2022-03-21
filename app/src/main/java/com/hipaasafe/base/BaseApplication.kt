@@ -21,6 +21,7 @@ import com.hipaasafe.R
 import com.hipaasafe.di.AppModule
 import com.hipaasafe.di.NetworkModule
 import com.hipaasafe.listener.CometChatCallListener
+import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.notification.NotificationActivity
 import com.hipaasafe.settings.CometChatSettings
 import com.hipaasafe.utils.AppUtils
@@ -98,7 +99,7 @@ class BaseApplication : Application(), LifecycleObserver, Application.ActivityLi
         CometChatCallListener.addCallListener(TagName.COMET_SDK, this)
         createNotificationChannel()
         ProcessLifecycleOwner.get().lifecycle.addObserver(this);
-        val isMuteNotification = preferenceUtils.getValue(Constants.Notifications, false)
+        val isMuteNotification = preferenceUtils.getValue(Constants.PreferenceKeys.mute_notifications, false)
         CometChatSettings.enableSoundForCalls = !isMuteNotification
     }
 
@@ -137,28 +138,28 @@ class BaseApplication : Application(), LifecycleObserver, Application.ActivityLi
                 )
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 applicationContext().startActivity(intent)
-//                when (redirectToType.toLowerCase()) {
-//                    Constants.NotificationType.FRIEND_REQUEST.toLowerCase() -> {
-//                        val intent = Intent(
-//                            applicationContext(),
-//                            InvitationActivity::class.java
-//                        )
-//
+                when (redirectToType.toLowerCase()) {
+                    Constants.NotificationType.FRIEND_REQUEST.toLowerCase() -> {
+                        val intent = Intent(
+                            applicationContext(),
+                            NotificationActivity::class.java
+                        )
+
 //                        intent.putExtra(Constants.IS_FROM_NOTIFY, true)
-//                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//                        applicationContext().startActivity(intent)
-//
-//                    }
-//                    else -> {
-//                        val intent = Intent(
-//                            BaseApplication.applicationContext(),
-//                            HomeActivity::class.java
-//                        )
-//                        intent.flags =
-//                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-//                        BaseApplication.applicationContext().startActivity(intent)
-//                    }
-//                }
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        applicationContext().startActivity(intent)
+
+                    }
+                    else -> {
+                        val intent = Intent(
+                            applicationContext(),
+                            HomeActivity::class.java
+                        )
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                        applicationContext().startActivity(intent)
+                    }
+                }
             }
         }
     }

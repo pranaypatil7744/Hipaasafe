@@ -5,6 +5,7 @@ import com.hipaasafe.presentation.home_screen.appointment_fragment.AppointmentVi
 import com.hipaasafe.presentation.home_screen.my_network.MyNetworkViewModel
 import com.hipaasafe.presentation.home_screen.my_patients_fragment.PatientsViewModel
 import com.hipaasafe.presentation.login.LoginViewModel
+import com.hipaasafe.presentation.notification.NotificationViewModel
 import com.hipaasafe.presentation.profile_edit_details.ProfileViewModel
 import com.hipaasafe.presentation.upload_documents.DocumentViewModel
 import com.hipaasafe.presentation.view_documents.NotesViewModel
@@ -22,6 +23,7 @@ val AppModule = module {
     viewModel { PatientsViewModel(get()) }
     viewModel { DocumentViewModel(get(),get(),get(),get(),get(),get(),get()) }
     viewModel { AppointmentViewModel(get(), get(),get(),get(),get(),get(),get()) }
+    viewModel { NotificationViewModel(get()) }
 
     single { createLoginRepository(get(named("normalService"))) }
     single { createPatientSendOtpUseCase(get()) }
@@ -65,5 +67,8 @@ val AppModule = module {
     single { createNotesRepository(get(named("normalService"))) }
     single { createGetNotesListUseCase(get()) }
     single { createAddNotUseCase(get()) }
+
+    single { createNotificationsRepository(get(named("normalService"))) }
+    single { createMuteNotificationUseCase(get()) }
 
 }

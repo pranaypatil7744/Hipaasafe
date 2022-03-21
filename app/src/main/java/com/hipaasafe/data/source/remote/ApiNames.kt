@@ -32,5 +32,8 @@ class ApiNames {
         const val RemoveRequestDocApi = "documents/remove-request-from-patient"
         const val AddNoteApi = "notes/add"
         const val GetNotesApi = "notes/get"
+        const val muteNotificationsApi = "user/mute-notifications"
+        const val GetNotificationsApi = "notifications/list?page=1&limit=10"
+
     }
 }

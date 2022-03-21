@@ -108,8 +108,9 @@ class NavAdapter(
             NavItemType.ITEM_DND.value -> {
                 holder.itemNavToggleBinding?.apply {
                     toggleDnd.text = data.title
-                    holder.itemView.setOnClickListener {
-                        listener.onClickDnd(position)
+                    toggleDnd.isChecked = data.isChecked == true
+                    toggleDnd.setOnCheckedChangeListener { buttonView, isChecked ->
+                        listener.onClickDnd(position,isChecked)
                     }
                 }
             }
@@ -137,7 +138,7 @@ class NavAdapter(
         fun onClickViewProfile(position: Int)
         fun onClickMenu(position: Int)
         fun onClickSignOut(position: Int)
-        fun onClickDnd(position: Int)
+        fun onClickDnd(position: Int,isChecked:Boolean)
     }
 
 }

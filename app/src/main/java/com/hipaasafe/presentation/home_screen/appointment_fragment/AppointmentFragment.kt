@@ -44,7 +44,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
 
     var handler: Handler = Handler()
     var runnable: Runnable? = null
-    var delay = 20000
+    var delay = 10000
     var currentDate: String = ""
     var currentTime: String = ""
     private val appointmentViewModel: AppointmentViewModel by viewModel()
@@ -244,11 +244,11 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
             layoutNoInternet.btnRetry.setOnClickListener {
                 callUpcomingAppointmentApi()
             }
-//            swipeMyPatient.setOnRefreshListener {
-//                swipeMyPatient.isRefreshing = false
-//                callUpcomingAppointmentApi()
-//                callMyQueueApi()
-//            }
+            swipeAppointment.setOnRefreshListener {
+                swipeAppointment.isRefreshing = false
+                callUpcomingAppointmentApi()
+                callMyQueueApi()
+            }
         }
     }
 

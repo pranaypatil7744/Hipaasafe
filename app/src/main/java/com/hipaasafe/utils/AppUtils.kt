@@ -714,6 +714,18 @@ class AppUtils {
         return currentYear.minus(birthYear).toString()
     }
 
+    fun invite(context: Context) {
+        val sendIntent = Intent()
+        sendIntent.action = Intent.ACTION_SEND
+        sendIntent.putExtra(Intent.EXTRA_TEXT, getInviteText(context))
+        sendIntent.type = "text/plain"
+        context.startActivity(sendIntent)
+    }
+
+    fun getInviteText(context: Context): String {
+        return "You are invited to join ${context.getString(R.string.app_name)},https://play.google.com/store/apps/details?id=${context.packageName}"
+    }
+
     fun convertDateToString(
         date: Date,
         formatToConvert: String

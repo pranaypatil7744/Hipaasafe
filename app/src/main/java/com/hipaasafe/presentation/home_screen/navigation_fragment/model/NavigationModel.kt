@@ -4,6 +4,7 @@ data class NavigationModel(
     var title:String? ="",
     var icon:Int? = null,
     var profile:String? = "",
+    var isChecked:Boolean? =false,
     var navItemType: NavItemType
 )
 enum class NavItemType(val value:Int){

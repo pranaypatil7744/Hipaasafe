@@ -78,7 +78,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.notification.NotificationActivity"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.help.HelpActivity"
@@ -98,7 +98,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.home_screen.HomeActivity"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.login.LoginActivity"
