@@ -102,35 +102,66 @@
         app:layout_constraintTop_toBottomOf="@id/imgMain">
 
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spinner_country_code"
-            style="@style/metropolis_bold"
+<!--        <androidx.appcompat.widget.AppCompatSpinner-->
+<!--            android:id="@+id/spinner_country_code"-->
+<!--            style="@style/metropolis_bold"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:gravity="center"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:overlapAnchor="false" />-->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutCountyCode"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            app:boxBackgroundColor="@color/white"
+            app:boxStrokeWidth="0dp"
+            app:errorEnabled="false"
+            android:layout_margin="2dp"
+            app:boxStrokeWidthFocused="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:hintEnabled="false"
             app:layout_constraintTop_toTopOf="parent"
-            app:overlapAnchor="false" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <AutoCompleteTextView
+                android:id="@+id/etCountry"
+                style="@style/metropolis_medium_small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:gravity="center"
+                android:imeOptions="actionDone"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="18dp"
+                android:textColor="@color/codGray"
+                android:textColorHint="@color/heather" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etMobile"
             style="@style/metropolis_semi_bold"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:background="@android:color/transparent"
             android:gravity="center_vertical"
             android:hint="@string/mobile_number"
             android:imeOptions="actionDone"
             android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:padding="18dp"
             android:maxLength="15"
             android:singleLine="true"
             android:textColor="@color/codGray"
             android:textColorHint="@color/heather"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/spinner_country_code"
+            app:layout_constraintStart_toEndOf="@+id/layoutCountyCode"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

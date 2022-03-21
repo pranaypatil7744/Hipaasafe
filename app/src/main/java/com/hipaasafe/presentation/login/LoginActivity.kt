@@ -10,6 +10,7 @@ import android.view.View.VISIBLE
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseActivity
@@ -43,26 +44,26 @@ class LoginActivity : BaseActivity() {
     private fun setUpObserver() {
         binding.apply {
             with(loginViewModel) {
-                doctorLoginSendOtpResponseData.observe(this@LoginActivity, {
+                doctorLoginSendOtpResponseData.observe(this@LoginActivity) {
                     toggleLoader(false)
                     if (it.success) {
                         navigateToVerifyOtpScreen()
                     } else {
                         showToast(it.message)
                     }
-                })
-                patientSendOtpResponseData.observe(this@LoginActivity, {
+                }
+                patientSendOtpResponseData.observe(this@LoginActivity) {
                     toggleLoader(false)
                     if (it.success) {
                         navigateToVerifyOtpScreen()
                     } else {
                         showToast(it.message)
                     }
-                })
-                messageData.observe(this@LoginActivity, {
+                }
+                messageData.observe(this@LoginActivity) {
                     toggleLoader(false)
                     showToast(it)
-                })
+                }
             }
         }
     }
@@ -126,35 +127,27 @@ class LoginActivity : BaseActivity() {
 
     private fun setUpCountryCodes() {
 
-        countryList.addAll(AppUtils.INSTANCE?.getCountriesList(this) ?: ArrayList())
-        val adapterCodes =
-            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countryList.map { it ->
-                it.dial_code
-            })
+        binding.apply {
+            countryList.addAll(AppUtils.INSTANCE?.getCountriesList(this@LoginActivity) ?: ArrayList())
+            val adapterCodes =
+                ArrayAdapter<String>(this@LoginActivity, android.R.layout.simple_list_item_1, countryList.map { it ->
+                    it.dial_code
+                })
 
-        binding.spinnerCountryCode.adapter = adapterCodes
-        val usIndex = AppUtils.INSTANCE?.getCountryIndex("+1",countryList) ?: 0
-
-        if (usIndex > 0) {
-            binding.spinnerCountryCode.setSelection(usIndex)
+            etCountry.setAdapter(adapterCodes)
+            val usIndex = AppUtils.INSTANCE?.getCountryIndex("+1",countryList) ?: 0
+            etCountry.setSelection(usIndex)
+            etCountry.setText(countryList[usIndex].dial_code)
+            selectedCountryCode = countryList[usIndex].dial_code.toString()
         }
     }
 
     private fun setUpListener() {
         binding.apply {
-            spinnerCountryCode.onItemSelectedListener = object :
-                AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View, position: Int, id: Long
-                ) {
-                    selectedCountryCode = parent.getItemAtPosition(position).toString()
-                    selectedCountryShortForm = countryList[position].code
-                }
+            etCountry.setOnItemClickListener { parent, view, position, id ->
+                val i  = parent.getItemAtPosition(position)
+                selectedCountryCode = i.toString()
 
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    // write code to perform some action
-                }
             }
             btnBack.setOnClickListener {
                 finish()

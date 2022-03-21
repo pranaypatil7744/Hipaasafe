@@ -202,7 +202,7 @@ class MyTeamsFragment : BaseFragment(), MyNetworkAdapter.MyNetworkClickManager {
             user.name = myNetworkList[position].name
             user.uid = myNetworkList[position].guid
             user.avatar = myNetworkList[position].avatar
-            CometChatUtils.userIntent(user, requireContext())
+            CometChatUtils.userIntent(user, requireContext(),isFromMyTeam = true)
         }
     }
 

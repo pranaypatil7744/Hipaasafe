@@ -64,13 +64,14 @@ class CometChatUtils {
             intent.putExtra(Constants.CometChatConstant.GROUP_PASSWORD, group.password)
             context.startActivity(intent)
         }
-        fun userIntent(user: User,context: Context) {
+        fun userIntent(user: User,context: Context,isFromMyTeam:Boolean? = false) {
             val intent = Intent(context, MainCometChatActivity::class.java)
             intent.putExtra(Constants.CometChatConstant.UID, user.uid)
             intent.putExtra(Constants.CometChatConstant.AVATAR, user.avatar)
             intent.putExtra(Constants.CometChatConstant.STATUS, user.status)
             intent.putExtra(Constants.CometChatConstant.NAME, user.name)
             intent.putExtra(Constants.CometChatConstant.TYPE, CometChatConstants.RECEIVER_TYPE_USER)
+            intent.putExtra(Constants.IS_FROM_MY_TEAM,isFromMyTeam)
             context.startActivity(intent)
         }
 

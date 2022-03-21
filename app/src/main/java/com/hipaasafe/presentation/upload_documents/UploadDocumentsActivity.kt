@@ -57,6 +57,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
     var selectedDoctorUid: String = ""
     var isForAttachment: Boolean = false
     var attachmentSendTo:String =""
+    var isFromMyTeam:Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,10 +87,20 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
             val request = UploadAndShareDocumentRequestModel()
             request.document_file = uploadedFile
             request.report_name_id = selectedDocumentId
-            request.doctor_uids = selectedDoctorUids
+            request.guids = if (selectedDoctorUids.size != 0) selectedDoctorUids else null
             request.document_name = etDocumentName.text.toString().trim()
             request.document_request_id = documentRequestId
-            request.guid = if (isForAttachment)attachmentSendTo else null
+            if (isFromMyTeam){
+                //TODO handle it
+                    val uidsList:ArrayList<String> = ArrayList()
+                uidsList.clear()
+                uidsList.add(attachmentSendTo)
+//                request.patient_id = ""
+//                request.doctor_id = ""
+                request.uids = uidsList
+            }else{
+                request.guid = if (isForAttachment)attachmentSendTo else null
+            }
             return request
         }
     }
@@ -228,6 +239,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
                 val selectedList = doctorList.filter {
                     it.isSelected
                 }
+                selectedDoctorUids.clear()
                 if (selectedList.isNotEmpty()) {
                     for (i in selectedList) {
                         selectedDoctorUids.add(i.guid.toString())
@@ -452,6 +464,7 @@ class UploadDocumentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickMa
         binding.apply {
             intent.extras?.run {
                 isFromAddDocument = getBoolean(Constants.IsFromAdd)
+                isFromMyTeam = getBoolean(Constants.IS_FROM_MY_TEAM,false)
                 attachmentSendTo = getString(Constants.AttachmentSendTo).toString()
                 isForAttachment = getBoolean(Constants.IsForAttachDoc)
                 pendingDocType = getString(Constants.PendingDocumentType).toString()

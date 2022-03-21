@@ -300,16 +300,16 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                     toggleLoader(false)
                     if (it.success == true) {
                         if (isAttachmentFlow) {
-                            val data = getShareReportRequestModel()
-                            val resultIntent = requireActivity().intent
-                            val b = Bundle()
-                            b.putString(
-                                Constants.DocumentLink,
-                                Constants.BASE_URL_REPORT + data.document_file
-                            )
-                            resultIntent.putExtras(b)
-                            requireActivity().setResult(Activity.RESULT_OK, resultIntent)
-                            requireActivity().finish()
+//                            val data = getShareReportRequestModel()
+//                            val resultIntent = requireActivity().intent
+//                            val b = Bundle()
+//                            b.putString(
+//                                Constants.DocumentLink,
+//                                Constants.BASE_URL_REPORT + data.document_file
+//                            )
+//                            resultIntent.putExtras(b)
+//                            requireActivity().setResult(Activity.RESULT_OK, resultIntent)
+//                            requireActivity().finish()
                         } else {
                             showToast(it.message.toString())
                         }
@@ -394,7 +394,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         val request = ShareDocumentRequestModel()
         request.document_file = documentsList[selectedItemPosition].title.toString()
         request.uids = selectedDoctorsIds
-        request.type = if (isForPatientDocuments) "GROUP" else "USER"
+        request.type = if (isForPatientDocuments) "USER" else "GROUP"
         return request
     }
 
@@ -428,7 +428,18 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     override fun clickOnForwardDoc(position: Int) {
         selectedItemPosition = position
         if (isAttachmentFlow) {
-            callShareReportApi()
+//            callShareReportApi()
+            val data = getShareReportRequestModel()
+            val resultIntent = requireActivity().intent
+            val b = Bundle()
+            b.putString(
+                Constants.DocumentLink,
+                Constants.BASE_URL_REPORT + data.document_file
+            )
+            resultIntent.putExtras(b)
+            requireActivity().setResult(Activity.RESULT_OK, resultIntent)
+            requireActivity().finish()
+
         } else {
             openForwardListBottomSheet()
         }

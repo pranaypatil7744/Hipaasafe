@@ -27,7 +27,7 @@ data class DoctorAppointmentListModel(
 )
 
 data class PatientDetailsModel(
-    var age:String? = "",
+    var dob:String? = "",
     var uid:String? = "",
     var name:String? = "",
     var email:String? = "",

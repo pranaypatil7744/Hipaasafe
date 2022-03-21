@@ -26,6 +26,7 @@ class Constants {
         const val IsImportant = "is_important"
         const val IsForwarded = "is_forwarded"
         const val IS_FROM_GROUP_CHAT = "IS_FROM_GROUP_CHAT"
+        const val IS_FROM_MY_TEAM = "IS_FROM_MY_TEAM"
         const val PAST = "PAST"
         const val UPCOMING = "UPCOMING"
         const val CONFIRM = "CONFIRM"

@@ -703,6 +703,17 @@ class AppUtils {
         return sdf.format(time)
     }
 
+    fun getCurrentYear(): String {
+        val time = Calendar.getInstance().time
+        val sdf = SimpleDateFormat("yyyy")
+        return sdf.format(time)
+    }
+
+    fun calculateAge(birthYear:Int):String {
+        val currentYear = getCurrentYear().toIntOrNull() ?: 0
+        return currentYear.minus(birthYear).toString()
+    }
+
     fun convertDateToString(
         date: Date,
         formatToConvert: String

@@ -96,6 +96,7 @@ class MainCometChatActivity : BaseActivity(),
     }
 
     var isFromCreateGroup: Boolean = false
+    var isFromMyTeam:Boolean = false
 
     lateinit var binding: ActivityMainCometChatBinding
     lateinit var attachmentBottomSheetDialog: BottomSheetDialog
@@ -201,11 +202,7 @@ class MainCometChatActivity : BaseActivity(),
         binding.apply {
             linearLayoutManager =
                 LinearLayoutManager(this@MainCometChatActivity, LinearLayoutManager.VERTICAL, false)
-            if (type == CometChatConstants.RECEIVER_TYPE_GROUP){
-                btnAttachMedia.visibility = VISIBLE
-            }else{
-                btnAttachMedia.visibility = GONE
-            }
+            btnAttachMedia.visibility = VISIBLE
         }
     }
 
@@ -322,6 +319,7 @@ class MainCometChatActivity : BaseActivity(),
                     }
                     val b = Bundle()
                     b.putBoolean(Constants.IsForAttachDoc,true)
+                    b.putBoolean(Constants.IS_FROM_MY_TEAM,isFromMyTeam)
                     b.putString(Constants.AttachmentSendTo,id)
                     i.putExtras(b)
                     attachmentResult.launch(i)
@@ -1624,6 +1622,7 @@ class MainCometChatActivity : BaseActivity(),
                 } else {
                     name.toString().split("|").last()
                 }
+                isFromMyTeam = getBoolean(Constants.IS_FROM_MY_TEAM,false)
                 profilePicUrl = getString(Constants.CometChatConstant.AVATAR)
                 type = getString(Constants.CometChatConstant.TYPE).toString()
                 if (type == CometChatConstants.RECEIVER_TYPE_USER) {
@@ -2417,11 +2416,7 @@ class MainCometChatActivity : BaseActivity(),
             layoutEditMsg.visibility = GONE
             etEnterMsg.setText("")
             etEnterMsg.hint = getString(R.string.write_a_message)
-            if (type == CometChatConstants.RECEIVER_TYPE_GROUP){
-                btnAttachMedia.visibility = VISIBLE
-            }else{
-                btnAttachMedia.visibility = GONE
-            }
+            btnAttachMedia.visibility = VISIBLE
         }
     }
 
@@ -2502,11 +2497,7 @@ class MainCometChatActivity : BaseActivity(),
             layoutReplyMsg.visibility = GONE
             etEnterMsg.setText("")
             etEnterMsg.hint = getString(R.string.write_a_message)
-            if (type == CometChatConstants.RECEIVER_TYPE_GROUP){
-                btnAttachMedia.visibility = VISIBLE
-            }else{
-                btnAttachMedia.visibility = GONE
-            }
+            btnAttachMedia.visibility = VISIBLE
         }
     }
 
@@ -2731,12 +2722,12 @@ class MainCometChatActivity : BaseActivity(),
 
     override fun clickOnTextMsg(position: Int, baseMessage: BaseMessage) {
         this.baseMessage = baseMessage
-        startActivity(
-            Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse((baseMessage as MediaMessage).attachment.fileUrl)
-            )
-        )
+//        startActivity(
+//            Intent(
+//                Intent.ACTION_VIEW,
+//                Uri.parse((baseMessage as MediaMessage).attachment.fileUrl)
+//            )
+//        )
     }
 
     override fun clickOnImageMsg(position: Int, baseMessage: BaseMessage) {

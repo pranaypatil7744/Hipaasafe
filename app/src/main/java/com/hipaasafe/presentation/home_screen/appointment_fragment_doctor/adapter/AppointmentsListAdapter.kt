@@ -11,6 +11,7 @@ import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.databinding.ItemDoctorAppontmentListBinding
 import com.hipaasafe.domain.model.appointment.DoctorAppointmentListModel
+import com.hipaasafe.utils.AppUtils
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -27,9 +28,11 @@ class AppointmentsListAdapter(val context: Context,private val doctorAppointment
         val data = doctorAppointmentList[position]
         holder.binding.apply {
             tvTitle.text = data.patient_details.name
-            tvSubTitle.text = data.patient_details.age
+            val birthYear = data.patient_details.dob?.split("-")?.first()
+            val age = AppUtils.INSTANCE?.calculateAge(birthYear?.toIntOrNull()?:0)
+            tvSubTitle.text = age
             tvStatus.text = data.appointment_status?.lowercase(Locale.ROOT)
-            if (data.queue_no != null){
+            if (data.queue_no != null && data.queue_no != 0){
                 tvQueue.visibility = VISIBLE
                 tvQueue.text = "Queue : ${data.queue_no}"
             }else{
