@@ -263,6 +263,7 @@
     <string name="view_document">View Document</string>
     <string name="invite">Invite</string>
     <string name="you_are_in_the_queue">You are in the queue...</string>
+    <string name="please_grant_the_call_permission_to_continue">Please grant the call permission to continue</string>
 
 
 </resources>

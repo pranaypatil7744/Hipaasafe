@@ -96,7 +96,7 @@ class MainCometChatActivity : BaseActivity(),
     }
 
     var isFromCreateGroup: Boolean = false
-    var isFromMyTeam:Boolean = false
+    var isFromMyTeam: Boolean = false
 
     lateinit var binding: ActivityMainCometChatBinding
     lateinit var attachmentBottomSheetDialog: BottomSheetDialog
@@ -136,6 +136,8 @@ class MainCometChatActivity : BaseActivity(),
     var isHasBlockedByMe: Boolean = false
     var isBlockedByMe: Boolean = false
     var isCameraClick: Boolean = false
+    var isAudioCall:Boolean = false
+    var isVideoCall:Boolean = false
     private val loggedInUser = CometChat.getLoggedInUser()
     private var messagesRequest //Used to fetch messages.
             : MessagesRequest? = null
@@ -144,7 +146,7 @@ class MainCometChatActivity : BaseActivity(),
     private var locationListener: LocationListener? = null
     private val MIN_TIME: Long = 1000
     private val MIN_DIST: Long = 5
-    var loginUserType:Int =0
+    var loginUserType: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -217,15 +219,15 @@ class MainCometChatActivity : BaseActivity(),
                     }
                 }
                 tvChatName.setOnClickListener {
-                    if (loginUserType != LoginUserType.PATIENT.value){
-                        if (type == CometChatConstants.RECEIVER_TYPE_GROUP){
+                    if (loginUserType != LoginUserType.PATIENT.value) {
+                        if (type == CometChatConstants.RECEIVER_TYPE_GROUP) {
                             startViewDocumentActivity()
                         }
                     }
                 }
                 imgChatIcon.setOnClickListener {
-                    if (loginUserType != LoginUserType.PATIENT.value){
-                        if (type == CometChatConstants.RECEIVER_TYPE_GROUP){
+                    if (loginUserType != LoginUserType.PATIENT.value) {
+                        if (type == CometChatConstants.RECEIVER_TYPE_GROUP) {
                             startViewDocumentActivity()
                         }
                     }
@@ -234,7 +236,7 @@ class MainCometChatActivity : BaseActivity(),
                 toolbarIcon1.setOnClickListener {
                     if (!isOngoingCall && !isBlockedByMe && !isHasBlockedByMe) {
                         if (isNetworkAvailable()) {
-                            initiateAudioCall()
+                            checkCallPermission()
                         } else {
                             showToast(getString(R.string.no_internet_connection_please_try_again_later))
                         }
@@ -244,7 +246,7 @@ class MainCometChatActivity : BaseActivity(),
                 toolbarIcon2.setOnClickListener {
                     if (!isOngoingCall && !isBlockedByMe && !isHasBlockedByMe) {
                         if (isNetworkAvailable()) {
-                            initiateVideoCall()
+                            checkVideoCallPermission()
                         } else {
                             showToast(getString(R.string.no_internet_connection_please_try_again_later))
                         }
@@ -312,15 +314,15 @@ class MainCometChatActivity : BaseActivity(),
 //                    } else {
 //                        showToast(getString(R.string.no_internet_connection_please_try_again_later))
 //                    }
-                    val i: Intent = if (loginUserType == LoginUserType.PATIENT.value){
-                        Intent(this@MainCometChatActivity,AttachmentActivity::class.java)
-                    }else{
-                        Intent(this@MainCometChatActivity,UploadDocumentsActivity::class.java)
+                    val i: Intent = if (loginUserType == LoginUserType.PATIENT.value) {
+                        Intent(this@MainCometChatActivity, AttachmentActivity::class.java)
+                    } else {
+                        Intent(this@MainCometChatActivity, UploadDocumentsActivity::class.java)
                     }
                     val b = Bundle()
-                    b.putBoolean(Constants.IsForAttachDoc,true)
-                    b.putBoolean(Constants.IS_FROM_MY_TEAM,isFromMyTeam)
-                    b.putString(Constants.AttachmentSendTo,id)
+                    b.putBoolean(Constants.IsForAttachDoc, true)
+                    b.putBoolean(Constants.IS_FROM_MY_TEAM, isFromMyTeam)
+                    b.putString(Constants.AttachmentSendTo, id)
                     i.putExtras(b)
                     attachmentResult.launch(i)
                 }
@@ -344,6 +346,29 @@ class MainCometChatActivity : BaseActivity(),
             }
         }
     }
+
+    private fun checkCallPermission() {
+        binding.apply {
+            if (PermissionUtils.getCallPermission(this@MainCometChatActivity)) {
+                preferenceUtils.setValue(Constants.AskedPermission.CALL_PERMISSION_COUNT, 0)
+                initiateAudioCall()
+            } else {
+                PermissionUtils.requestCallPermissions(this@MainCometChatActivity)
+            }
+        }
+    }
+    private fun checkVideoCallPermission() {
+        binding.apply {
+            if (PermissionUtils.getVideoCallPermission(this@MainCometChatActivity)) {
+                preferenceUtils.setValue(Constants.AskedPermission.VIDEO_CALL_PERMISSION_COUNT, 0)
+                initiateVideoCall()
+            } else {
+                PermissionUtils.requestVideoCallPermissions(this@MainCometChatActivity)
+            }
+        }
+    }
+
+
     private val attachmentResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
@@ -358,7 +383,7 @@ class MainCometChatActivity : BaseActivity(),
         val i = Intent(this, ViewDocumentsActivity::class.java)
         val b = Bundle()
         b.putString(Constants.CometChatConstant.NAME, chatName)
-        b.putString(Constants.CometChatConstant.GUID,id)
+        b.putString(Constants.CometChatConstant.GUID, id)
         i.putExtras(b)
         startActivity(i)
     }
@@ -1616,13 +1641,13 @@ class MainCometChatActivity : BaseActivity(),
                 val name = getString(Constants.CometChatConstant.NAME)
                 loginUserType =
                     PreferenceUtils(this@MainCometChatActivity).getValue(Constants.PreferenceKeys.role_id)
-                        .toIntOrNull()?:0
+                        .toIntOrNull() ?: 0
                 chatName = if (loginUserType == LoginUserType.PATIENT.value) {
                     name.toString().split("|").first()
                 } else {
                     name.toString().split("|").last()
                 }
-                isFromMyTeam = getBoolean(Constants.IS_FROM_MY_TEAM,false)
+                isFromMyTeam = getBoolean(Constants.IS_FROM_MY_TEAM, false)
                 profilePicUrl = getString(Constants.CometChatConstant.AVATAR)
                 type = getString(Constants.CometChatConstant.TYPE).toString()
                 if (type == CometChatConstants.RECEIVER_TYPE_USER) {
@@ -1733,7 +1758,7 @@ class MainCometChatActivity : BaseActivity(),
 //                }
 //                true
 //            }
-            R.id.menu_delete_group,R.id.menu_delete_chat_and_exit -> {
+            R.id.menu_delete_group, R.id.menu_delete_chat_and_exit -> {
                 DialogUtils.showConfirmationDialog(
                     this,
                     this,
@@ -2788,16 +2813,16 @@ class MainCometChatActivity : BaseActivity(),
 
     override fun clickOnAttachmentLink(position: Int, link: String) {
         val extension = link.split(".").last()
-        if (extension == "pdf"){
-            val i = Intent(this,WebViewActivity::class.java)
+        if (extension == "pdf") {
+            val i = Intent(this, WebViewActivity::class.java)
             val b = Bundle()
-            b.putString(Constants.DocumentLink,link)
+            b.putString(Constants.DocumentLink, link)
             i.putExtras(b)
             startActivity(i)
-        }else{
-            val i = Intent(this,ImageViewerActivity::class.java)
+        } else {
+            val i = Intent(this, ImageViewerActivity::class.java)
             val b = Bundle()
-            b.putString(Constants.DocumentLink,link)
+            b.putString(Constants.DocumentLink, link)
             i.putExtras(b)
             startActivity(i)
         }
@@ -2891,6 +2916,75 @@ class MainCometChatActivity : BaseActivity(),
         intent.putExtras(b)
         startActivity(intent)
         finish()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == Constants.PermissionRequestCodes.CALL_PHONE_PERMISSION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                initiateAudioCall()
+            } else {
+                val callPerCount = preferenceUtils.getIntValue(
+                    Constants.AskedPermission.CALL_PERMISSION_COUNT,
+                    0
+                )
+                preferenceUtils.setValue(
+                    Constants.AskedPermission.CALL_PERMISSION_COUNT,
+                    callPerCount.plus(1)
+                )
+                if (preferenceUtils.getIntValue(
+                        Constants.AskedPermission.CALL_PERMISSION_COUNT,
+                        0
+                    ) >= 2
+                ) {
+                    DialogUtils.showPermissionDialog(
+                        this,
+                        getString(R.string.please_grant_the_call_permission_to_continue),
+                        getString(R.string.allow_permission),
+                        getString(R.string.go_to_settings),
+                        getString(R.string.deny),
+                        isFinish = false
+                    )
+                } else {
+                    showToast(getString(R.string.please_grant_the_call_permission_to_continue))
+                }
+            }
+        } else if (requestCode == Constants.PermissionRequestCodes.CALL_VIDEO_PERMISSION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                initiateVideoCall()
+            } else {
+                val videoCallPerCount = preferenceUtils.getIntValue(
+                    Constants.AskedPermission.VIDEO_CALL_PERMISSION_COUNT,
+                    0
+                )
+                preferenceUtils.setValue(
+                    Constants.AskedPermission.VIDEO_CALL_PERMISSION_COUNT,
+                    videoCallPerCount.plus(1)
+                )
+                if (preferenceUtils.getIntValue(
+                        Constants.AskedPermission.VIDEO_CALL_PERMISSION_COUNT,
+                        0
+                    ) >= 2
+                ) {
+                    DialogUtils.showPermissionDialog(
+                        this,
+                        getString(R.string.please_grant_the_call_permission_to_continue),
+                        getString(R.string.allow_permission),
+                        getString(R.string.go_to_settings),
+                        getString(R.string.deny),
+                        isFinish = false
+                    )
+                } else {
+                    showToast(getString(R.string.please_grant_the_call_permission_to_continue))
+                }
+            }
+        }
     }
 
 }

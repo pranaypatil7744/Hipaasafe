@@ -75,7 +75,6 @@ class CometChatCallActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         callActivity = this
-        handleIntent()
         setContentView(R.layout.activity_cometchat_callmanager)
         handleIntent()
         initView()

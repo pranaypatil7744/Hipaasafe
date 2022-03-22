@@ -122,6 +122,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
                     if (it.success == true){
                         handler.removeCallbacks(runnable!!)
                         layoutYourTurn.visibility = GONE
+                        callUpcomingAppointmentApi()
                     }else{
                         showToast(it.message.toString())
                     }
@@ -161,6 +162,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
                             upcomingAppointmentAdapter.notifyDataSetChanged()
                         } else {
                             layoutNoData.root.visibility = VISIBLE
+                            layoutNoData.tvNoDataFound.text = "No appointments found"
                         }
                     } else {
                         showToast(it.message.toString())

@@ -55,20 +55,50 @@ class PermissionUtils {
             if (ActivityCompat.checkSelfPermission(
                     activity,
                     Manifest.permission.CALL_PHONE
+                ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    activity,
+                    Manifest.permission.RECORD_AUDIO
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
                 return true
             }
             return false
         }
+
         fun requestCallPermissions(activity: Activity) {
             ActivityCompat.requestPermissions(
                 activity,
                 arrayOf(
-                    Manifest.permission.CALL_PHONE
+                    Manifest.permission.CALL_PHONE,Manifest.permission.RECORD_AUDIO
                 ),
                 Constants.PermissionRequestCodes.CALL_PHONE_PERMISSION_CODE
             )
+        }
+        fun requestVideoCallPermissions(activity: Activity) {
+            ActivityCompat.requestPermissions(
+                activity,
+                arrayOf(
+                    Manifest.permission.CALL_PHONE,Manifest.permission.RECORD_AUDIO,Manifest.permission.CAMERA
+                ),
+                Constants.PermissionRequestCodes.CALL_VIDEO_PERMISSION_CODE
+            )
+        }
+
+        fun getVideoCallPermission(activity: Activity):Boolean{
+            if (ActivityCompat.checkSelfPermission(
+                    activity,
+                    Manifest.permission.CALL_PHONE
+                ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    activity,
+                    Manifest.permission.RECORD_AUDIO
+                ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    activity,
+                    Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                return true
+            }
+            return false
         }
 
         fun hasPermissions(context: Context?, vararg permissions: String): Boolean {
