@@ -344,7 +344,7 @@ class CometChatUtils {
                     }
 
                     override fun onError(e: CometChatException?) {
-                        listener?.onCometLoginFailure()
+                        listener?.onCometLoginFailure(e?.message.toString())
                         AppUtils.INSTANCE?.logMe(
                             TagName.COMET_SDK,
                             "Login from comet failure : " + e?.localizedMessage
@@ -413,5 +413,5 @@ class CometChatUtils {
 
 interface CometListener{
     fun onCometLoginSuccess()
-    fun onCometLoginFailure()
+    fun onCometLoginFailure(msg:String)
 }

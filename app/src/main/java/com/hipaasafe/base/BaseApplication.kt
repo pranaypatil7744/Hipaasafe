@@ -133,31 +133,31 @@ class BaseApplication : Application(), LifecycleObserver, Application.ActivityLi
             data?.let {
                 val redirectToType = it.optString("redirectToType")
                 val intent = Intent(
-                    applicationContext(),
+                    mContext,
                     NotificationActivity::class.java
                 )
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                applicationContext().startActivity(intent)
+                mContext.startActivity(intent)
                 when (redirectToType.toLowerCase()) {
                     Constants.NotificationType.FRIEND_REQUEST.toLowerCase() -> {
                         val intent = Intent(
-                            applicationContext(),
+                            mContext,
                             NotificationActivity::class.java
                         )
 
 //                        intent.putExtra(Constants.IS_FROM_NOTIFY, true)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        applicationContext().startActivity(intent)
+                        mContext.startActivity(intent)
 
                     }
                     else -> {
                         val intent = Intent(
-                            applicationContext(),
+                            mContext,
                             HomeActivity::class.java
                         )
                         intent.flags =
                             Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                        applicationContext().startActivity(intent)
+                        mContext.startActivity(intent)
                     }
                 }
             }

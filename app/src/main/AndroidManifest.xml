@@ -23,7 +23,8 @@
         android:roundIcon="@mipmap/ic_main_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hipaasafe"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true">
         <activity android:name=".presentation.web_view.WebViewActivity"
             android:screenOrientation="portrait"
             android:exported="false"/>

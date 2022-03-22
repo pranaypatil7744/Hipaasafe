@@ -37,18 +37,26 @@ class HelpActivity : BaseActivity(), HelpAdapter.HelpManager {
                     if (it.success == true) {
                         helpList.clear()
                         helpList.add(HelpModel(type = HelpItemType.HEADER))
-                        for (i in it.data) {
-                            helpList.add(
-                                HelpModel(
-                                    type = if (i.key == Constants.MOBILE) HelpItemType.CALL else HelpItemType.EMAIL,
-                                    icon = if (i.key == Constants.MOBILE) R.drawable.img_call else R.drawable.img_email,
-                                    label = if (i.key == Constants.MOBILE) getString(R.string.you_can_call_us) else getString(
-                                        R.string.send_us_an_e_mail
-                                    ),
-                                    data = i.value.toString()
-                                )
+                        val mobile = it.data[1].value
+                        val email = it.data[0].value
+                        helpList.add(
+                            HelpModel(
+                                type = HelpItemType.EMAIL,
+                                icon = R.drawable.img_email,
+                                label = getString(
+                                    R.string.send_us_an_e_mail
+                                ),
+                                data = email.toString()
                             )
-                        }
+                        )
+                        helpList.add(
+                            HelpModel(
+                                type =HelpItemType.CALL,
+                                icon = R.drawable.img_call,
+                                label = getString(R.string.you_can_call_us),
+                                data = mobile.toString()
+                            )
+                        )
                         setUpAdapter()
                     } else {
                         showToast(it.message.toString())
@@ -91,7 +99,7 @@ class HelpActivity : BaseActivity(), HelpAdapter.HelpManager {
     private fun setUpToolbar() {
         binding.toolbar.apply {
             divider.visibility = View.VISIBLE
-            tvTitle.text = getString(R.string.help)
+            tvTitle.text = getString(R.string.help_support)
             tvDate.visibility = GONE
             btnBack.visibility = VISIBLE
             btnBack.setOnClickListener {

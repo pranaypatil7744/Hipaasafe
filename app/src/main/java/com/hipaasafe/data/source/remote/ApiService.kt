@@ -12,6 +12,7 @@ import com.hipaasafe.domain.model.get_patients.GetPatientsListResponseModel
 import com.hipaasafe.domain.model.notes.AddNoteRequestModel
 import com.hipaasafe.domain.model.notes.AddNoteResponseModel
 import com.hipaasafe.domain.model.notes.GetNotesListResponseModel
+import com.hipaasafe.domain.model.notifications.GetNotificationsResponseModel
 import com.hipaasafe.domain.model.notifications.MuteNotificationsRequestModel
 import com.hipaasafe.domain.model.notifications.MuteNotificationsResponseModel
 import com.hipaasafe.domain.model.patient_login.*
@@ -150,5 +151,11 @@ interface ApiService {
 
     @POST(ApiNames.muteNotificationsApi)
     suspend fun callMuteNotificationApi(@Body request:MuteNotificationsRequestModel):MuteNotificationsResponseModel
+
+    @GET(ApiNames.GetNotificationsApi)
+    suspend fun callGetNotificationsApi(
+        @Query("page")page: Int,
+        @Query("limit")limit: Int,
+    ):GetNotificationsResponseModel
 
 }

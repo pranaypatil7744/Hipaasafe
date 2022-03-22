@@ -16,6 +16,7 @@ import com.hipaasafe.domain.usecase.documents.*
 import com.hipaasafe.domain.usecase.login.*
 import com.hipaasafe.domain.usecase.notes.AddNotesUseCase
 import com.hipaasafe.domain.usecase.notes.GetNotesListUseCase
+import com.hipaasafe.domain.usecase.notification.GetNotificationsUseCase
 import com.hipaasafe.domain.usecase.notification.MuteNotificationsUseCase
 import com.hipaasafe.domain.usecase.patients.GetPatientsListUseCase
 import com.hipaasafe.domain.usecase.profile.PatientUpdateProfileUseCase
@@ -261,4 +262,7 @@ fun createNotificationsRepository(apiService: ApiService):NotificationsRepositor
 }
 fun createMuteNotificationUseCase(notificationsRepository: NotificationsRepository): MuteNotificationsUseCase {
     return MuteNotificationsUseCase(notificationsRepository)
+}
+fun createGetNotificationUseCase(notificationsRepository: NotificationsRepository): GetNotificationsUseCase {
+    return GetNotificationsUseCase(notificationsRepository)
 }

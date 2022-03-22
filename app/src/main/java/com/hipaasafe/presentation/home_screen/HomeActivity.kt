@@ -3,6 +3,7 @@ package com.hipaasafe.presentation.home_screen
 import android.content.Intent
 import android.os.Bundle
 import android.view.View.VISIBLE
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -10,7 +11,6 @@ import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.databinding.ActivityHomeBinding
-import com.hipaasafe.presentation.home_screen.appointment_fragment.AppointmentFragment
 import com.hipaasafe.presentation.home_screen.home_fragment.HomeFragment
 import com.hipaasafe.presentation.home_screen.home_fragment.HomeFragmentDoctor
 import com.hipaasafe.presentation.home_screen.navigation_fragment.NavigationFragment
@@ -18,6 +18,7 @@ import com.hipaasafe.presentation.past_appointments.PastAppointmentsActivity
 import com.hipaasafe.utils.AppUtils
 import com.hipaasafe.utils.PreferenceUtils
 import com.hipaasafe.utils.enum.LoginUserType
+
 
 class HomeActivity : BaseActivity(),ToolbarActionListener {
     lateinit var binding: ActivityHomeBinding
@@ -110,6 +111,22 @@ class HomeActivity : BaseActivity(),ToolbarActionListener {
     override fun drawerItemSelected() {
         binding.drawerLayout.closeDrawer(GravityCompat.START,false)
     }
+
+    private val TIME_INTERVAL =
+        2000 // # milliseconds, desired time passed between two back presses.
+
+    private var mBackPressed: Long = 0
+
+//    override fun onBackPressed() {
+//        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+//            super.onBackPressed()
+//            return
+//        } else {
+//            Toast.makeText(baseContext, "Tap back button in order to exit", Toast.LENGTH_SHORT)
+//                .show()
+//        }
+//        mBackPressed = System.currentTimeMillis()
+//    }
 
 }
 

@@ -23,7 +23,7 @@ val AppModule = module {
     viewModel { PatientsViewModel(get()) }
     viewModel { DocumentViewModel(get(),get(),get(),get(),get(),get(),get()) }
     viewModel { AppointmentViewModel(get(), get(),get(),get(),get(),get(),get()) }
-    viewModel { NotificationViewModel(get()) }
+    viewModel { NotificationViewModel(get(),get()) }
 
     single { createLoginRepository(get(named("normalService"))) }
     single { createPatientSendOtpUseCase(get()) }
@@ -70,5 +70,6 @@ val AppModule = module {
 
     single { createNotificationsRepository(get(named("normalService"))) }
     single { createMuteNotificationUseCase(get()) }
+    single { createGetNotificationUseCase(get()) }
 
 }

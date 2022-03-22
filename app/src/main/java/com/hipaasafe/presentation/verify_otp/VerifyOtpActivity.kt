@@ -442,8 +442,9 @@ class VerifyOtpActivity : BaseActivity(), CometListener {
         navigateToHome()
     }
 
-    override fun onCometLoginFailure() {
+    override fun onCometLoginFailure(msg: String) {
         toggleLoader(showLoader = false)
-        showToast(getString(R.string.something_went_wrong))
+        showToast(msg)
     }
+
 }

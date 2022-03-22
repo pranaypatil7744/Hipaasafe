@@ -244,11 +244,11 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
             layoutNoInternet.btnRetry.setOnClickListener {
                 callUpcomingAppointmentApi()
             }
-            swipeAppointment.setOnRefreshListener {
-                swipeAppointment.isRefreshing = false
-                callUpcomingAppointmentApi()
-                callMyQueueApi()
-            }
+//            swipeAppointment.setOnRefreshListener {
+//                swipeAppointment.isRefreshing = false
+//                callUpcomingAppointmentApi()
+//                callMyQueueApi()
+//            }
         }
     }
 
@@ -338,7 +338,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
                     layoutCount.visibility = VISIBLE
                     btnGotIt.visibility = GONE
                     tvCount.text = queueNo.toString()
-                    tvMainTitle.text = context.getString(R.string.we_re_still_waiting_in_the_queue)
+                    tvMainTitle.text = context.getString(R.string.you_are_in_the_queue)
                     tvMainSubTitle.text =
                         context.getString(R.string.saving_the_world_happens_one_person_at_a_time)
                 } else {

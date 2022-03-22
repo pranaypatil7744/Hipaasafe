@@ -109,7 +109,7 @@ class LoginActivity : BaseActivity() {
             imgMain.setImageResource(R.drawable.img_login_patient)
             layoutEmail.visibility = INVISIBLE
             layoutMobile.visibility = VISIBLE
-            btnContinue.text = getString(R.string.sent_otp)
+            btnContinue.text = getString(R.string.send_otp)
             tvByClicking.visibility = VISIBLE
             tvTermCondition.visibility = VISIBLE
         }
