@@ -69,6 +69,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
         super.onViewCreated(view, savedInstanceState)
         setUpView()
         callMyQueueApi()
+        callUpcomingAppointmentApi()
         setUpObserver()
         setUpAdapter()
         setUpListener()
@@ -80,7 +81,6 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
             callMyQueueApi()
         }.also { runnable = it }, delay.toLong())
         super.onResume()
-        callUpcomingAppointmentApi()
     }
 
     override fun onPause() {
@@ -246,11 +246,11 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
             layoutNoInternet.btnRetry.setOnClickListener {
                 callUpcomingAppointmentApi()
             }
-//            swipeAppointment.setOnRefreshListener {
-//                swipeAppointment.isRefreshing = false
-//                callUpcomingAppointmentApi()
-//                callMyQueueApi()
-//            }
+            swipeAppointment.setOnRefreshListener {
+                swipeAppointment.isRefreshing = false
+                callUpcomingAppointmentApi()
+                callMyQueueApi()
+            }
         }
     }
 

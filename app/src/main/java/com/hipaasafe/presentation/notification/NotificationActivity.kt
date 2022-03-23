@@ -8,6 +8,7 @@ import com.hipaasafe.R
 import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.databinding.ActivityNotificationBinding
 import com.hipaasafe.domain.model.notifications.GetNotificationsRequestModel
+import com.hipaasafe.domain.model.notifications.MarkReadNotificationRequestModel
 import com.hipaasafe.presentation.notification.adapter.NotificationAdapter
 import com.hipaasafe.utils.isNetworkAvailable
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -18,6 +19,7 @@ class NotificationActivity : BaseActivity(), NotificationAdapter.NotificationMan
     lateinit var notificationAdapter: NotificationAdapter
 
     var notificationList: ArrayList<NotificationResult> = ArrayList()
+    var selectedItemPosition:Int =0
     private val notificationViewModel: NotificationViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,8 +28,12 @@ class NotificationActivity : BaseActivity(), NotificationAdapter.NotificationMan
         setContentView(binding.root)
         setUpToolbar()
         setUpObserver()
-        getNotificationListApi()
         setUpNotificationAdapter()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getNotificationListApi()
     }
 
     private fun setUpObserver() {
@@ -45,8 +51,9 @@ class NotificationActivity : BaseActivity(), NotificationAdapter.NotificationMan
                                         _id = i.id.toString(),
                                         title = i.title,
                                         message = i.message,
-                                        status = true,
-                                        createdAt = i.createdAt
+                                        isRead = i.mark_read?:false,
+                                        createdAt = i.createdAt,
+                                        user_img = i.sender_details.avatar
                                     )
                                 )
                             }
@@ -57,6 +64,16 @@ class NotificationActivity : BaseActivity(), NotificationAdapter.NotificationMan
                             layoutNoData.root.visibility = VISIBLE
                         }
                     } else {
+                        showToast(it.message.toString())
+                    }
+                }
+
+                markReadNotificationsResponseData.observe(this@NotificationActivity){
+                    toggleLoader(false)
+                    if (it.success == true){
+                        notificationList[selectedItemPosition].isRead = true
+                        notificationAdapter.notifyItemChanged(selectedItemPosition)
+                    }else{
                         showToast(it.message.toString())
                     }
                 }
@@ -102,8 +119,8 @@ class NotificationActivity : BaseActivity(), NotificationAdapter.NotificationMan
 
     private fun setUpToolbar() {
         binding.toolbar.apply {
-            divider.visibility = View.VISIBLE
-            btnBack.visibility = View.VISIBLE
+            divider.visibility = VISIBLE
+            btnBack.visibility = VISIBLE
             btnBack.setOnClickListener {
                 finish()
             }
@@ -115,8 +132,22 @@ class NotificationActivity : BaseActivity(), NotificationAdapter.NotificationMan
 
     override fun onNotificationItemClicked(position: Int) {
         val data = notificationList[position]
-        if (!data.status) {
+        selectedItemPosition = position
+        if (!data.isRead) {
+            callMarkReadApi(data._id.toString())
+        }
+    }
 
+    private fun callMarkReadApi(notificationId:String) {
+        binding.apply {
+            if (isNetworkAvailable()){
+                toggleLoader(true)
+                notificationViewModel.callMarkReadNotificationsApi(request = MarkReadNotificationRequestModel(
+                    notification_id = notificationId.toIntOrNull()?:0
+                ))
+            }else{
+                showToast(getString(R.string.no_internet_connection))
+            }
         }
     }
 

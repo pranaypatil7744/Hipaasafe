@@ -17,6 +17,9 @@ import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.FragmentNavigationBinding
 import com.hipaasafe.domain.model.notifications.MuteNotificationsRequestModel
 import com.hipaasafe.presentation.help.HelpActivity
+import com.hipaasafe.presentation.help.HelpViewModel
+import com.hipaasafe.presentation.help.model.HelpItemType
+import com.hipaasafe.presentation.help.model.HelpModel
 import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.home_screen.navigation_fragment.adapter.NavAdapter
 import com.hipaasafe.presentation.home_screen.navigation_fragment.model.NavItemType
@@ -46,6 +49,7 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
             return NavigationFragment()
         }
     }
+    private val helpViewModel: HelpViewModel by viewModel()
 
     private val notificationViewModel: NotificationViewModel by viewModel()
     private var navMenuList: ArrayList<NavigationModel> = ArrayList()
@@ -73,6 +77,17 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
         setUpAdapter()
     }
 
+    private fun callHelpDetailsApi() {
+        binding.apply {
+            if (requireActivity().isNetworkAvailable()) {
+                toggleLoader(true)
+                helpViewModel.callGetStaticDetailsApi()
+            } else {
+                showToast(getString(R.string.no_internet_connection))
+            }
+        }
+    }
+
     private fun setUpObserver() {
         binding.apply {
             with(notificationViewModel){
@@ -85,6 +100,21 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
                         navAdapter.notifyItemChanged(3)
                         showToast(it.message.toString())
                     }
+                }
+            }
+            with(helpViewModel) {
+                helpDetailsResponseData.observe(requireActivity()) {
+                    toggleLoader(false)
+                    if (it.success == true) {
+                        val inviteText = it.data[2].value
+                        AppUtils.INSTANCE?.invite(requireContext(),inviteText.toString())
+                    } else {
+                        showToast(it.message.toString())
+                    }
+                }
+                messageData.observe(requireActivity()) {
+                    toggleLoader(false)
+                    showToast(it.toString())
                 }
             }
         }
@@ -152,7 +182,7 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
                     NavigationModel(
                         navItemType = NavItemType.ITEM_MENU,
                         title = getString(R.string.invite),
-                        icon = R.drawable.ic_dnd
+                        icon = R.drawable.ic_sms_tracking
                     )
                 )
             }
@@ -188,7 +218,7 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
                 startActivity(i)
             }
             getString(R.string.invite) -> {
-                AppUtils.INSTANCE?.invite(requireContext())
+                callHelpDetailsApi()
             }
         }
     }

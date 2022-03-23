@@ -12,9 +12,7 @@ import com.hipaasafe.domain.model.get_patients.GetPatientsListResponseModel
 import com.hipaasafe.domain.model.notes.AddNoteRequestModel
 import com.hipaasafe.domain.model.notes.AddNoteResponseModel
 import com.hipaasafe.domain.model.notes.GetNotesListResponseModel
-import com.hipaasafe.domain.model.notifications.GetNotificationsResponseModel
-import com.hipaasafe.domain.model.notifications.MuteNotificationsRequestModel
-import com.hipaasafe.domain.model.notifications.MuteNotificationsResponseModel
+import com.hipaasafe.domain.model.notifications.*
 import com.hipaasafe.domain.model.patient_login.*
 import com.hipaasafe.domain.model.static_details.GetStaticDetailsResponseModel
 import com.hipaasafe.presentation.profile_edit_details.model.ProfileEditRequestModel
@@ -157,5 +155,8 @@ interface ApiService {
         @Query("page")page: Int,
         @Query("limit")limit: Int,
     ):GetNotificationsResponseModel
+
+    @PUT(ApiNames.MarkNotificationsApi)
+    suspend fun callMarkReadNotificationApi(@Body request:MarkReadNotificationRequestModel):MarkReadNotificationResponseModel
 
 }

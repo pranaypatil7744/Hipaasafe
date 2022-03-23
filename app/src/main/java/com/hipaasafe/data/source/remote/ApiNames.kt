@@ -33,7 +33,8 @@ class ApiNames {
         const val AddNoteApi = "notes/add"
         const val GetNotesApi = "notes/get"
         const val muteNotificationsApi = "user/mute-notifications"
-        const val GetNotificationsApi = "notifications/list?page=1&limit=10"
+        const val GetNotificationsApi = "notifications/list"
+        const val MarkNotificationsApi = "notifications/mark-as-read"
 
     }
 }

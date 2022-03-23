@@ -1,9 +1,6 @@
 package com.hipaasafe.domain.repository
 
-import com.hipaasafe.domain.model.notifications.GetNotificationsRequestModel
-import com.hipaasafe.domain.model.notifications.GetNotificationsResponseModel
-import com.hipaasafe.domain.model.notifications.MuteNotificationsRequestModel
-import com.hipaasafe.domain.model.notifications.MuteNotificationsResponseModel
+import com.hipaasafe.domain.model.notifications.*
 
 interface NotificationsRepository {
 
@@ -11,4 +8,5 @@ interface NotificationsRepository {
 
     suspend fun callGetNotificationsApi(request:GetNotificationsRequestModel):GetNotificationsResponseModel
 
+    suspend fun callMarkReadNotificationApi(request:MarkReadNotificationRequestModel):MarkReadNotificationResponseModel
 }

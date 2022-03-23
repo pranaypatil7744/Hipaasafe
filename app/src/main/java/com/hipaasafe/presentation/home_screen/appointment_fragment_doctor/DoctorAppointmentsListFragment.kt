@@ -47,10 +47,12 @@ class DoctorAppointmentsListFragment : BaseFragment() {
         setUpObserver()
         setUpAdapter()
         setUpListener()
-        callDoctorAppointmentListApi(
-            date = parentFr.nextSevenDaysList[parentFr.selectedTabPosition].date.toString(),
-            parentFr.selectedDoctorId
-        )
+        parentFr.let {
+            callDoctorAppointmentListApi(
+                date = it.nextSevenDaysList[parentFr.selectedTabPosition].date.toString(),
+                it.selectedDoctorId
+            )
+        }
     }
 
     private fun setUpListener() {

@@ -83,6 +83,7 @@ class WebViewActivity : BaseActivity() {
             }
             btnOne.apply {
                 visibility = VISIBLE
+                setImageResource(R.drawable.ic_print)
                 setOnClickListener {
                     sendFileForPrinting(url)
                 }

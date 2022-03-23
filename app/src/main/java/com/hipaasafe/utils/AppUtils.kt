@@ -714,10 +714,10 @@ class AppUtils {
         return currentYear.minus(birthYear).toString()
     }
 
-    fun invite(context: Context) {
+    fun invite(context: Context,text:String) {
         val sendIntent = Intent()
         sendIntent.action = Intent.ACTION_SEND
-        sendIntent.putExtra(Intent.EXTRA_TEXT, getInviteText(context))
+        sendIntent.putExtra(Intent.EXTRA_TEXT, text)
         sendIntent.type = "text/plain"
         context.startActivity(sendIntent)
     }

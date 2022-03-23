@@ -38,7 +38,7 @@ class NotificationAdapter(
             tvNotification.text = data.message
             TextViewCompat.setTextAppearance(
                 tvNotification,
-                if (data.status) R.style.metropolis_regular else R.style.metropolis_bold
+                if (data.isRead) R.style.metropolis_regular_small else R.style.metropolis_bold_small
             )
             if (!TextUtils.isEmpty(data.user_img)) {
                 ImageUtils.INSTANCE?.loadRemoteImageForProfile(

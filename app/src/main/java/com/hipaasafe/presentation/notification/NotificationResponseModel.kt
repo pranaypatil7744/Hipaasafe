@@ -12,7 +12,7 @@ data class NotificationResult(
     var message: String? = "",
     var user_img: String? = "",
     var createdAt: String? = "",
-    var status: Boolean
+    var isRead: Boolean
 )
 
 data class NotificationChangeStatusRequestModel(

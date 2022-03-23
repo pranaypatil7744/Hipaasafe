@@ -17,6 +17,7 @@ import com.hipaasafe.domain.usecase.login.*
 import com.hipaasafe.domain.usecase.notes.AddNotesUseCase
 import com.hipaasafe.domain.usecase.notes.GetNotesListUseCase
 import com.hipaasafe.domain.usecase.notification.GetNotificationsUseCase
+import com.hipaasafe.domain.usecase.notification.MarkReadNotificationUseCase
 import com.hipaasafe.domain.usecase.notification.MuteNotificationsUseCase
 import com.hipaasafe.domain.usecase.patients.GetPatientsListUseCase
 import com.hipaasafe.domain.usecase.profile.PatientUpdateProfileUseCase
@@ -265,4 +266,7 @@ fun createMuteNotificationUseCase(notificationsRepository: NotificationsReposito
 }
 fun createGetNotificationUseCase(notificationsRepository: NotificationsRepository): GetNotificationsUseCase {
     return GetNotificationsUseCase(notificationsRepository)
+}
+fun createMarkReadNotificationUseCase(notificationsRepository: NotificationsRepository): MarkReadNotificationUseCase {
+    return MarkReadNotificationUseCase(notificationsRepository)
 }
