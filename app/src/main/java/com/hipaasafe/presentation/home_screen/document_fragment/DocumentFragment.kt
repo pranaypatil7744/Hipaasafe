@@ -1,8 +1,10 @@
 package com.hipaasafe.presentation.home_screen.document_fragment
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.print.PrintManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -19,6 +21,7 @@ import com.hipaasafe.domain.model.documents.FetchReportsRequestModel
 import com.hipaasafe.domain.model.documents.RemoveRequestDocumentRequestModel
 import com.hipaasafe.domain.model.documents.ShareDocumentRequestModel
 import com.hipaasafe.domain.model.get_doctors.GetDoctorsRequestModel
+import com.hipaasafe.presentation.adapter.MyPrintDocumentAdapter
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.DocumentAdapter
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.ForwardDocAdapter
 import com.hipaasafe.presentation.home_screen.document_fragment.model.DocumentItemType
@@ -101,10 +104,10 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
             layoutNoInternet.btnRetry.setOnClickListener {
                 callFetchReportsApi()
             }
-//            swipeMyPatient.setOnRefreshListener {
-//                swipeMyPatient.isRefreshing = false
-//                callFetchReportsApi()
-//            }
+            swipeDocument.setOnRefreshListener {
+                swipeDocument.isRefreshing = false
+                callFetchReportsApi()
+            }
         }
     }
 
@@ -469,6 +472,8 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
     override fun clickOnUploadedDoc(position: Int) {
         val link =Constants.BASE_URL_REPORT+documentsList[position].uploadedFileUrl
         val extension = link.split(".").last()
+
+//        sendFileForPrinting(link)
         if (extension == "pdf"){
             val i = Intent(requireContext(), WebViewActivity::class.java)
             val b = Bundle()
@@ -483,8 +488,18 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
             startActivity(i)
         }
     }
+    fun sendFileForPrinting(url:String) {
+        val printManager: PrintManager =
+            requireActivity().getSystemService(Context.PRINT_SERVICE) as PrintManager
+        val jobName = this.getString(R.string.app_name) + "print"
+        printManager.print(
+            jobName,
+            MyPrintDocumentAdapter(url), null
+        )
+    }
 
-    private fun callCancelDocApi(position: Int) {
+
+        private fun callCancelDocApi(position: Int) {
         binding.apply {
             if (requireActivity().isNetworkAvailable()){
                 toggleLoader(true)

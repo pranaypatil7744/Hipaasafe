@@ -4,5 +4,5 @@ data class PastAppointmentHistoryModel(
     var title:String? = "",
     var date:String? = "",
     var time:String? = "",
-    var age:String? =""
+    var dob:String? =""
 )

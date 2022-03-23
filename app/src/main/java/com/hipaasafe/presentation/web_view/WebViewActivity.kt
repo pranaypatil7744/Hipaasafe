@@ -2,7 +2,9 @@ package com.hipaasafe.presentation.web_view
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
+import android.print.PrintManager
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.webkit.*
@@ -10,11 +12,14 @@ import com.hipaasafe.Constants
 import com.hipaasafe.R
 import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.databinding.ActivityWebViewBinding
+import com.hipaasafe.presentation.adapter.MyPrintDocumentAdapter
+import com.hipaasafe.utils.AppUtils
 import com.hipaasafe.utils.isNetworkAvailable
 
 class WebViewActivity : BaseActivity() {
     lateinit var binding: ActivityWebViewBinding
     var url: String = ""
+    var ogLink:String =""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWebViewBinding.inflate(layoutInflater)
@@ -36,9 +41,9 @@ class WebViewActivity : BaseActivity() {
         intent.extras?.run {
             val pdfFile =
                 "https://file-examples-com.github.io/uploads/2017/10/file-sample_150kB.pdf"
-            val link = getString(Constants.DocumentLink)
+            ogLink = getString(Constants.DocumentLink).toString()
 
-            url = "http://docs.google.com/gview?embedded=true&url=$link"
+            url = "http://docs.google.com/gview?embedded=true&url=$ogLink"
 //                "https://drive.google.com/viewerng/viewer?embedded=true&url=$link"
 //                "https://docs.google.com/viewer?url=$link"
 //                "http://docs.google.com/viewer?url=$link&embedded=true"
@@ -76,7 +81,23 @@ class WebViewActivity : BaseActivity() {
             btnBack.setOnClickListener {
                 finish()
             }
+            btnOne.apply {
+                visibility = VISIBLE
+                setOnClickListener {
+                    sendFileForPrinting(url)
+                }
+            }
         }
+    }
+
+    fun sendFileForPrinting(url:String) {
+        val printManager: PrintManager =
+            this.getSystemService(Context.PRINT_SERVICE) as PrintManager
+        val jobName = this.getString(R.string.app_name) + "print"
+        printManager.print(
+            jobName,
+            MyPrintDocumentAdapter(url), null
+        )
     }
 
     private fun toggleLoader(showLoader: Boolean) {

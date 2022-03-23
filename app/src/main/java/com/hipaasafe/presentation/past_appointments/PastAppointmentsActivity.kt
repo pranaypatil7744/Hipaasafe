@@ -397,7 +397,7 @@ class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickM
                             title = name,
                             date = i.appointment_date,
                             time = i.appointment_time,
-                            age = i.patient_details?.dob ?: ""
+                            dob = i.patient_details?.dob ?: ""
                         )
                     )
                 }
@@ -412,7 +412,7 @@ class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickM
                             title = name,
                             date = i.appointment_date,
                             time = i.appointment_time,
-                            age = i.patient_details?.dob ?: ""
+                            dob = i.patient_details?.dob ?: ""
                         )
                     )
                 }

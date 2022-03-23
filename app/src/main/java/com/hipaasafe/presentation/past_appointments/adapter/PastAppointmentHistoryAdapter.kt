@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hipaasafe.R
 import com.hipaasafe.databinding.ItemAppointmentHistoryBinding
 import com.hipaasafe.presentation.past_appointments.model.PastAppointmentHistoryModel
+import com.hipaasafe.utils.AppUtils
 
 class PastAppointmentHistoryAdapter(
     val context: Context,
@@ -29,11 +30,13 @@ class PastAppointmentHistoryAdapter(
         holder.binding.apply {
             tvTitle.text = data.title
             tvSubTitle.text = data.date + "  |  " + data.time
-            if (data.age.isNullOrEmpty()){
+            if (data.dob.isNullOrEmpty()){
                 tvAge.visibility = GONE
             }else{
+                val birthYear = data.dob?.split("-")?.first()
+                val age = AppUtils.INSTANCE?.calculateAge(birthYear?.toIntOrNull()?:0)
                 tvAge.visibility = VISIBLE
-                tvAge.text = data.age+" Yrs"
+                tvAge.text = "$age Yrs"
             }
             if (historyList.size - 1 == position){
                 divider.visibility = GONE
