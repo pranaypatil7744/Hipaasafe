@@ -811,14 +811,14 @@ class AppUtils {
         experience: String?
     ): String {
         var result = ""
-        if (!TextUtils.isEmpty(speciality)) {
-            result = "$speciality - "
+        if (!speciality.isNullOrEmpty()) {
+            result = speciality
         }
-        if (!TextUtils.isEmpty(location)) {
-            result = "$result$location - "
+        if (!location.isNullOrEmpty()) {
+            result = "$result - $location"
         }
-        if (!TextUtils.isEmpty(experience) || !TextUtils.equals(experience, "0.0")) {
-            result = "$result$experience yrs"
+        if (!experience.isNullOrEmpty() && !TextUtils.equals(experience, "0.0")) {
+            result = "$result - $experience yrs"
         }
         return result
     }
