@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.CancellationSignal
 import android.os.ParcelFileDescriptor
 import android.os.StrictMode
-import android.os.StrictMode.ThreadPolicy
 import android.print.PageRange
 import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
@@ -15,7 +14,7 @@ import java.io.*
 import java.net.URL
 
 
-class MyPrintDocumentAdapter(val url:String) : PrintDocumentAdapter() {
+class MyPrintDocumentAdapter(val url: String, val isLocalPath: Boolean) : PrintDocumentAdapter() {
 
     override fun onLayout(
         oldAttributes: PrintAttributes,
@@ -30,7 +29,7 @@ class MyPrintDocumentAdapter(val url:String) : PrintDocumentAdapter() {
             callback.onLayoutCancelled()
             return
         }
-        val pdi = PrintDocumentInfo.Builder("chat_history.pdf")
+        val pdi = PrintDocumentInfo.Builder("report.pdf")
             .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT).build()
         callback.onLayoutFinished(pdi, true)
     }
@@ -47,16 +46,17 @@ class MyPrintDocumentAdapter(val url:String) : PrintDocumentAdapter() {
 
 
         try {
-//            val outputDir: File? = BaseApplication.applicationContext()
-//                .getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) // context being the Activity pointer
-//            val targetPdf2 = outputDir?.path + "/2.pdf"
-            val targetPdf ="/data/user/0/com.hipaasafe/files/Screenshot_2022-03-19-20-37-33-134_com.instagram.android.jpg"
-
-//            val policy = ThreadPolicy.Builder().permitAll().build()
-//            StrictMode.setThreadPolicy(policy)
-            input = URL(url).openStream()
-//            input = FileInputStream(targetPdf)
-            output = FileOutputStream(destination.fileDescriptor)
+            val targetPdf =
+                "/data/user/0/com.hipaasafe/files/Screenshot_2022-03-19-20-37-33-134_com.instagram.android.jpg"
+            if (isLocalPath) {
+                input = FileInputStream(url)
+                output = FileOutputStream(destination.fileDescriptor)
+            } else {
+                val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+                StrictMode.setThreadPolicy(policy)
+                input = URL(url).openStream()
+                output = FileOutputStream(destination.fileDescriptor)
+            }
 
             val buf = ByteArray(24 * 16384)
             var bytesRead = 0
@@ -66,17 +66,14 @@ class MyPrintDocumentAdapter(val url:String) : PrintDocumentAdapter() {
                 output.write(buf, 0, bytesRead)
             }
             callback.onWriteFinished(arrayOf<PageRange>(PageRange.ALL_PAGES))
-
-            input.close();
-            output.close();
-
         } catch (ee: FileNotFoundException) {
             AppUtils.INSTANCE?.logMe(TagName.EXCEPTION_TAG, ee.localizedMessage)
         } catch (e: Exception) {
             AppUtils.INSTANCE?.logMe(TagName.EXCEPTION_TAG, e.localizedMessage)
         } finally {
             try {
-
+                input.close()
+                output.close()
             } catch (e: IOException) {
                 AppUtils.INSTANCE?.logMe(TagName.EXCEPTION_TAG, e.localizedMessage)
             }

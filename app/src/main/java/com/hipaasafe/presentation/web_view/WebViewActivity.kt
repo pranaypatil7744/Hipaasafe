@@ -85,7 +85,7 @@ class WebViewActivity : BaseActivity() {
                 visibility = VISIBLE
                 setImageResource(R.drawable.ic_print)
                 setOnClickListener {
-                    sendFileForPrinting(url)
+                    sendFileForPrinting(ogLink)
                 }
             }
         }
@@ -97,7 +97,7 @@ class WebViewActivity : BaseActivity() {
         val jobName = this.getString(R.string.app_name) + "print"
         printManager.print(
             jobName,
-            MyPrintDocumentAdapter(url), null
+            MyPrintDocumentAdapter(url,isLocalPath = false), null
         )
     }
 

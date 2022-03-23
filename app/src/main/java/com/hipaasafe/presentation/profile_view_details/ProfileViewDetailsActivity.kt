@@ -142,7 +142,7 @@ class ProfileViewDetailsActivity : BaseActivity() {
                 )
                 btnEditDetails.visibility = VISIBLE
                 layoutInfo.visibility = GONE
-            } else {
+            } else if (loginUserId == LoginUserType.DOCTOR.value) {
                 viewProfileList.add(
                     ViewProfileModel(
                         icon = R.drawable.ic_speciality,
@@ -155,6 +155,9 @@ class ProfileViewDetailsActivity : BaseActivity() {
                         title = getString(R.string.years_of_experience), subTitle = experience
                     )
                 )
+                btnEditDetails.visibility = INVISIBLE
+                layoutInfo.visibility = VISIBLE
+            }else{
                 btnEditDetails.visibility = INVISIBLE
                 layoutInfo.visibility = VISIBLE
             }

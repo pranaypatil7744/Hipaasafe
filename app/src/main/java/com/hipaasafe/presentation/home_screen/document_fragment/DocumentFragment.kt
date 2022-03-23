@@ -476,7 +476,6 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         val link =Constants.BASE_URL_REPORT+documentsList[position].uploadedFileUrl
         val extension = link.split(".").last()
 
-//        sendFileForPrinting(link)
         if (extension == "pdf"){
             val i = Intent(requireContext(), WebViewActivity::class.java)
             val b = Bundle()
@@ -497,7 +496,7 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
         val jobName = this.getString(R.string.app_name) + "print"
         printManager.print(
             jobName,
-            MyPrintDocumentAdapter(url), null
+            MyPrintDocumentAdapter(url,isLocalPath = false), null
         )
     }
 

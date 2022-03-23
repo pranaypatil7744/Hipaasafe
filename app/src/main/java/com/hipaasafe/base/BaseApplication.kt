@@ -148,6 +148,7 @@ class BaseApplication : Application(), LifecycleObserver, Application.ActivityLi
                         )
                         b.putBoolean(Constants.IS_FROM_NOTIFICATION,true)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        intent.putExtras(b)
                         mContext.startActivity(intent)
 
                     }
@@ -158,14 +159,16 @@ class BaseApplication : Application(), LifecycleObserver, Application.ActivityLi
                         )
                         b.putBoolean(Constants.IS_CHAT_SCREEN,true)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        intent.putExtras(b)
                         mContext.startActivity(intent)
                     }
-                    Constants.NotificationType.patient_my_document_screen.toLowerCase() -> {
+                    Constants.NotificationType.patient_my_document_screen.lowercase(Locale.getDefault()) -> {
                         val intent = Intent(
                             mContext,
                             HomeActivity::class.java
                         )
                         b.putBoolean(Constants.IS_DOCUMENT_SCREEN,true)
+                        intent.putExtras(b)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                         mContext.startActivity(intent)
 
