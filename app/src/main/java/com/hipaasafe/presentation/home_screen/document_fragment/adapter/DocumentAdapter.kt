@@ -112,7 +112,11 @@ class DocumentAdapter(
                             tvSubTitle.visibility = GONE
                         }else{
                             tvSubTitle.visibility = VISIBLE
-                            tvSubTitle.text = "Shared with - "+data.uploadedFileBy
+                            if (data.uploadedFileById == data.patientId){
+                                tvSubTitle.text = "Shared with - "+data.uploadedFileBy
+                            }else{
+                                tvSubTitle.text = "Shared by - "+data.uploadedFileBy
+                            }
                         }
 
                         if (data.uploadedFileUrl?.contains(".pdf") == true){

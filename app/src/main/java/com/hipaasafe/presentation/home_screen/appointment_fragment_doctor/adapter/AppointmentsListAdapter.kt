@@ -28,9 +28,11 @@ class AppointmentsListAdapter(val context: Context,private val doctorAppointment
         val data = doctorAppointmentList[position]
         holder.binding.apply {
             tvTitle.text = data.patient_details.name
-            val birthYear = data.patient_details.dob?.split("-")?.first()
-            val age = AppUtils.INSTANCE?.calculateAge(birthYear?.toIntOrNull()?:0)
-            tvSubTitle.text = age
+            if (!data.patient_details.dob.isNullOrEmpty()){
+                val birthYear = data.patient_details.dob?.split("-")?.first()
+                val age = AppUtils.INSTANCE?.calculateAge(birthYear?.toIntOrNull()?:0)
+                tvSubTitle.text = "$age Yrs"
+            }
             tvStatus.text = data.appointment_status?.lowercase(Locale.ROOT)
             if (data.queue_no != null && data.queue_no != 0){
                 tvQueue.visibility = VISIBLE

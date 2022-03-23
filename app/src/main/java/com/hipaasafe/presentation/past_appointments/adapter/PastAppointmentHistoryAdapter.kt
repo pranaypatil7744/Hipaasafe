@@ -13,7 +13,7 @@ import com.hipaasafe.utils.AppUtils
 
 class PastAppointmentHistoryAdapter(
     val context: Context,
-    private val historyList: ArrayList<PastAppointmentHistoryModel>
+    private val historyList: ArrayList<PastAppointmentHistoryModel>,var isPatient:Boolean
 ) : RecyclerView.Adapter<PastAppointmentHistoryAdapter.ViewHolder>() {
     class ViewHolder(val binding: ItemAppointmentHistoryBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -33,10 +33,18 @@ class PastAppointmentHistoryAdapter(
             if (data.dob.isNullOrEmpty()){
                 tvAge.visibility = GONE
             }else{
-                val birthYear = data.dob?.split("-")?.first()
-                val age = AppUtils.INSTANCE?.calculateAge(birthYear?.toIntOrNull()?:0)
-                tvAge.visibility = VISIBLE
-                tvAge.text = "$age Yrs"
+                if (isPatient){
+                    tvAge.visibility = GONE
+                }else{
+                    val birthYear = data.dob?.split("-")?.first()
+                    val age = AppUtils.INSTANCE?.calculateAge(birthYear?.toIntOrNull()?:0)
+                    if (age?.toIntOrNull()?:0 != 0){
+                        tvAge.visibility = VISIBLE
+                        tvAge.text = "$age Yrs"
+                    }else{
+                        tvAge.visibility = GONE
+                    }
+                }
             }
             if (historyList.size - 1 == position){
                 divider.visibility = GONE

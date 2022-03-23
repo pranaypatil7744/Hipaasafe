@@ -253,7 +253,10 @@ class DocumentFragment : BaseFragment(), DocumentAdapter.DocumentClickManager,
                                         uploadDocumentId = i.report_name_id ?: 0,
                                         uploadedFileName = i.document_name,
                                         uploadedFileBy = i.doctor_details.name,
-                                        uploadedFileType = i.hospital_tests.title
+                                        uploadedFileById = i.updatedBy,
+                                        uploadedFileType = i.hospital_tests.title,
+                                        doctorId = i.doctor_id,
+                                        patientId = i.patient_id
                                     )
                                 )
                             }

@@ -8,11 +8,13 @@ data class DocumentsModel(
     var subTitle:String? = "",
     var guid:String? ="",
     var doctorId:String? ="",
+    var patientId:String? ="",
     var uploadDocumentId:Int =0,
     var DocumentRequestId:Int =0,
     var uploadedFileName:String?= "",
     var uploadedFileType:String?= "",
     var uploadedFileBy:String?= "",
+    var uploadedFileById:String?= "",
     var uploadedFileUrl:String? =""
 ):Serializable
 enum class DocumentItemType(val value:Int){

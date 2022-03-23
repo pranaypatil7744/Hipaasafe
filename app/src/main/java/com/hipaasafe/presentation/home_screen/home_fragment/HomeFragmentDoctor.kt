@@ -218,9 +218,11 @@ class HomeFragmentDoctor : BaseFragment(), ForwardDocAdapter.ForwardClickManager
             setNurseUI(position)
             when(selectedBottomTabPosition){
                 R.id.navigation_doctor_appointments -> {
+                    doctorAppointmentFragment.selectedDoctorId = selectedDoctorId
                     doctorAppointmentFragment.setUpTabListener(doctorAppointmentFragment.selectedTabPosition)
                 }
                 R.id.navigation_my_patients ->{
+                    myPatientsFragment.selectedDoctorId = selectedDoctorId
                     myPatientsFragment.callMyPatientsListApi()
                 }
             }

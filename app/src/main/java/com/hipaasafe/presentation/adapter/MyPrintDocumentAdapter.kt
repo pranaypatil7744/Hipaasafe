@@ -52,8 +52,8 @@ class MyPrintDocumentAdapter(val url:String) : PrintDocumentAdapter() {
 //            val targetPdf2 = outputDir?.path + "/2.pdf"
             val targetPdf ="/data/user/0/com.hipaasafe/files/Screenshot_2022-03-19-20-37-33-134_com.instagram.android.jpg"
 
-            val policy = ThreadPolicy.Builder().permitAll().build()
-            StrictMode.setThreadPolicy(policy)
+//            val policy = ThreadPolicy.Builder().permitAll().build()
+//            StrictMode.setThreadPolicy(policy)
             input = URL(url).openStream()
 //            input = FileInputStream(targetPdf)
             output = FileOutputStream(destination.fileDescriptor)
@@ -67,14 +67,16 @@ class MyPrintDocumentAdapter(val url:String) : PrintDocumentAdapter() {
             }
             callback.onWriteFinished(arrayOf<PageRange>(PageRange.ALL_PAGES))
 
+            input.close();
+            output.close();
+
         } catch (ee: FileNotFoundException) {
             AppUtils.INSTANCE?.logMe(TagName.EXCEPTION_TAG, ee.localizedMessage)
         } catch (e: Exception) {
             AppUtils.INSTANCE?.logMe(TagName.EXCEPTION_TAG, e.localizedMessage)
         } finally {
             try {
-                input.close();
-                output.close();
+
             } catch (e: IOException) {
                 AppUtils.INSTANCE?.logMe(TagName.EXCEPTION_TAG, e.localizedMessage)
             }

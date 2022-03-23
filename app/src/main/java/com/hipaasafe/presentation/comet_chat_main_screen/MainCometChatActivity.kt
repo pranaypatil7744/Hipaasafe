@@ -1568,14 +1568,14 @@ class MainCometChatActivity : BaseActivity(),
                             }
                         }
                         chatName = user.name
-                        if (user.metadata != null) {
-                            val specialty =
-                                user.metadata.get(Constants.CometChatConstant.speciality)
-                            val location = user.metadata.get(Constants.CometChatConstant.LOCATION)
-                            val experience =
-                                user.metadata.get(Constants.CometChatConstant.experience)
-                            userDetails = "$specialty - $location - $experience Yrs"
-                        }
+//                        if (user.metadata != null) {
+//                            val specialty =
+//                                user.metadata.get(Constants.CometChatConstant.speciality)
+//                            val location = user.metadata.get(Constants.CometChatConstant.LOCATION)
+//                            val experience =
+//                                user.metadata.get(Constants.CometChatConstant.experience)
+//                            userDetails = "$specialty - $location - $experience Yrs"
+//                        }
                         toolbar.tvChatName.text = chatName
                     }
                 }

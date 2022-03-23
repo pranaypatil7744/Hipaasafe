@@ -332,9 +332,11 @@ class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickM
                     if (it.success == true) {
                         if (it.data != null && it.data.size != 0) {
                             layoutNoData.root.visibility = GONE
+                            recyclerPastAppointments.visibility = VISIBLE
                             setUpAdapter(it.data)
                         } else {
                             layoutNoData.root.visibility = VISIBLE
+                            recyclerPastAppointments.visibility = GONE
                         }
                     } else {
                         showToast(it.message.toString())
@@ -418,7 +420,7 @@ class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickM
                 }
                 pastAppointmentHistoryAdapter = PastAppointmentHistoryAdapter(
                     this@PastAppointmentsActivity,
-                    pastAppointmentHistoryList
+                    pastAppointmentHistoryList, isPatient = loginUserType == LoginUserType.PATIENT.value
                 )
                 recyclerPastAppointments.adapter = pastAppointmentHistoryAdapter
             }
