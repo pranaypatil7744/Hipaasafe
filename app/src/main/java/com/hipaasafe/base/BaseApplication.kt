@@ -22,7 +22,7 @@ import com.hipaasafe.di.AppModule
 import com.hipaasafe.di.NetworkModule
 import com.hipaasafe.listener.CometChatCallListener
 import com.hipaasafe.presentation.home_screen.HomeActivity
-import com.hipaasafe.presentation.notification.NotificationActivity
+import com.hipaasafe.presentation.past_appointments.PastAppointmentsActivity
 import com.hipaasafe.settings.CometChatSettings
 import com.hipaasafe.utils.AppUtils
 import com.hipaasafe.utils.ImageUtils
@@ -33,6 +33,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
+import java.util.*
 
 class BaseApplication : Application(), LifecycleObserver, Application.ActivityLifecycleCallbacks {
 
@@ -132,24 +133,44 @@ class BaseApplication : Application(), LifecycleObserver, Application.ActivityLi
 
             data?.let {
                 val redirectToType = it.optString("redirectToType")
-                val intent = Intent(
-                    mContext,
-                    NotificationActivity::class.java
-                )
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                mContext.startActivity(intent)
-                when (redirectToType.toLowerCase()) {
-                    Constants.NotificationType.FRIEND_REQUEST.toLowerCase() -> {
+//                val intent = Intent(
+//                    mContext,
+//                    NotificationActivity::class.java
+//                )
+//                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                mContext.startActivity(intent)
+                val b = Bundle()
+                when (redirectToType.lowercase(Locale.getDefault())) {
+                    Constants.NotificationType.patient_past_appnt.lowercase(Locale.getDefault()) -> {
                         val intent = Intent(
                             mContext,
-                            NotificationActivity::class.java
+                            PastAppointmentsActivity::class.java
                         )
-
-//                        intent.putExtra(Constants.IS_FROM_NOTIFY, true)
+                        b.putBoolean(Constants.IS_FROM_NOTIFICATION,true)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                         mContext.startActivity(intent)
 
                     }
+                    Constants.NotificationType.chat_screen.lowercase(Locale.getDefault()) -> {
+                        val intent = Intent(
+                            mContext,
+                            HomeActivity::class.java
+                        )
+                        b.putBoolean(Constants.IS_CHAT_SCREEN,true)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        mContext.startActivity(intent)
+                    }
+                    Constants.NotificationType.patient_my_document_screen.toLowerCase() -> {
+                        val intent = Intent(
+                            mContext,
+                            HomeActivity::class.java
+                        )
+                        b.putBoolean(Constants.IS_DOCUMENT_SCREEN,true)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        mContext.startActivity(intent)
+
+                    }
+
                     else -> {
                         val intent = Intent(
                             mContext,

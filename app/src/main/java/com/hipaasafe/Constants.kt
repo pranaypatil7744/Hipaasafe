@@ -26,6 +26,7 @@ class Constants {
         const val IsForwarded = "is_forwarded"
         const val IS_FROM_GROUP_CHAT = "IS_FROM_GROUP_CHAT"
         const val IS_FROM_MY_TEAM = "IS_FROM_MY_TEAM"
+        const val IS_FROM_NOTIFICATION = "IS_FROM_NOTIFICATION"
         const val PAST = "PAST"
         const val UPCOMING = "UPCOMING"
         const val CONFIRM = "CONFIRM"
@@ -45,6 +46,8 @@ class Constants {
         const val IS_PDF = "IS_PDF"
         const val IS_SELFIE_CAMERA = "IS_SELFIE_CAMERA"
         const val IS_CAMERA = "IS_CAMERA"
+        const val IS_CHAT_SCREEN = "IS_CHAT_SCREEN"
+        const val IS_DOCUMENT_SCREEN = "IS_DOCUMENT_SCREEN"
         const val FIREBASE_TOKEN = "FIREBASE_TOKEN"
         const val NotificationCount = "NotificationCount"
         const val PendingDocumentName = "PendingDocumentName"
@@ -249,7 +252,10 @@ class Constants {
 
     class NotificationType {
         companion object {
-            const val FRIEND_REQUEST = "friendRequest"
+            const val patient_past_appnt = "patient_past_appnt"
+            const val chat_screen = "chat_screen"
+            const val patient_my_document_screen = "patient_my_document_screen"
+            const val patient_my_appointment_screen = "patient_my_appointment_screen"
         }
     }
 }

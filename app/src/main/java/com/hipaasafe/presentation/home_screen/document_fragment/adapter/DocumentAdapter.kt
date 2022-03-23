@@ -111,6 +111,7 @@ class DocumentAdapter(
                         if (data.uploadedFileBy.isNullOrEmpty()){
                             tvSubTitle.visibility = GONE
                         }else{
+                            // Todo handle it
                             tvSubTitle.visibility = VISIBLE
                             if (data.uploadedFileById == data.patientId){
                                 tvSubTitle.text = "Shared with - "+data.uploadedFileBy

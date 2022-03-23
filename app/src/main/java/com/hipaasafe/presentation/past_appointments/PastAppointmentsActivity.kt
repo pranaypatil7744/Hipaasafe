@@ -1,10 +1,10 @@
 package com.hipaasafe.presentation.past_appointments
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
@@ -15,10 +15,10 @@ import com.hipaasafe.base.BaseActivity
 import com.hipaasafe.databinding.ActivityPastAppointmentsBinding
 import com.hipaasafe.databinding.BottomsheetForwardDocBinding
 import com.hipaasafe.domain.model.appointment.AppointmentItemsModel
-import com.hipaasafe.domain.model.appointment.GetAppointmentResponseModel
 import com.hipaasafe.domain.model.appointment.GetAppointmentsRequestModel
 import com.hipaasafe.domain.model.appointment.GetDoctorPastAppointmentsRequestModel
 import com.hipaasafe.domain.model.doctor_login.DoctorsMappedModel
+import com.hipaasafe.presentation.home_screen.HomeActivity
 import com.hipaasafe.presentation.home_screen.appointment_fragment.AppointmentViewModel
 import com.hipaasafe.presentation.home_screen.document_fragment.adapter.ForwardDocAdapter
 import com.hipaasafe.presentation.home_screen.document_fragment.model.ForwardDocumentModel
@@ -32,7 +32,6 @@ import com.hipaasafe.utils.isNetworkAvailable
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.lang.reflect.Type
 import java.util.*
-import kotlin.collections.ArrayList
 
 class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickManager {
     lateinit var binding: ActivityPastAppointmentsBinding
@@ -45,14 +44,15 @@ class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickM
     var fromDate: String = ""
     var toDate: String = ""
     var selectedFromDate: Calendar? = null
-    var isCalendarClick:Boolean = false
+    var isCalendarClick: Boolean = false
 
-    var selectedDoctorId:String =""
-    var doctorsListForNurse:ArrayList<DoctorsMappedModel> = ArrayList()
-    var doctorsList:ArrayList<ForwardDocumentModel> = ArrayList()
+    var selectedDoctorId: String = ""
+    var doctorsListForNurse: ArrayList<DoctorsMappedModel> = ArrayList()
+    var doctorsList: ArrayList<ForwardDocumentModel> = ArrayList()
     lateinit var bottomSheetDialogDoctor: BottomSheetDialog
     lateinit var bottomSheetSelectDoctorBinding: BottomsheetForwardDocBinding
     private lateinit var doctorListAdapter: ForwardDocAdapter
+    var isFromNotification: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +60,7 @@ class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickM
         setContentView(binding.root)
         preferenceUtils = PreferenceUtils(this)
         getPreferenceData()
+        getIntentData()
         binding.apply {
             when (loginUserType) {
                 LoginUserType.PATIENT.value -> {
@@ -71,7 +72,11 @@ class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickM
                 LoginUserType.NURSE.value -> {
                     val currentDate = AppUtils.INSTANCE?.getCurrentDate().toString()
                     toDate =
-                        AppUtils.INSTANCE?.convertDateFormat("dd MMM yyyy", currentDate, "yyyy-MM-dd")
+                        AppUtils.INSTANCE?.convertDateFormat(
+                            "dd MMM yyyy",
+                            currentDate,
+                            "yyyy-MM-dd"
+                        )
                             .toString()
                     fromDate = AppUtils.INSTANCE?.getPreviousDate(3).toString()
                     etFromDate.setText(fromDate)
@@ -84,7 +89,11 @@ class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickM
                 else -> {
                     val currentDate = AppUtils.INSTANCE?.getCurrentDate().toString()
                     toDate =
-                        AppUtils.INSTANCE?.convertDateFormat("dd MMM yyyy", currentDate, "yyyy-MM-dd")
+                        AppUtils.INSTANCE?.convertDateFormat(
+                            "dd MMM yyyy",
+                            currentDate,
+                            "yyyy-MM-dd"
+                        )
                             .toString()
                     fromDate = AppUtils.INSTANCE?.getPreviousDate(3).toString()
                     etFromDate.setText(fromDate)
@@ -100,6 +109,14 @@ class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickM
         setUpToolbar()
         setUpAdapter()
         setUpListener()
+    }
+
+    private fun getIntentData() {
+        binding.apply {
+            intent?.extras?.run {
+                isFromNotification = getBoolean(Constants.IS_FROM_NOTIFICATION, false)
+            }
+        }
     }
 
     private fun callDoctorPastAppointmentApi(fromDate: String, toDate: String) {
@@ -124,15 +141,20 @@ class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickM
 
     private fun getPreferenceData() {
         binding.apply {
-            loginUserType = preferenceUtils.getValue(Constants.PreferenceKeys.role_id).toIntOrNull()?:0
-            if (loginUserType == LoginUserType.NURSE.value){
+            loginUserType =
+                preferenceUtils.getValue(Constants.PreferenceKeys.role_id).toIntOrNull() ?: 0
+            if (loginUserType == LoginUserType.NURSE.value) {
                 layoutSelectDoctor.visibility = VISIBLE
-                val collectionType: Type = object : TypeToken<ArrayList<DoctorsMappedModel>>() {}.type
-                val data = Gson().fromJson<ArrayList<DoctorsMappedModel>>(preferenceUtils.getValue(Constants.PreferenceKeys.doctorsMappedModel),collectionType)
+                val collectionType: Type =
+                    object : TypeToken<ArrayList<DoctorsMappedModel>>() {}.type
+                val data = Gson().fromJson<ArrayList<DoctorsMappedModel>>(
+                    preferenceUtils.getValue(Constants.PreferenceKeys.doctorsMappedModel),
+                    collectionType
+                )
                 doctorsListForNurse.clear()
                 doctorsListForNurse.addAll(data)
                 setNurseUI(0)
-            }else{
+            } else {
                 selectedDoctorId = preferenceUtils.getValue(Constants.PreferenceKeys.uid)
                 layoutSelectDoctor.visibility = GONE
             }
@@ -141,25 +163,30 @@ class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickM
 
     private fun setNurseUI(position: Int) {
         binding.apply {
-            if (doctorsListForNurse.size != 0){
+            if (doctorsListForNurse.size != 0) {
                 selectedDoctorId = doctorsListForNurse[position].uid.toString()
                 hintSelectDoctor.visibility = GONE
                 imgProfile.visibility = VISIBLE
                 tvDoctorName.visibility = VISIBLE
-                ImageUtils.INSTANCE?.loadRemoteImageForProfile(imgProfile,doctorsListForNurse[position].avatar)
+                ImageUtils.INSTANCE?.loadRemoteImageForProfile(
+                    imgProfile,
+                    doctorsListForNurse[position].avatar
+                )
                 tvDoctorName.text = doctorsListForNurse[position].name
                 doctorsList.clear()
-                for (i in doctorsListForNurse){
-                    doctorsList.add(ForwardDocumentModel(
-                        title = i.name,
-                        icon = i.avatar,
-                        doctorId = i.uid
-                    ))
+                for (i in doctorsListForNurse) {
+                    doctorsList.add(
+                        ForwardDocumentModel(
+                            title = i.name,
+                            icon = i.avatar,
+                            doctorId = i.uid
+                        )
+                    )
                 }
-                if (::doctorListAdapter.isInitialized){
+                if (::doctorListAdapter.isInitialized) {
                     doctorListAdapter.notifyDataSetChanged()
                 }
-            }else{
+            } else {
                 hintSelectDoctor.visibility = VISIBLE
             }
         }
@@ -169,7 +196,7 @@ class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickM
         binding.apply {
 
             btnDown.setOnClickListener {
-                if (doctorsListForNurse.size != 0){
+                if (doctorsListForNurse.size != 0) {
                     openDoctorsListBottomSheet()
                 }
             }
@@ -388,7 +415,7 @@ class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickM
     private fun setUpAdapter(list: ArrayList<AppointmentItemsModel>? = ArrayList()) {
         binding.apply {
             if (::pastAppointmentHistoryAdapter.isInitialized) {
-                if (isCalendarClick){
+                if (isCalendarClick) {
                     pastAppointmentHistoryList.clear()
                 }
                 for (i in list ?: arrayListOf()) {
@@ -420,7 +447,8 @@ class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickM
                 }
                 pastAppointmentHistoryAdapter = PastAppointmentHistoryAdapter(
                     this@PastAppointmentsActivity,
-                    pastAppointmentHistoryList, isPatient = loginUserType == LoginUserType.PATIENT.value
+                    pastAppointmentHistoryList,
+                    isPatient = loginUserType == LoginUserType.PATIENT.value
                 )
                 recyclerPastAppointments.adapter = pastAppointmentHistoryAdapter
             }
@@ -433,9 +461,21 @@ class PastAppointmentsActivity : BaseActivity(), ForwardDocAdapter.ForwardClickM
             tvDate.visibility = GONE
             btnBack.visibility = VISIBLE
             btnBack.setOnClickListener {
-                finish()
+                if (isFromNotification) {
+                    startActivity(Intent(this@PastAppointmentsActivity, HomeActivity::class.java))
+                } else {
+                    finish()
+                }
             }
             divider.visibility = VISIBLE
+        }
+    }
+
+    override fun onBackPressed() {
+        if (isFromNotification) {
+            startActivity(Intent(this@PastAppointmentsActivity, HomeActivity::class.java))
+        } else {
+            super.onBackPressed()
         }
     }
 

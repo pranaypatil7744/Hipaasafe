@@ -114,7 +114,7 @@ class AppointmentFragment : BaseFragment(), UpcomingAppointmentAdapter.Appointme
                 }
                 queueMessageData.observe(requireActivity()) {
                     toggleLoader(false)
-                    handler.removeCallbacks(runnable!!)
+                    runnable?.let { it1 -> handler.removeCallbacks(it1) }
                 }
 
                 stopMyQueueResponseData.observe(requireActivity()){
