@@ -163,6 +163,7 @@ class HomeFragmentDoctor : BaseFragment(), ForwardDocAdapter.ForwardClickManager
             fList.add(myTeamsFragment)
             viewPager.adapter = PagerAdapter(requireActivity(), fList)
             viewPager.isUserInputEnabled = false
+            selectedBottomTabPosition = navigationViewDoctor.selectedItemId
             navigationViewDoctor.setOnNavigationItemSelectedListener {
                 selectedBottomTabPosition = it.itemId
                 when (it.itemId) {
@@ -220,6 +221,7 @@ class HomeFragmentDoctor : BaseFragment(), ForwardDocAdapter.ForwardClickManager
                 R.id.navigation_doctor_appointments -> {
                     doctorAppointmentFragment.selectedDoctorId = selectedDoctorId
                     doctorAppointmentFragment.setUpTabListener(doctorAppointmentFragment.selectedTabPosition)
+//                    doctorAppointmentFragment.callDashboardCountsApi()
                 }
                 R.id.navigation_my_patients ->{
                     myPatientsFragment.selectedDoctorId = selectedDoctorId

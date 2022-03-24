@@ -159,4 +159,9 @@ interface ApiService {
     @PUT(ApiNames.MarkNotificationsApi)
     suspend fun callMarkReadNotificationApi(@Body request:MarkReadNotificationRequestModel):MarkReadNotificationResponseModel
 
+    @GET(ApiNames.DoctorDashboardWeekCountApi)
+    suspend fun callDoctorDashboardCountApi(
+        @Query("doctor_id")doctor_id:String
+    ):DoctorAppointmentDashboardResponseModel
+
 }

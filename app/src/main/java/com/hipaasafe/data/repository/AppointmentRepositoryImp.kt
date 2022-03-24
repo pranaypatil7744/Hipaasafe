@@ -47,5 +47,9 @@ class AppointmentRepositoryImp constructor(private val apiService: ApiService) :
         return apiService.callStopMyQueueApi(request)
     }
 
+    override suspend fun callDoctorDashboardCountApi(request: DoctorAppointmentDashboardRequestModel): DoctorAppointmentDashboardResponseModel {
+        return apiService.callDoctorDashboardCountApi(request.doctor_id)
+    }
+
 
 }

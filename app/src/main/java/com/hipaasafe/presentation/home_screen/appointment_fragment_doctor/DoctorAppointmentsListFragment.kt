@@ -70,6 +70,7 @@ class DoctorAppointmentsListFragment : BaseFragment() {
                     date = parentFr.nextSevenDaysList[parentFr.selectedTabPosition].date.toString(),
                     parentFr.selectedDoctorId
                 )
+//                parentFr.callDashboardCountsApi()
             }
         }
     }
@@ -87,7 +88,7 @@ class DoctorAppointmentsListFragment : BaseFragment() {
                     } else {
                         layoutNoAppointments.root.visibility = VISIBLE
                         layoutNoAppointments.tvInfo.text =
-                            getString(R.string.no_appointments_for) + " " + parentFr.nextSevenDaysList[parentFr.selectedTabPosition].label
+                            getString(R.string.no_appointments_for) + " " + parentFr.nextSevenDaysList[parentFr.selectedTabPosition].label?.split("(")?.first()
                         recyclerDoctorAppointments.visibility = GONE
                     }
                     setUpAdapter()
@@ -115,6 +116,7 @@ class DoctorAppointmentsListFragment : BaseFragment() {
                 toggleLoader(true)
                 layoutNoInternet.root.visibility = GONE
                 recyclerDoctorAppointments.visibility = VISIBLE
+                layoutNoAppointments.root.visibility = VISIBLE
                 appointmentViewModel.callDoctorAppointmentsListApi(
                     request =
                     DoctorAppointmentsRequestModel(
@@ -124,6 +126,7 @@ class DoctorAppointmentsListFragment : BaseFragment() {
             } else {
                 layoutNoInternet.root.visibility = VISIBLE
                 recyclerDoctorAppointments.visibility = GONE
+                layoutNoAppointments.root.visibility = GONE
             }
         }
     }

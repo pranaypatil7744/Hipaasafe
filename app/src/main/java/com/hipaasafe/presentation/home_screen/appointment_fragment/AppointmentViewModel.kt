@@ -15,7 +15,8 @@ class AppointmentViewModel constructor(
     var doctorAppointmentsListUseCase: DoctorAppointmentsListUseCase,
     var getDoctorPastAppointmentsUseCase: GetDoctorPastAppointmentsUseCase,
     var stopMyQueueUseCase: StopMyQueueUseCase,
-    var getMyQueueUseCase: GetMyQueueUseCase
+    var getMyQueueUseCase: GetMyQueueUseCase,
+    var doctorAppointmentCountUseCase: DoctorAppointmentCountUseCase
 ) : ViewModel() {
     val getAppointmentsResponseData = MutableLiveData<GetAppointmentResponseModel>()
     val modifyAppointmentResponseData = MutableLiveData<ModifyAppointmentResponseModel>()
@@ -23,11 +24,28 @@ class AppointmentViewModel constructor(
     val doctorAppointmentsListResponseData = MutableLiveData<DoctorAppointmentsResponseModel>()
     val getMyQueueResponseData = MutableLiveData<GetMyQueueResponseModel>()
     val stopMyQueueResponseData = MutableLiveData<StopMyQueueResponseModel>()
+    val doctorAppointmentDashboardCountResponseData = MutableLiveData<DoctorAppointmentDashboardResponseModel>()
     val getDoctorPastAppointmentsListResponseData =
         MutableLiveData<GetDoctorPastAppointmentsResponseModel>()
     val messageData = MutableLiveData<String>()
     val queueMessageData = MutableLiveData<String>()
 
+
+    fun callDoctorDashboardCountApi(request:DoctorAppointmentDashboardRequestModel) {
+        doctorAppointmentCountUseCase.invoke(
+            viewModelScope,
+            request,
+            object : UseCaseResponse<DoctorAppointmentDashboardResponseModel> {
+                override fun onSuccess(result: DoctorAppointmentDashboardResponseModel) {
+                    doctorAppointmentDashboardCountResponseData.value = result
+                }
+
+                override fun onError(apiError: ApiError?) {
+                    queueMessageData.value = apiError?.message
+                }
+
+            })
+    }
 
     fun callStopMyQueueApi(request:StopMyQueueRequestModel) {
         stopMyQueueUseCase.invoke(

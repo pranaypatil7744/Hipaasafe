@@ -18,9 +18,11 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvInfo"
         style="@style/metropolis_medium_large"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:gravity="center"
         tools:text="@string/no_appointments_for_today"
         android:textColor="@color/storm_gray"
         app:layout_constraintEnd_toEndOf="parent"

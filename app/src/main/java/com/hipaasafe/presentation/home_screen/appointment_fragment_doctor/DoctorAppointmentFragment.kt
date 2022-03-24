@@ -3,17 +3,23 @@ package com.hipaasafe.presentation.home_screen.appointment_fragment_doctor
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hipaasafe.base.BaseFragment
 import com.hipaasafe.databinding.FragmentDoctorAppointmentBinding
+import com.hipaasafe.domain.model.appointment.DoctorAppointmentDashboardRequestModel
 import com.hipaasafe.presentation.adapter.PagerAdapter
 import com.hipaasafe.presentation.home_screen.HomeActivity
+import com.hipaasafe.presentation.home_screen.appointment_fragment.AppointmentViewModel
 import com.hipaasafe.presentation.home_screen.appointment_fragment_doctor.model.AppointmentTabModel
 import com.hipaasafe.utils.AppUtils
 import com.hipaasafe.utils.PreferenceUtils
+import com.hipaasafe.utils.isNetworkAvailable
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class DoctorAppointmentFragment : BaseFragment() {
@@ -23,6 +29,8 @@ class DoctorAppointmentFragment : BaseFragment() {
             return DoctorAppointmentFragment()
         }
     }
+
+    private val appointmentViewModel: AppointmentViewModel by viewModel()
 
     var doctorAppointmentsListFragment1 = DoctorAppointmentsListFragment.newInstance()
     var doctorAppointmentsListFragment2 = DoctorAppointmentsListFragment.newInstance()
@@ -48,13 +56,97 @@ class DoctorAppointmentFragment : BaseFragment() {
         preferenceUtils = PreferenceUtils(requireContext())
         val homeFragmentDoctor = (requireActivity() as HomeActivity).homeFragmentDoctor
         selectedDoctorId = homeFragmentDoctor.selectedDoctorId
-        setUpView()
-        setUpTabs()
+        setUpObserver()
+        callDashboardCountsApi()
         setUpListener()
+    }
+
+    private fun setUpObserver() {
+        binding.apply {
+            with(appointmentViewModel) {
+                doctorAppointmentDashboardCountResponseData.observe(requireActivity()) {
+                    toggleLoader(false)
+                    if (it.success == true) {
+                        if (!it.data.isNullOrEmpty()) {
+                            layoutNoAppointments.root.visibility = GONE
+                            tabLayout.visibility = VISIBLE
+                            divider.visibility = VISIBLE
+                            viewPager.visibility = VISIBLE
+                            nextSevenDaysList.clear()
+                            for (i in it.data) {
+                                nextSevenDaysList.add(
+                                    AppointmentTabModel(
+                                        date = i.date?.split("T")?.first(),
+                                        label = AppUtils.INSTANCE?.convertDateFormat(
+                                            "yyyy-MM-dd",
+                                            i.date.toString().split("T").first(),
+                                            "dd MMM"
+                                        )+" (${i.count})"
+                                    )
+                                )
+                            }
+                            if (nextSevenDaysList.isNotEmpty() && nextSevenDaysList.size > 1){
+                                nextSevenDaysList[0].label = "Today (${it.data[0].count})"
+                                nextSevenDaysList[1].label = "Tomorrow (${it.data[1].count})"
+                            }
+                            setUpTabs()
+                            setUpTabListener(selectedTabPosition)
+                        } else {
+                            layoutNoAppointments.root.visibility = VISIBLE
+                            layoutNoAppointments.tvInfo.text = "No appointments"
+                            tabLayout.visibility = GONE
+                            divider.visibility = GONE
+                            viewPager.visibility = GONE
+                        }
+                    } else {
+                        showToast(it.message.toString())
+                    }
+                }
+                messageData.observe(requireActivity()) {
+                    toggleLoader(false)
+                    showToast(it.toString())
+                }
+            }
+        }
+    }
+
+    private fun toggleLoader(showLoader: Boolean) {
+        toggleFadeView(
+            binding.root,
+            binding.contentLoading.layoutLoading,
+            binding.contentLoading.imageLoading,
+            showLoader
+        )
+    }
+
+
+    fun callDashboardCountsApi() {
+        binding.apply {
+            if (requireActivity().isNetworkAvailable()) {
+                toggleLoader(true)
+                layoutNoInternet.root.visibility = GONE
+                tabLayout.visibility = VISIBLE
+                divider.visibility = VISIBLE
+                viewPager.visibility = VISIBLE
+                appointmentViewModel.callDoctorDashboardCountApi(
+                    request = DoctorAppointmentDashboardRequestModel(
+                        doctor_id = selectedDoctorId
+                    )
+                )
+            } else {
+                layoutNoInternet.root.visibility = VISIBLE
+                tabLayout.visibility = GONE
+                divider.visibility = GONE
+                viewPager.visibility = GONE
+            }
+        }
     }
 
     private fun setUpListener() {
         binding.apply {
+            layoutNoInternet.btnRetry.setOnClickListener {
+                callDashboardCountsApi()
+            }
             tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     selectedTabPosition = tab?.position ?: 0
@@ -74,7 +166,7 @@ class DoctorAppointmentFragment : BaseFragment() {
     }
 
     fun setUpTabListener(tabPosition: Int) {
-        when (selectedTabPosition) {
+        when (tabPosition) {
             0 -> {
                 doctorAppointmentsListFragment1.apply {
                     callDoctorAppointmentListApi(
@@ -143,6 +235,7 @@ class DoctorAppointmentFragment : BaseFragment() {
     private fun setUpTabs() {
         binding.apply {
             val fragmentList: ArrayList<Fragment> = ArrayList()
+            fragmentList.clear()
             fragmentList.add(doctorAppointmentsListFragment1)
             fragmentList.add(doctorAppointmentsListFragment2)
             fragmentList.add(doctorAppointmentsListFragment3)
