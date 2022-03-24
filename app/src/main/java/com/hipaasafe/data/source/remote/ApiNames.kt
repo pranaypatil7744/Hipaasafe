@@ -35,6 +35,7 @@ class ApiNames {
         const val muteNotificationsApi = "user/mute-notifications"
         const val GetNotificationsApi = "notifications/list"
         const val MarkNotificationsApi = "notifications/mark-as-read"
+        const val DoctorDashboardWeekCountApi = "query/appointments/fetch/week-count"
 
     }
 }

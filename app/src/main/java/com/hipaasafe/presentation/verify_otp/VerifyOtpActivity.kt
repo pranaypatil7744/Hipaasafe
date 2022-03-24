@@ -137,7 +137,6 @@ class VerifyOtpActivity : BaseActivity(), CometListener {
                     stopTimer()
                     if (it.success) {
                         saveDoctorData(it.data)
-                        OneSignal.disablePush(false)
                         val token = preferenceUtils.getValue(Constants.FIREBASE_TOKEN)
                         CometChatUtils.loginToComet(
                             it.data.uid,
@@ -163,8 +162,6 @@ class VerifyOtpActivity : BaseActivity(), CometListener {
                             i.putExtras(b)
                             startActivity(i)
                         } else {
-                            preferenceUtils.setValue(Constants.IS_LOGIN, true)
-                            OneSignal.disablePush(false)
                             val token = preferenceUtils.getValue(Constants.FIREBASE_TOKEN)
                             CometChatUtils.loginToComet(
                                 it.data.uid,
@@ -231,7 +228,6 @@ class VerifyOtpActivity : BaseActivity(), CometListener {
     private fun saveDoctorData(data: DoctorDataModel) {
         binding.apply {
             preferenceUtils.apply {
-                setValue(Constants.IS_LOGIN, true)
                 setValue(Constants.PreferenceKeys.id, data.id.toString())
                 setValue(Constants.PreferenceKeys.uid, data.uid.toString())
                 setValue(Constants.PreferenceKeys.name, data.name.toString())
@@ -439,6 +435,8 @@ class VerifyOtpActivity : BaseActivity(), CometListener {
 
     override fun onCometLoginSuccess() {
         toggleLoader(showLoader = false)
+        preferenceUtils.setValue(Constants.IS_LOGIN, true)
+        OneSignal.disablePush(false)
         navigateToHome()
     }
 

@@ -43,7 +43,6 @@ class SignUpActivity : BaseActivity(), ValidationListener, CometListener {
                 patientRegisterResponseData.observe(this@SignUpActivity) {
                     if (it.success) {
                         savePatientData(it.data)
-                        OneSignal.disablePush(false)
                         val token = preferenceUtils.getValue(Constants.FIREBASE_TOKEN)
                         CometChatUtils.loginToComet(
                             it.data.uid,
@@ -77,7 +76,6 @@ class SignUpActivity : BaseActivity(), ValidationListener, CometListener {
     private fun savePatientData(data: UserRegisterDataModel) {
         binding.apply {
             preferenceUtils.apply {
-                setValue(Constants.IS_LOGIN, true)
                 setValue(Constants.PreferenceKeys.id, data.id.toString())
                 setValue(Constants.PreferenceKeys.uid, data.uid.toString())
                 setValue(Constants.PreferenceKeys.name, data.name.toString())
@@ -228,6 +226,8 @@ class SignUpActivity : BaseActivity(), ValidationListener, CometListener {
     }
     override fun onCometLoginSuccess() {
         toggleLoader(showLoader = false)
+        preferenceUtils.setValue(Constants.IS_LOGIN, true)
+        OneSignal.disablePush(false)
         navigateToHome()
     }
 
