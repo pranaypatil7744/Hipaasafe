@@ -242,7 +242,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     val notification: Uri =
                         Uri.parse("android.resource://" + "com.hipaasafe" + "/" + R.raw.incoming_call)
 
-                    builder.setSound(alert)
+                    builder.setSound(notification)
                     builder.addAction(
                         0,
                         "Answers",
