@@ -52,6 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvMsg"
+        app:layout_constraintVertical_bias="0.23000002"
         app:srcCompat="@drawable/img_login_patient" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -178,32 +179,6 @@
         app:layout_constraintTop_toBottomOf="@+id/layoutMobile"
         tools:text="@string/something_went_wrong" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvByClicking"
-        style="@style/metropolis_regular_x_small"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:layout_marginTop="27dp"
-        android:text="@string/by_clicking_continu_you_agree_with_our"
-        android:textColor="@color/heather"
-        app:layout_constraintBottom_toTopOf="@id/tvTermCondition"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvTermCondition"
-        style="@style/metropolis_regular_x_small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:text="@string/terms_and_condition"
-        android:textColor="@color/azure_radiance"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnContinue"
         style="@style/MaterialButtonBaseStyle"
@@ -213,9 +188,42 @@
         android:text="@string/send_otp"
         android:textColor="@color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/tvByClicking"
+        app:layout_constraintBottom_toTopOf="@id/layoutTerm"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutMobile" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layoutTerm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnContinue"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvByClicking"
+            style="@style/metropolis_regular_x_small"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:text="@string/by_clicking_continu_you_agree_with_our"
+            android:textColor="@color/heather"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTermCondition"
+            style="@style/metropolis_regular_x_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/terms_and_condition"
+            android:textColor="@color/azure_radiance"
+            app:layout_constraintTop_toBottomOf="@id/tvByClicking"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         android:id="@+id/content_loading"
