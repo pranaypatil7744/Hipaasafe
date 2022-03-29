@@ -295,7 +295,9 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
             .setPositiveButton(
                 getString(R.string.yes)
             ) { _, _ ->
+                val token = preferenceUtils.getValue(Constants.FIREBASE_TOKEN)
                 preferenceUtils.clear()
+                preferenceUtils.setValue(Constants.FIREBASE_TOKEN,token)
                 OneSignal.clearOneSignalNotifications()
                 OneSignal.disablePush(true)
                 BaseApplication.second = Constants.RESEND_OTP_SECOND
