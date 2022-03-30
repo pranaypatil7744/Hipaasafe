@@ -280,12 +280,14 @@ class NavigationFragment : BaseFragment(), NavAdapter.NavClickManager {
     }
 
     private fun toggleLoader(showLoader: Boolean) {
-        toggleFadeView(
-            binding.root,
-            binding.contentLayout.layoutLoading,
-            binding.contentLayout.imageLoading,
-            showLoader
-        )
+        binding.apply {
+            toggleFadeView(
+                root,
+                contentLayout.layoutLoading,
+                contentLayout.imageLoading,
+                showLoader
+            )
+        }
     }
 
 
